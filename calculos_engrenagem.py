@@ -1,10 +1,10 @@
 import numpy as np
 
 #Dados de Entrada
-P_in = 1580      # Potência de entrada [W]
-n_in = 1450   # Rotação de entrada [rpm]
-F_cabo = 1988    # Força de tração [N]
-D_tambor = 0.12  # Diâmetro do tambor [m]
+P_in = 1580      # Potência de entrada
+n_in = 1450   # Rotação de entrada
+F_cabo = 1988    # Força de tração
+D_tambor = 0.12  # Diâmetro do tambor
 η_total = 0.85   # Eficiência total do redutor
 
 # Parametros iniciais
@@ -144,7 +144,6 @@ def dimensionar_estagio(T_p_in, n_p_in, i_alvo, m, N_p, b_face_fator, eta_estagi
 
 def print_estagio(nome_estagio, res):
     if res is None:
-        print(f"\n--- {nome_estagio}: FALHA ---")
         print("Nenhum módulo padrão foi suficiente.")
         return
 
