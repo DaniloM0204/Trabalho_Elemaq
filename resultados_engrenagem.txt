@@ -1,0 +1,65 @@
+
+--- Estágio 1 (Entrada): aprovado ---
+  Módulo (m): 2.5 mm
+  Largura da Face (b): 25.0 mm
+  Ângulo de Pressão: 20.0 graus
+  Razão de Contato (mp): 1.664
+
+  Pinhão:
+    N° de Dentes (Np): 18
+    Diâmetro Primitivo (dp): 45.00 mm
+    Diâmetro Externo (dep): 50.00 mm
+  Coroa:
+    N° de Dentes (Nc): 66
+    Diâmetro Primitivo (dc): 165.00 mm
+    Diâmetro Externo (dec): 170.00 mm
+  Conjunto:
+    Razão de Transmissão (i): 3.667
+    Distância entre Centros (C): 105.00 mm
+  Fatores de Segurança:
+    FS (Flexão): 3.85
+    FS (Superfície): 1.85
+
+--- Estágio 2 (Saída): aprovado ---
+  Módulo (m): 4.0 mm
+  Largura da Face (b): 40.0 mm
+  Ângulo de Pressão: 20.0 graus
+  Razão de Contato (mp): 1.664
+
+  Pinhão:
+    N° de Dentes (Np): 18
+    Diâmetro Primitivo (dp): 72.00 mm
+    Diâmetro Externo (dep): 80.00 mm
+  Coroa:
+    N° de Dentes (Nc): 66
+    Diâmetro Primitivo (dc): 264.00 mm
+    Diâmetro Externo (dec): 272.00 mm
+  Conjunto:
+    Razão de Transmissão (i): 3.667
+    Distância entre Centros (C): 168.00 mm
+  Fatores de Segurança:
+    FS (Flexão): 5.10
+    FS (Superfície): 2.45
+Razão de Transmissão Total Efetiva: 13.444
+Erro Percentual: -0.31%
+Status: Erro DENTRO do limite de +/- 5%. Projeto aprovado.
+
+--- Parâmetros para outros setores ---
+  Rotação (n_eixo1): 1450.0 rpm
+  Torque (T_eixo1): 10.41 N.m
+  Forças no Pinhão 1 (aplicadas no Eixo 1):
+    Força Tangencial (W_t1): 462.46 N
+    Força Radial (W_r1): 168.32 N
+  Rotação (n_eixo2): 395.5 rpm
+  Torque (T_eixo2): 35.18 N.m
+  Forças da Coroa 1 (aplicadas no Eixo 2):
+    Força Tangencial (W_t_c1): 462.46 N
+    Força Radial (W_r_c1): 168.32 N
+  Forças no Pinhão 2 (aplicadas no Eixo 2):
+    Força Tangencial (W_t_p2): 977.10 N
+    Força Radial (W_r_p2): 355.64 N
+  Rotação (n_eixo3): 107.9 rpm
+  Torque (T_eixo3): 118.91 N.m
+  Forças da Coroa 2 (aplicadas no Eixo 3):
+    Força Tangencial (W_t_c2): 977.10 N
+    Força Radial (W_r_c2): 355.64 N

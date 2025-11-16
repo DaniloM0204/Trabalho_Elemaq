@@ -2,10 +2,10 @@ import numpy as np
 
 #Dados de Entrada
 P_in = 1580      # Potência de entrada
-n_in = 1450   # Rotação de entrada
-F_cabo = 1988    # Força de tração
-D_tambor = 0.12  # Diâmetro do tambor
-η_total = 0.85   # Eficiência total do redutor
+n_in = 1450   # Rotacao de entrada
+F_cabo = 1988    # Forca de tracao
+D_tambor = 0.12  # Diametro do tambor
+η_total = 0.85   # Eficiencia total do redutor
 
 # Parametros iniciais
 ω_in = n_in * (2 * np.pi / 60)
@@ -19,7 +19,7 @@ i_alvo_2 = np.sqrt(i_total)
 
 
 def dimensionar_estagio(T_p_in, n_p_in, i_alvo, m, N_p, b_face_fator, eta_estagio):
-    φ_graus = 20.0 # Ângulo de pressão
+    φ_graus = 20.0 # Angulo de pressao
     φ_rad = np.radians(φ_graus)
 
     N_c = round(N_p * i_alvo)
@@ -30,17 +30,17 @@ def dimensionar_estagio(T_p_in, n_p_in, i_alvo, m, N_p, b_face_fator, eta_estagi
     r_p = d_p / 2
     r_c = d_c / 2
     b_face = m * b_face_fator
-    C = (d_p + d_c) / 2 # Distância entre Centros
+    C = (d_p + d_c) / 2 # Distancia entre Centros
 
-    d_ext_p = m * (N_p + 2) # Diâmetro Externo Pinhão
-    d_ext_c = m * (N_c + 2) # Diâmetro Externo Coroa
+    d_ext_p = m * (N_p + 2) # Diametro Externo Pinhao
+    d_ext_c = m * (N_c + 2) # Diametro Externo Coroa
     r_ext_p = d_ext_p / 2
     r_ext_c = d_ext_c / 2
 
-    # Razão de Contato
+    # Razao de Contato
     p_circ = m * np.pi
     p_base = p_circ * np.cos(φ_rad)
-    r_b_p = r_p * np.cos(φ_rad) # Raio de base pinhão
+    r_b_p = r_p * np.cos(φ_rad) # Raio de base pinhao
     r_b_c = r_c * np.cos(φ_rad) # Raio de base coroa
 
     # Comprimento de ação (Z)
@@ -50,16 +50,16 @@ def dimensionar_estagio(T_p_in, n_p_in, i_alvo, m, N_p, b_face_fator, eta_estagi
 
     mp = Z / p_base # Razão de contato
 
-    # Força Tangencial no pinhão
+    # Forca Tangencial no pinhao
     W_t = (T_p_in * 1000) / (d_p / 2)
-    # Força Radial no pinhão
+    # Forca Radial no pinhao
     W_r = W_t * np.tan(φ_rad)
 
     # Velocidade tangencial
     ω_p_in = n_p_in * (2 * np.pi / 60)
     V_t = (d_p / 1000) * ω_p_in / 2
 
-    # Torque de saida e rotação
+    # Torque de saida e rotacao
     T_p_out = T_p_in * i_efetiva * eta_estagio
     n_p_out = n_p_in / i_efetiva
 
@@ -81,7 +81,7 @@ def dimensionar_estagio(T_p_in, n_p_in, i_alvo, m, N_p, b_face_fator, eta_estagi
     A = 50 + 56 * (1 - B)
     K_v = (A / (A + np.sqrt(V_t * 200)))**B
 
-    # Fator Distribuição Carga (K_m)
+    # Fator Distribuicao Carga (K_m)
     K_m = 0
     if b_face <= 50:
         K_m = 1.6
@@ -92,13 +92,13 @@ def dimensionar_estagio(T_p_in, n_p_in, i_alvo, m, N_p, b_face_fator, eta_estagi
     else:
         K_m = 2.2 # Suposição para valores > 500
 
-    # Análise de Flexão
+    # Analise de Flexao
     σ_b = (W_t / (b_face * m * J)) * (K_s * K_m) / K_v
     σ_b_adm = S_at / (K_T * K_R)
 
     FS_flexao = np.inf if σ_b == 0 else σ_b_adm / σ_b
 
-    # Análise de Contato/Pitting
+    # Analise de Contato/Pitting
     mg = N_c / N_p
 
     # Fator de Geometria (Superfície)
@@ -142,30 +142,6 @@ def dimensionar_estagio(T_p_in, n_p_in, i_alvo, m, N_p, b_face_fator, eta_estagi
         "n_p_out": n_p_out
     }
 
-def print_estagio(nome_estagio, res):
-    if res is None:
-        print("Nenhum módulo padrão foi suficiente.")
-        return
-
-    print(f"\n--- {nome_estagio}: aprovado ---")
-    print(f"  Módulo (m): {res['m']:.1f} mm")
-    print(f"  Largura da Face (b): {res['b_face']:.1f} mm")
-    print(f"  Ângulo de Pressão: {20.0} graus")
-    print(f"  Razão de Contato (mp): {res['mp']:.3f}")
-    print("\n  Pinhão:")
-    print(f"    N° de Dentes (Np): {res['N_p']}")
-    print(f"    Diâmetro Primitivo (dp): {res['d_p']:.2f} mm")
-    print(f"    Diâmetro Externo (dep): {res['d_ext_p']:.2f} mm")
-    print("  Coroa:")
-    print(f"    N° de Dentes (Nc): {res['N_c']}")
-    print(f"    Diâmetro Primitivo (dc): {res['d_c']:.2f} mm")
-    print(f"    Diâmetro Externo (dec): {res['d_ext_c']:.2f} mm")
-    print("  Conjunto:")
-    print(f"    Razão de Transmissão (i): {res['i_efetiva']:.3f}")
-    print(f"    Distância entre Centros (C): {res['C']:.2f} mm")
-    print("  Fatores de Segurança:")
-    print(f"    FS (Flexão): {res['FS_flexao']:.2f}")
-    print(f"    FS (Superfície): {res['FS_pitting']:.2f}")
 
 
 estagio1_iteracoes = []
@@ -179,6 +155,33 @@ b_Face_2 = 10
 
 resultado_estagio_1 = None
 resultado_estagio_2 = None
+
+#
+def escreve_estagio(file, nome_estagio, res):
+    if res is None:
+        file.write("Nenhum módulo padrão foi suficiente.\n")
+        return
+
+    file.write(f"\n--- {nome_estagio}: aprovado ---\n")
+    file.write(f"  Modulo (m): {res['m']:.1f} mm\n")
+    file.write(f"  Largura da Face (b): {res['b_face']:.1f} mm\n")
+    file.write(f"  Angulo de Pressao: {20.0} graus\n")
+    file.write(f"  Razao de Contato (mp): {res['mp']:.3f}\n")
+    file.write("\n  Pinhao:\n")
+    file.write(f"    N de Dentes (Np): {res['N_p']}\n")
+    file.write(f"    Diametro Primitivo (dp): {res['d_p']:.2f} mm\n")
+    file.write(f"    Diametro Externo (dep): {res['d_ext_p']:.2f} mm\n")
+    file.write("  Coroa:\n")
+    file.write(f"    N de Dentes (Nc): {res['N_c']}\n")
+    file.write(f"    Diametro Primitivo (dc): {res['d_c']:.2f} mm\n")
+    file.write(f"    Diametro Externo (dec): {res['d_ext_c']:.2f} mm\n")
+    file.write("  Conjunto:\n")
+    file.write(f"    Razao de Transmissao (i): {res['i_efetiva']:.3f}\n")
+    file.write(f"    Distancia entre Centros (C): {res['C']:.2f} mm\n")
+    file.write("  Fatores de Seguranca:\n")
+    file.write(f"    FS (Flexao): {res['FS_flexao']:.2f}\n")
+    file.write(f"    FS (Superfície): {res['FS_pitting']:.2f}\n")
+
 
 # Estágio 1
 for modulo in modulos_padronizados:
@@ -201,53 +204,53 @@ if resultado_estagio_1 is not None:
             resultado_estagio_2 = resultado
             break
 
+with open("resultados_engrenagem.txt", "w") as f:
+    # Estágio 1
+    escreve_estagio(f, "Estágio 1 (Entrada)", resultado_estagio_1)
 
-# Estágio 1
-print_estagio("Estágio 1 (Entrada)", resultado_estagio_1)
+    # Estágio 2
+    escreve_estagio(f, "Estágio 2 (Saída)", resultado_estagio_2)
 
-# Estágio 2
-print_estagio("Estágio 2 (Saída)", resultado_estagio_2)
+    if resultado_estagio_1 and resultado_estagio_2:
+        i_total_efetiva_final = resultado_estagio_1['i_efetiva'] * resultado_estagio_2['i_efetiva']
+        erro_final = (i_total_efetiva_final - i_total) / i_total
 
-if resultado_estagio_1 and resultado_estagio_2:
-    i_total_efetiva_final = resultado_estagio_1['i_efetiva'] * resultado_estagio_2['i_efetiva']
-    erro_final = (i_total_efetiva_final - i_total) / i_total
+        f.write(f"Razao de Transmissao Total Efetiva: {i_total_efetiva_final:.3f}\n")
+        f.write(f"Erro Percentual: {erro_final * 100:.2f}%\n")
 
-    print(f"Razão de Transmissão Total Efetiva: {i_total_efetiva_final:.3f}")
-    print(f"Erro Percentual: {erro_final * 100:.2f}%")
-
-    if abs(erro_final) <= 0.05:
-        print("Status: Erro DENTRO do limite de +/- 5%. Projeto aprovado.")
+        if abs(erro_final) <= 0.05:
+            f.write("Dentro do limite de+/- 5%. Projeto aprovado.\n")
+        else:
+            f.write("Fora do limite de +/- 5%. Projeto com falha.\n")
     else:
-        print("Status: Erro FORA do limite de +/- 5%. Projeto com falha.")
-else:
-    print("Falha no dimensionamento de um dos estágios. Verificação final abortada.")
+        f.write("Dimensionamento Falhou\n")
 
 
-# ---  Parâmetros para outros setores ---
-if resultado_estagio_1 and resultado_estagio_2:
-    # Eixo 1 Entrada
-    print(f"  Rotação (n_eixo1): {n_in:.1f} rpm")
-    print(f"  Torque (T_eixo1): {T_in:.2f} N.m")
-    print("  Forças no Pinhão 1 (aplicadas no Eixo 1):")
-    print(f"    Força Tangencial (W_t1): {resultado_estagio_1['W_t']:.2f} N")
-    print(f"    Força Radial (W_r1): {resultado_estagio_1['W_r']:.2f} N")
+    # ---  Parametros para outros setores ---
+    if resultado_estagio_1 and resultado_estagio_2:
+        # Eixo 1 Entrada
+        f.write(f"  Rotacao (n_eixo1): {n_in:.1f} rpm\n")
+        f.write(f"  Torque (T_eixo1): {T_in:.2f} N.m\n")
+        f.write("  Forcas no Pinhao 1 (aplicadas no Eixo 1):\n")
+        f.write(f"    Forca Tangencial (W_t1): {resultado_estagio_1['W_t']:.2f} N\n")
+        f.write(f"    Forca Radial (W_r1): {resultado_estagio_1['W_r']:.2f} N\n")
 
-    # Eixo 2
-    print(f"  Rotação (n_eixo2): {resultado_estagio_1['n_p_out']:.1f} rpm")
-    print(f"  Torque (T_eixo2): {resultado_estagio_1['T_p_out']:.2f} N.m")
-    print("  Forças da Coroa 1 (aplicadas no Eixo 2):")
-    print(f"    Força Tangencial (W_t_c1): {resultado_estagio_1['W_t']:.2f} N")
-    print(f"    Força Radial (W_r_c1): {resultado_estagio_1['W_r']:.2f} N")
-    print("  Forças no Pinhão 2 (aplicadas no Eixo 2):")
-    print(f"    Força Tangencial (W_t_p2): {resultado_estagio_2['W_t']:.2f} N")
-    print(f"    Força Radial (W_r_p2): {resultado_estagio_2['W_r']:.2f} N")
+        # Eixo 2
+        f.write(f"  Rotacao (n_eixo2): {resultado_estagio_1['n_p_out']:.1f} rpm\n")
+        f.write(f"  Torque (T_eixo2): {resultado_estagio_1['T_p_out']:.2f} N.m\n")
+        f.write("  Forças da Coroa 1 (aplicadas no Eixo 2):\n")
+        f.write(f"    Força Tangencial (W_t_c1): {resultado_estagio_1['W_t']:.2f} N\n")
+        f.write(f"    Força Radial (W_r_c1): {resultado_estagio_1['W_r']:.2f} N\n")
+        f.write("  Forças no Pinhão 2 (aplicadas no Eixo 2):\n")
+        f.write(f"    Força Tangencial (W_t_p2): {resultado_estagio_2['W_t']:.2f} N\n")
+        f.write(f"    Força Radial (W_r_p2): {resultado_estagio_2['W_r']:.2f} N\n")
 
-    # Eixo 3 Saída
-    print(f"  Rotação (n_eixo3): {resultado_estagio_2['n_p_out']:.1f} rpm")
-    print(f"  Torque (T_eixo3): {resultado_estagio_2['T_p_out']:.2f} N.m")
-    print("  Forças da Coroa 2 (aplicadas no Eixo 3):")
-    print(f"    Força Tangencial (W_t_c2): {resultado_estagio_2['W_t']:.2f} N")
-    print(f"    Força Radial (W_r_c2): {resultado_estagio_2['W_r']:.2f} N")
+        # Eixo 3 Saida
+        f.write(f"  Rotacao (n_eixo3): {resultado_estagio_2['n_p_out']:.1f} rpm\n")
+        f.write(f"  Torque (T_eixo3): {resultado_estagio_2['T_p_out']:.2f} N.m\n")
+        f.write("  Forças da Coroa 2 (aplicadas no Eixo 3):\n")
+        f.write(f"    Força Tangencial (W_t_c2): {resultado_estagio_2['W_t']:.2f} N\n")
+        f.write(f"    Força Radial (W_r_c2): {resultado_estagio_2['W_r']:.2f} N\n")
 
-else:
-    print("\nSem print aqui")
+    else:
+        f.write("\nSem parametros adicionais para outros setores devido a falha no dimensionamento.\n")
