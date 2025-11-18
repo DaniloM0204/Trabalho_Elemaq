@@ -2,7 +2,7 @@ import numpy as np
 import bib_equacoes as beta
 
 #Dados de Entrada
-P_in = 1580000      # Potência de entrada (W)
+P_in = 1580      # Potência de entrada (kW)
 n_in = 1450   # Rotacao de entrada (rpm)
 F_cabo = 1988    # Forca de tracao (N)
 D_tambor = 0.12  # Diametro do tambor (m)
