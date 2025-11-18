@@ -43,6 +43,8 @@
 Razao de Transmissao Total Efetiva: 13.444
 Erro Percentual: -0.31%
 Dentro do limite de+/- 5%. Projeto aprovado.
+
+Parametros dos Eixos:
   Rotacao (n_eixo1): 1450.0 rpm
   Torque (T_eixo1): 10.41 N.m
   Forcas no Pinhao 1 (Eixo 1):

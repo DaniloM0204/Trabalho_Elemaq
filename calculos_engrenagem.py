@@ -105,6 +105,9 @@ with open("resultados_engrenagem.txt", "w") as f:
     # ---  Parametros para outros setores ---
     if resultado_estagio_1 and resultado_estagio_2:
         # Eixo 1 Entrada
+        f.write("\n")
+        f.write("Parametros dos Eixos:\n")
+
         f.write(f"  Rotacao (n_eixo1): {n_in:.1f} rpm\n")
         f.write(f"  Torque (T_eixo1): {T_in:.2f} N.m\n")
         f.write("  Forcas no Pinhao 1 (Eixo 1):\n")
