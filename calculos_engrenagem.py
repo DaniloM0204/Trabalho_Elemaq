@@ -9,27 +9,69 @@ D_tambor = 0.12  # Diametro do tambor (m)
 eta_total = 0.85   # Eficiencia total do redutor
 vida_util = 4000 # Vida util em nº de horas considerando Pmax
 
+# Material Engrenagens
+"""Confesso que pedi pro gemini escolher um material pq eu tava com preguiça de ficar olhando cada um, dai ele escolheu esse que a gente vai padronizar pra todas as engrenagens"""
+
+# Aço AISI 4140 Normalizado
+S_at = 240  # MPa
+S_ac = 860  # MPa
+C_p = 191   # MPa^0.5
+
 # Parametros iniciais
-omega_in = n_in * (np.pi / 60) # Em rad/s mesmo
+"""Nessa seção são calculados os valores que irão compor o dimensionamento dos estágios dos pares de engrenagens, obtendo aqui uma velocidade angular de entrada para o calculo do Torque de entrada, e saída, para poder calcular a razão de transmissão que vai nos dar quanto cada estágio tem que reduzir de velocidade."""
+
+omega_in = n_in * (2*np.pi / 60) # Em rad/s mesmo
 T_in = P_in / omega_in
 T_out = F_cabo * (D_tambor / 2)
+
+# Calculo da razao de transmissao total
 i_total = T_out / (T_in * eta_total)
-i_alvo_1 = np.sqrt(i_total)
-i_alvo_2 = np.sqrt(i_total)
-eta_1 = np.sqrt(eta_total)
-eta_2 = np.sqrt(eta_total)
+i_estagio = np.sqrt(i_total)
 
-estagio1_iteracoes = []
-estagio2_iteracoes = []
+# Eficiencias dos estagios
+eta_estagio = np.sqrt(eta_total)
 
+"""Foram definidos modulos padronizados da tabela 12.2 do Norton assim como o Numero de dentes dos pinhões, e a largura das faces."""
 modulos_padronizados = [1.5, 2, 2.5, 3, 4, 5, 6, 8]
-Np_1 = 18
-b_Face_1 = 10
-Np_2 = 18
-b_Face_2 = 10
+Np = 18
+b_Face = 10
 
 resultado_estagio_1 = None
 resultado_estagio_2 = None
+
+# Dimensionamento por partes
+
+# Estagio 1
+for m in modulos_padronizados:
+    # Formato da Engrenagem
+    grupo_engrenagens = beta.calcula_grupo_engrenagens(i_estagio, m, Np, b_Face)
+
+    # Forças nas engrenagens
+    forcas = beta.calcula_forcas(T_in, n_in, grupo_engrenagens, eta_estagio)
+
+    # Análise dos fatores de segurança
+    fatores = beta.analisa_fatores(grupo_engrenagens, forcas, S_at, S_ac, C_p)
+
+    # Verifica se o fator de seguranca é maior que 1.5
+    if fatores['FS_flexao'] > 1.5 and fatores['FS_pitting'] > 1.5:
+        resultado_estagio_1 = {**grupo_engrenagens, **forcas, **fatores}
+        break
+
+# Estagio 2
+if resultado_estagio_1 is not None:
+    T_in_2 = resultado_estagio_1['T_p_out']
+    n_in_2 = resultado_estagio_1['n_p_out']
+
+    for m in modulos_padronizados:
+        grupo_engrenagens = beta.calcula_grupo_engrenagens(i_estagio, m, Np, b_Face)
+        forcas = beta.calcula_forcas(T_in_2, n_in_2, grupo_engrenagens, eta_estagio)
+        fatores = beta.analisa_fatores(grupo_engrenagens, forcas, S_at, S_ac, C_p)
+
+        if fatores['FS_flexao'] > 1.5 and fatores['FS_pitting'] > 1.5:
+            resultado_estagio_2 = {**grupo_engrenagens,**forcas ,**fatores}
+
+            break
+
 
 #Engrenagem
 def escreve_estagio(file, nome_estagio, res):
@@ -58,32 +100,13 @@ def escreve_estagio(file, nome_estagio, res):
     file.write(f"    FS (Superficie): {res['FS_pitting']:.2f}\n")
 
 
-# Estagio 1
-for modulo in modulos_padronizados:
-    resultado = beta.dimensionar_estagio(T_in, n_in, i_alvo_1, modulo, Np_1, b_Face_1, eta_1)
 
-    if resultado['FS_flexao'] > 1.5 and resultado['FS_pitting'] > 1.5:
-        resultado_estagio_1 = resultado
-        break
-
-# Estágio 2
-if resultado_estagio_1 is not None:
-    # Saída do estágio 1 é a entrada do estágio 2
-    T_p2_in = resultado_estagio_1['T_p_out']
-    n_p2_in = resultado_estagio_1['n_p_out']
-
-    for modulo in modulos_padronizados:
-        resultado = beta.dimensionar_estagio(T_p2_in, n_p2_in, i_alvo_2, modulo, Np_2, b_Face_2, eta_2)
-
-        if resultado['FS_flexao'] > 1.5 and resultado['FS_pitting'] > 1.5:
-            resultado_estagio_2 = resultado
-            break
 
 with open("resultados_engrenagem.txt", "w") as f:
-    # Estágio 1
-    escreve_estagio(f, "Estagio 1 (Entrada)", resultado_estagio_1)
 
-    # Estágio 2
+    f.write(f"Torque de Entrada: {T_in:.2f} N.m\n Torque de Saida: {T_out:.2f} N.m\n")
+
+    escreve_estagio(f, "Estagio 1 (Entrada)", resultado_estagio_1)
     escreve_estagio(f, "Estagio 2 (Saida)", resultado_estagio_2)
 
     if resultado_estagio_1 and resultado_estagio_2:
