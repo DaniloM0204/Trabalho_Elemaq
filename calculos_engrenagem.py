@@ -1,8 +1,8 @@
 import numpy as np
-import bib_equacoes as β
+import bib_equacoes as beta
 
 #Dados de Entrada
-P_in = 1580      # Potência de entrada (kW)
+P_in = 1580000      # Potência de entrada (W)
 n_in = 1450   # Rotacao de entrada (rpm)
 F_cabo = 1988    # Forca de tracao (N)
 D_tambor = 0.12  # Diametro do tambor (m)
@@ -62,7 +62,7 @@ def escreve_estagio(file, nome_estagio, res):
 
 # Estagio 1
 for modulo in modulos_padronizados:
-    resultado = β.dimensionar_estagio(T_in, n_in, i_alvo_1, modulo, Np_1, b_Face_1, eta_1)
+    resultado = beta.dimensionar_estagio(T_in, n_in, i_alvo_1, modulo, Np_1, b_Face_1, eta_1)
 
     if resultado['FS_flexao'] > 1.5 and resultado['FS_pitting'] > 1.5:
         resultado_estagio_1 = resultado
@@ -75,7 +75,7 @@ if resultado_estagio_1 is not None:
     n_p2_in = resultado_estagio_1['n_p_out']
 
     for modulo in modulos_padronizados:
-        resultado = β.dimensionar_estagio(T_p2_in, n_p2_in, i_alvo_2, modulo, Np_2, b_Face_2, eta_2)
+        resultado = beta.dimensionar_estagio(T_p2_in, n_p2_in, i_alvo_2, modulo, Np_2, b_Face_2, eta_2)
 
         if resultado['FS_flexao'] > 1.5 and resultado['FS_pitting'] > 1.5:
             resultado_estagio_2 = resultado
