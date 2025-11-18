@@ -1,65 +1,65 @@
 
 --- Estagio 1 (Entrada): aprovado ---
-  Modulo (m): 8.0 mm
-  Largura da Face (b): 80.0 mm
+  Modulo (m): 4.0 mm
+  Largura da Face (b): 40.0 mm
   Angulo de Pressao: 20.0 graus
-  Razao de Contato (mp): 1.514
+  Razao de Contato (mp): 1.637
 
   Pinhao:
     N de Dentes (Np): 18
-    Diametro Primitivo (dp): 144.00 mm
-    Diametro Externo (dep): 160.00 mm
+    Diametro Primitivo (dp): 72.00 mm
+    Diametro Externo (dep): 80.00 mm
   Coroa:
-    N de Dentes (Nc): 16
-    Diametro Primitivo (dc): 128.00 mm
-    Diametro Externo (dec): 144.00 mm
+    N de Dentes (Nc): 47
+    Diametro Primitivo (dc): 188.00 mm
+    Diametro Externo (dec): 196.00 mm
   Conjunto:
-    Razao de Transmissao (i): 0.889
-    Distancia entre Centros (C): 136.00 mm
+    Razao de Transmissao (i): 2.611
+    Distancia entre Centros (C): 130.00 mm
   Fatores de Seguranca:
-    FS (Flexao): 5.96
-    FS (Superficie): 1.71
+    FS (Flexao): 7.39
+    FS (Superficie): 3.26
 
 --- Estagio 2 (Saida): aprovado ---
-  Modulo (m): 8.0 mm
-  Largura da Face (b): 80.0 mm
+  Modulo (m): 4.0 mm
+  Largura da Face (b): 40.0 mm
   Angulo de Pressao: 20.0 graus
-  Razao de Contato (mp): 1.514
+  Razao de Contato (mp): 1.637
 
   Pinhao:
     N de Dentes (Np): 18
-    Diametro Primitivo (dp): 144.00 mm
-    Diametro Externo (dep): 160.00 mm
+    Diametro Primitivo (dp): 72.00 mm
+    Diametro Externo (dep): 80.00 mm
   Coroa:
-    N de Dentes (Nc): 16
-    Diametro Primitivo (dc): 128.00 mm
-    Diametro Externo (dec): 144.00 mm
+    N de Dentes (Nc): 47
+    Diametro Primitivo (dc): 188.00 mm
+    Diametro Externo (dec): 196.00 mm
   Conjunto:
-    Razao de Transmissao (i): 0.889
-    Distancia entre Centros (C): 136.00 mm
+    Razao de Transmissao (i): 2.611
+    Distancia entre Centros (C): 130.00 mm
   Fatores de Seguranca:
-    FS (Flexao): 7.12
-    FS (Superficie): 2.05
-Razao de Transmissao Total Efetiva: 0.790
-Erro Percentual: -2.35%
+    FS (Flexao): 3.46
+    FS (Superficie): 1.53
+Razao de Transmissao Total Efetiva: 6.818
+Erro Percentual: 1.11%
 Dentro do limite de+/- 5%. Projeto aprovado.
 
 Parametros dos Eixos:
   Rotacao (n_eixo1): 1450.0 rpm
-  Torque (T_eixo1): 173.42 N.m
+  Torque (T_eixo1): 20.81 N.m
   Forcas no Pinhao 1 (Eixo 1):
-    Forca Tangencial (W_t1): 2408.67 N
-    Forca Radial (W_r1): 876.68 N
-  Rotacao (n_eixo2): 1631.2 rpm
-  Torque (T_eixo2): 142.12 N.m
+    Forca Tangencial (W_t1): 578.08 N
+    Forca Radial (W_r1): 210.40 N
+  Rotacao (n_eixo2): 555.3 rpm
+  Torque (T_eixo2): 50.10 N.m
   Forcas da Coroa 1 (Eixo 2):
-    Forca Tangencial (W_t_c1): 2408.67 N
-    Forca Radial (W_r_c1): 876.68 N
+    Forca Tangencial (W_t_c1): 578.08 N
+    Forca Radial (W_r_c1): 210.40 N
   Forcas no Pinhao 2 (Eixo 2):
-    Forca Tangencial (W_t_p2): 1973.94 N
-    Forca Radial (W_r_p2): 718.45 N
-  Rotacao (n_eixo3): 1835.2 rpm
-  Torque (T_eixo3): 116.47 N.m
+    Forca Tangencial (W_t_p2): 1391.63 N
+    Forca Radial (W_r_p2): 506.51 N
+  Rotacao (n_eixo3): 212.7 rpm
+  Torque (T_eixo3): 120.60 N.m
   Forcas da Coroa 2 (Eixo 3):
-    Forca Tangencial (W_t_c2): 1973.94 N
-    Forca Radial (W_r_c2): 718.45 N
+    Forca Tangencial (W_t_c2): 1391.63 N
+    Forca Radial (W_r_c2): 506.51 N
