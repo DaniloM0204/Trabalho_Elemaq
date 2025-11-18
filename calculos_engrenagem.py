@@ -2,21 +2,22 @@ import numpy as np
 import bib_equacoes as β
 
 #Dados de Entrada
-P_in = 1580      # Potência de entrada
-n_in = 1450   # Rotacao de entrada
-F_cabo = 1988    # Forca de tracao
-D_tambor = 0.12  # Diametro do tambor
-η_total = 0.85   # Eficiencia total do redutor
+P_in = 1580      # Potência de entrada (kW)
+n_in = 1450   # Rotacao de entrada (rpm)
+F_cabo = 1988    # Forca de tracao (N)
+D_tambor = 0.12  # Diametro do tambor (m)
+eta_total = 0.85   # Eficiencia total do redutor
+vida_util = 4000 # Vida util em nº de horas considerando Pmax
 
 # Parametros iniciais
-ω_in = n_in * (2 * np.pi / 60)
-T_in = P_in / ω_in
+omega_in = n_in * (np.pi / 60) * D_tambor #rpm para m/s
+T_in = P_in / omega_in
 T_out = F_cabo * (D_tambor / 2)
-i_total = T_out / (T_in * η_total)
+i_total = T_out / (T_in * eta_total)
 i_alvo_1 = np.sqrt(i_total)
 i_alvo_2 = np.sqrt(i_total)
-η_1 = np.sqrt(η_total)
-η_2 = np.sqrt(η_total)
+eta_1 = np.sqrt(eta_total)
+eta_2 = np.sqrt(eta_total)
 
 
 
@@ -32,7 +33,7 @@ b_Face_2 = 10
 resultado_estagio_1 = None
 resultado_estagio_2 = None
 
-#
+#Engrenagem
 def escreve_estagio(file, nome_estagio, res):
     if res is None:
         file.write("Nenhum modulo padrao foi suficiente.\n")
@@ -61,7 +62,7 @@ def escreve_estagio(file, nome_estagio, res):
 
 # Estagio 1
 for modulo in modulos_padronizados:
-    resultado = β.dimensionar_estagio(T_in, n_in, i_alvo_1, modulo, Np_1, b_Face_1, η_1)
+    resultado = β.dimensionar_estagio(T_in, n_in, i_alvo_1, modulo, Np_1, b_Face_1, eta_1)
 
     if resultado['FS_flexao'] > 1.5 and resultado['FS_pitting'] > 1.5:
         resultado_estagio_1 = resultado
@@ -74,7 +75,7 @@ if resultado_estagio_1 is not None:
     n_p2_in = resultado_estagio_1['n_p_out']
 
     for modulo in modulos_padronizados:
-        resultado = β.dimensionar_estagio(T_p2_in, n_p2_in, i_alvo_2, modulo, Np_2, b_Face_2, η_2)
+        resultado = β.dimensionar_estagio(T_p2_in, n_p2_in, i_alvo_2, modulo, Np_2, b_Face_2, eta_2)
 
         if resultado['FS_flexao'] > 1.5 and resultado['FS_pitting'] > 1.5:
             resultado_estagio_2 = resultado
