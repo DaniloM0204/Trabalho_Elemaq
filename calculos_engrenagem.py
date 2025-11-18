@@ -10,7 +10,7 @@ eta_total = 0.85   # Eficiencia total do redutor
 vida_util = 4000 # Vida util em nº de horas considerando Pmax
 
 # Parametros iniciais
-omega_in = n_in * (np.pi / 60) * D_tambor #rpm para m/s
+omega_in = n_in * (np.pi / 60) * (D_tambor/2) #rpm para m/s
 T_in = P_in / omega_in
 T_out = F_cabo * (D_tambor / 2)
 i_total = T_out / (T_in * eta_total)
