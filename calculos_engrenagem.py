@@ -9,7 +9,7 @@ D_tambor = 0.12  # Diametro do tambor
 η_total = 0.85   # Eficiencia total do redutor
 
 # Parametros iniciais
-ω_in = n_in * (2 * np.pi / 60)
+ω_in = n_in * (2 * np.pi / 60) * (D_tambor / 2)
 T_in = P_in / ω_in
 T_out = F_cabo * (D_tambor / 2)
 i_total = T_out / (T_in * η_total)
