@@ -1,6 +1,7 @@
 import numpy as np
 
 
+
 def calcula_grupo_engrenagens(i_alvo, m, N_p, b_face_fator):
     phi_graus = 20.0
     # Passando para radianos pois os calculos sao feitos em radianos
@@ -153,3 +154,104 @@ def analisa_fatores(grupoengre,forcas,S_at,S_ac,C_p):
         FS_pitting = (sigma_c_adm / sigma_c)**2
 
     return {"FS_flexao": FS_flexao, "FS_pitting": FS_pitting}
+
+def calcula_c_superf(S_ut):
+    """
+    Analisa TODOS os acabamentos e retorna o MAIOR fator (Melhor cenário).
+    """
+    A_b = [(1.58, -0.085),   # Retificado
+           (4.51, -0.265),   # Usinado
+           (57.7, -0.718),   # Laminado
+           (272, -0.995)]    # Forjado
+    
+    nomes = ['retificado', 'usinado', 'laminado', 'forjado']
+    c_lista = []
+    
+    for i in range(len(A_b)):
+        A = A_b[i][0]
+        b = A_b[i][1]
+        
+        # Cálculo da fórmula: C_superf = A * (Sut)^b
+        fator = A * (S_ut ** b)
+        
+        # O fator não deve ser maior que 1.0
+        if fator > 1.0: fator = 1.0
+            
+        c_lista.append(fator)
+
+    # Encontrar o maior valor
+    maior_valor = max(c_lista)
+    indice_maior = c_lista.index(maior_valor)
+    melhor_acabamento = nomes[indice_maior]
+        
+    return maior_valor, melhor_acabamento
+
+def calcula_fator_tamanho(d):
+    """Calcula C_tamanho segundo Norton para Flexão/Torção"""
+    if d <= 8:
+        return 1.0
+    elif d <= 250:
+        return 1.189 * (d ** -0.097)
+    else:
+        return 0.6
+
+def calcula_diametro_goodman(Nf, Kf, Ma, Kfs, Ta, Sf, Kfm, Mm, Kfsm, Tm, Sut):
+    """Equação de Goodman Modificado (Eq 43 do relatório)"""
+    
+    # Tensão Alternada
+    termo_alternado_num = np.sqrt((Kf * Ma)**2 + 0.75 * (Kfs * Ta)**2)
+    termo_alternado = termo_alternado_num / Sf
+    
+    # Tensão Média
+    termo_medio_num = np.sqrt((Kfm * Mm)**2 + 0.75 * (Kfsm * Tm)**2)
+    termo_medio = termo_medio_num / Sut
+    
+    multiplicador = (32 * Nf) / np.pi
+    
+    d_min = (multiplicador * (termo_alternado + termo_medio)) ** (1/3)
+    return d_min
+
+def dimensionar_eixo_completo(Ma, Tm, Sut, Se_linha, Nf=1.5, tolerancia=0.05):
+    """
+    Realiza a iteração do diâmetro considerando o erro aceitável de 5%.
+    Automaticamente seleciona o melhor acabamento superficial.
+    """
+    
+    # 1. Fatores constantes
+    C_carreg = 1.0 # Flexão rotativa padrão
+    C_temp = 1.0
+    C_conf = 0.814 # 99% confiabilidade
+    
+    # Fator de superfície (Otimizado)
+    C_sup, acabamento = calcula_c_superf(S_ut=Sut)
+    
+    # 2. Loop de Iteração
+    d_atual = 30.0 # Chute inicial em mm
+    erro = 1.0
+    iteracao = 0
+    
+    print(f"--- Iniciando Iteração do Eixo (Acabamento: {acabamento}) ---")
+    
+    while erro > tolerancia and iteracao < 20:
+        # Calcula fator de tamanho com o diâmetro atual
+        C_tam = calcula_fator_tamanho(d_atual)
+        
+        # Atualiza Limite de Fadiga (Sf)
+        Sf_corrigido = Se_linha * C_carreg * C_tam * C_sup * C_temp * C_conf
+        
+        # Calcula novo diâmetro via Goodman
+        # Assumindo Kf e Kfs genéricos (ex: chaveta) se não passados
+        d_novo = calcula_diametro_goodman(
+            Nf=Nf, Kf=2.0, Ma=Ma, Kfs=1.6, Ta=0, 
+            Sf=Sf_corrigido, Kfm=1.0, Mm=0, Kfsm=1.0, Tm=Tm, Sut=Sut
+        )
+        
+        # Cálculo do erro relativo
+        erro = abs(d_novo - d_atual) / d_atual
+        
+        print(f"Iter {iteracao+1}: d_calc={d_novo:.2f}mm (C_tam={C_tam:.3f}, Sf={Sf_corrigido:.1f}) - Erro: {erro*100:.2f}%")
+        
+        d_atual = d_novo
+        iteracao += 1
+        
+    return d_atual, Sf_corrigido

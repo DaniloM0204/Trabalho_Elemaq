@@ -155,3 +155,16 @@ with open("resultados_engrenagem.txt", "w") as f:
 
     else:
         f.write("\nSem parametros adicionais para outros setores devido a falha no dimensionamento.\n")
+
+# Eixos!
+
+# Aço AISI 1020 Normalizado
+S_ut = 469  # MPa - Tensão de ruptura
+S_y = 390   # MPa - Tensão de escoamento
+
+# Coeficientes 
+C_seg = 1.5  # Fator de segurança 
+C_superf, acabamento_superf = beta.calcula_c_superf(S_ut) #fator de acabamento superficial e o acabamento superficial definido
+C_conf = 0.814  # Fator de confiabilidade de 99%
+C_temp = 1.0   # Fator de temperatura para T < 450C
+C_carr = 1.0   # Fator de carregamento para carga moderada
