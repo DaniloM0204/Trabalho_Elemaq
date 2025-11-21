@@ -32,7 +32,7 @@ i_estagio = np.sqrt(i_total)
 eta_estagio = np.sqrt(eta_total)
 
 """Foram definidos modulos padronizados da tabela 12.2 do Norton assim como o Numero de dentes dos pinhões, e a largura das faces."""
-modulos_padronizados = [1.5, 2, 2.5, 3, 4, 5, 6, 8]
+modulos_padronizados = [1.25,1.5, 2, 2.5, 3, 4, 5, 6, 8]
 N_pinhao_padronizado = [17, 18, 19, 20, 21, 22, 23, 24, 25]
 b_Face = 10
 
@@ -54,8 +54,13 @@ for Np in N_pinhao_padronizado:
             dados = {**grupo_engrenagens, **forcas, **fatores}
             # Calcula erro
             dados['erro_estagio'] = abs((dados['i_efetiva'] - i_estagio) / i_estagio)
-            guardaengrenagem1.append(dados)
-            break
+
+            if dados['erro_estagio'] <= 0.2:
+                guardaengrenagem1.append(dados)
+                break
+            else:
+                continue
+
 
 # Escolhe a engrenagem com menor erro
 if guardaengrenagem1:
@@ -120,16 +125,30 @@ with open("resultados_engrenagem.txt", "w") as f:
         i_total_efetiva_final = resultado_estagio_1['i_efetiva'] * resultado_estagio_2['i_efetiva']
         erro_final = (i_total_efetiva_final - i_total) / i_total
 
-        # Comparativo de engrenagens para relatorio
-        f.write("\n")
-        f.write(f"{'Np':<4} | {'Nc':<4} | {'Mod':<4} | {'i_efetiva':<10} | {'Erro Estagio':<12} | {'Status'}\n")
-        f.write("-" * 60 + "\n")
+    f.write("Comparativo pares estagio 1:\n")
+    f.write(f"{'Np':<4} | {'Nc':<4} | {'Mod':<4} | {'C (mm)':<10} | {'i_efetiva':<10} | {'Erro (%)':<10} | {'Status'}\n")
+    f.write("-" * 80 + "\n")
 
-        # Mostra até 5 melhores
-        for par in guardaengrenagem1[:5]:
-            status = "Melhor Par" if par == resultado_estagio_1 else "Possivel Par"
+    guardaengrenagem1.sort(key=lambda x: x['N_p'])
+
+    for par in guardaengrenagem1[:4]:
+        status = "Melhor Par" if par == resultado_estagio_1 else "Possivel Par"
+        erro_perc = par['erro_estagio'] * 100
+
+        f.write(f"{par['N_p']:<4} | {par['N_c']:<4} | {par['m']:<4.1f} | {par['C']:<10.2f} | {par['i_efetiva']:<10.4f} | {erro_perc:<10.2f} | {status}\n")
+
+    if guardaengrenagem2:
+        f.write("\n")
+        f.write("Comparativo pares estagio 2:\n")
+        f.write(f"{'Np':<4} | {'Nc':<4} | {'Mod':<4} | {'C (mm)':<10} | {'i_efetiva':<10} | {'Erro (%)':<10} | {'Status'}\n")
+        f.write("-" * 80 + "\n")
+
+        guardaengrenagem2.sort(key=lambda x: x['N_p'])
+        for par in guardaengrenagem2[:4]:
+            status = "Melhor Par" if par == resultado_estagio_2 else "Possivel Par"
             erro_perc = par['erro_estagio'] * 100
-            f.write(f"{par['N_p']:<4} | {par['N_c']:<4} | {par['m']:<4.1f} | {par['i_efetiva']:<10.4f} |{erro_perc:<11.2f}% | {status}\n")
+            f.write(f"{par['N_p']:<4} | {par['N_c']:<4} | {par['m']:<4.1f} | {par['C']:<10.2f} | {par['i_efetiva']:<10.4f} | {erro_perc:<10.2f} | {status}\n")
+
 
         escreve_estagio(f, "Estagio 1 (Entrada)", resultado_estagio_1)
         escreve_estagio(f, "Estagio 2 (Saida)", resultado_estagio_2)
