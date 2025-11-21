@@ -2,9 +2,9 @@ Torque de Entrada: 10.41 N.m
  Torque de Saida: 119.28 N.m
 
 
---- Estagio 1 (Entrada): aprovado ---
+--- Estagio 1 (Entrada): APROVADO ---
   Modulo (m): 2.5 mm
-  Largura da Face (b): 25.0 mm
+  Largura da Face (b): 20.0 mm
   Angulo de Pressao: 20.0 graus
   Razao de Contato (mp): 1.664
 
@@ -20,12 +20,17 @@ Torque de Entrada: 10.41 N.m
     Razao de Transmissao (i): 3.667
     Distancia entre Centros (C): 105.00 mm
   Fatores de Seguranca:
-    FS (Flexao): 10.50
-    FS (Superficie): 2.60
+    FS (Flexao): 17.74
+    FS (Superficie): 4.39
+  Vida Util Estimada:
+    Vida por Flexao: 52920 horas
+    Vida por Pitting: 28161 horas
+    Vida Minima: 28161 horas
+    Status Vida: APROVADO
 
---- Estagio 2 (Saida): aprovado ---
+--- Estagio 2 (Saida): APROVADO ---
   Modulo (m): 4.0 mm
-  Largura da Face (b): 40.0 mm
+  Largura da Face (b): 30.0 mm
   Angulo de Pressao: 20.0 graus
   Razao de Contato (mp): 1.664
 
@@ -41,8 +46,13 @@ Torque de Entrada: 10.41 N.m
     Razao de Transmissao (i): 3.667
     Distancia entre Centros (C): 168.00 mm
   Fatores de Seguranca:
-    FS (Flexao): 13.92
-    FS (Superficie): 3.44
+    FS (Flexao): 18.34
+    FS (Superficie): 4.54
+  Vida Util Estimada:
+    Vida por Flexao: 52920 horas
+    Vida por Pitting: 30240 horas
+    Vida Minima: 30240 horas
+    Status Vida: APROVADO
 Razao de Transmissao Total Efetiva: 13.444
 Razao de Transmissao Total Desejada: 13.486
 Erro Percentual: -0.31%

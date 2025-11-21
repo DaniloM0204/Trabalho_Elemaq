@@ -1,0 +1,24 @@
+RESULTADOS DOS DIAGRAMAS - VALORES CRÍTICOS
+==================================================
+
+EIXO1:
+  Momento máximo: 18393 N.mm
+  Cortante máximo: 369 N
+  Reação A: 369 N
+  Reação B: 123 N
+  Posição M_max: 50.5 mm
+
+EIXO2:
+  Momento máximo: 37189 N.mm
+  Cortante máximo: 930 N
+  Reação A: 602 N
+  Reação B: 930 N
+  Posição M_max: 159.8 mm
+
+EIXO3:
+  Momento máximo: 45374 N.mm
+  Cortante máximo: 756 N
+  Reação A: 756 N
+  Reação B: 284 N
+  Posição M_max: 60.0 mm
+
