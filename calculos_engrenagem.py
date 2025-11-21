@@ -50,16 +50,17 @@ for Np in N_pinhao_padronizado:
         forcas = beta.calcula_forcas(T_in, n_in, grupo_engrenagens, eta_estagio)
         fatores = beta.analisa_fatores(grupo_engrenagens, forcas, S_at, S_ac, C_p)
 
-        if fatores['FS_flexao'] > 1.5 and fatores['FS_pitting'] > 1.5:
-            dados = {**grupo_engrenagens, **forcas, **fatores}
-            # Calcula erro
-            dados['erro_estagio'] = abs((dados['i_efetiva'] - i_estagio) / i_estagio)
+        dados = {**grupo_engrenagens, **forcas, **fatores}
+        # Calcula erro
+        dados['erro_estagio'] = abs((dados['i_efetiva'] - i_estagio) / i_estagio)
 
-            if dados['erro_estagio'] <= 0.2:
-                guardaengrenagem1.append(dados)
-                break
-            else:
-                continue
+        if fatores['FS_flexao'] > 1.5 and fatores['FS_pitting'] > 1.5:
+            dados['status_calc'] = "Aprovado"
+            guardaengrenagem1.append(dados)
+            break
+        else:
+            dados['status_calc'] = "Reprovado"
+            guardaengrenagem1.append(dados)
 
 
 # Escolhe a engrenagem com menor erro
@@ -78,11 +79,17 @@ if resultado_estagio_1 is not None:
             forcas = beta.calcula_forcas(T_in_2, n_in_2, grupo_engrenagens, eta_estagio)
             fatores = beta.analisa_fatores(grupo_engrenagens, forcas, S_at, S_ac, C_p)
 
+            dados = {**grupo_engrenagens, **forcas, **fatores}
+            dados['erro_estagio'] = abs((dados['i_efetiva'] - i_estagio) / i_estagio)
+
             if fatores['FS_flexao'] > 1.5 and fatores['FS_pitting'] > 1.5:
-                dados = {**grupo_engrenagens, **forcas, **fatores}
-                dados['erro_estagio'] = abs((dados['i_efetiva'] - i_estagio) / i_estagio)
+                dados['status_calc'] = "Aprovado"
                 guardaengrenagem2.append(dados)
                 break
+            else:
+                dados['status_calc'] = "Reprovado"
+                guardaengrenagem2.append(dados)
+
 
 # Escolhe o melhor do Estagio 2
 if guardaengrenagem2:
@@ -118,14 +125,11 @@ def escreve_estagio(file, nome_estagio, res):
 
 
 with open("resultados_engrenagem.txt", "w") as f:
-
-    f.write(f"Torque de Entrada: {T_in:.2f} N.m\n Torque de Saida: {T_out:.2f} N.m\n")
-    f.write("\n")
-
     if resultado_estagio_1 and resultado_estagio_2:
         i_total_efetiva_final = resultado_estagio_1['i_efetiva'] * resultado_estagio_2['i_efetiva']
         erro_final = (i_total_efetiva_final - i_total) / i_total
 
+    # Trecho de comparação entre pares de engrenagens
     f.write("Comparativo pares estagio 1:\n")
     f.write(f"{'Np':<4} | {'Nc':<4} | {'Mod':<4} | {'C (mm)':<10} | {'i_efetiva':<10} |{'i_estagio':<10} | {'Erro (%)':<10}\n")
     f.write("-" * 80 + "\n")
@@ -145,26 +149,50 @@ with open("resultados_engrenagem.txt", "w") as f:
         f.write("-" * 80 + "\n")
 
         guardaengrenagem2.sort(key=lambda x: x['N_p'])
-        for par in guardaengrenagem2[:6]:
+        for par in guardaengrenagem2[:10]:
             status = "Melhor Par" if par == resultado_estagio_2 else "Possivel Par"
             erro_perc = par['erro_estagio'] * 100
             f.write(f"{par['N_p']:<4} | {par['N_c']:<4} | {par['m']:<4.1f} | {par['C']:<10.2f} | {par['i_efetiva']:<10.4f} |{i_estagio:<10.4f}| {erro_perc:<10.2f} |\n")
 
+# Trecho de comparação de módulos e tensões
+    f.write("\nComparativo modulos estagio 1:\n")
+    if guardaengrenagem1:
+        f.write("\n")
+        f.write(f"{'Modulo':<8} | {'sigma_b (MPa)':<13} | {'FS_flex':<8} | {'sigma_c (MPa)':<13} | {'FS_pit':<8} | {'Status'}\n")
+        f.write("-" * 80 + "\n")
 
-        escreve_estagio(f, "Estagio 1 (Entrada)", resultado_estagio_1)
-        escreve_estagio(f, "Estagio 2 (Saida)", resultado_estagio_2)
+        for par in guardaengrenagem1:
+            if par['N_p'] == resultado_estagio_1['N_p']:
+                status = "Nao Falha" if par['status_calc'] == "Aprovado" else "Falha"
+                f.write(f"{par['m']:<8.1f} | {par['sigma_b']:<13.2f} | {par['FS_flexao']:<8.2f} | {par['sigma_c']:<13.2f} | {par['FS_pitting']:<8.2f} | {status}\n")
 
-        f.write(f"Razao de Transmissao Total Efetiva: {i_total_efetiva_final:.3f}\n")
-        f.write(f"Razao de Transmissao Total Desejada: {i_total:.3f}\n")
-        f.write(f"Estagio 1 efetiva: {resultado_estagio_1['i_efetiva']:.3f}\n")
-        f.write(f"Erro Percentual: {erro_final * 100:.2f}%\n")
+    f.write("\nComparativo modulos estagio 2:\n")
+    if guardaengrenagem2:
+        f.write("\n")
+        f.write(f"{'Modulo':<8} | {'sigma_b (MPa)':<13} | {'FS_flex':<8} | {'sigma_c (MPa)':<13} | {'FS_pit':<8} | {'Status'}\n")
+        f.write("-" * 80 + "\n")
 
-        if abs(erro_final) <= 0.05:
+        for par in guardaengrenagem2:
+            if par['N_p'] == resultado_estagio_2['N_p']:
+                status = "Nao Falha" if par['status_calc'] == "Aprovado" else "Falha"
+                f.write(f"{par['m']:<8.1f} | {par['sigma_b']:<13.2f} | {par['FS_flexao']:<8.2f} | {par['sigma_c']:<13.2f} | {par['FS_pitting']:<8.2f} | {status}\n")
+
+with open("Estagios_Engrenagem.txt", "w") as f:
+    f.write(f"Torque de Entrada: {T_in:.2f} N.m\n Torque de Saida: {T_out:.2f} N.m\n")
+    f.write("\n")
+
+    escreve_estagio(f, "Estagio 1 (Entrada)", resultado_estagio_1)
+    escreve_estagio(f, "Estagio 2 (Saida)", resultado_estagio_2)
+
+    f.write(f"Razao de Transmissao Total Efetiva: {i_total_efetiva_final:.3f}\n")
+    f.write(f"Razao de Transmissao Total Desejada: {i_total:.3f}\n")
+    f.write(f"Erro Percentual: {erro_final * 100:.2f}%\n")
+
+    if abs(erro_final) <= 0.05:
             f.write("Dentro do limite de+/- 5%. Projeto aprovado.\n")
-        else:
-            f.write("Fora do limite de +/- 5%. Projeto com falha.\n")
     else:
-        f.write("Dimensionamento Falhou\n")
+            f.write("Fora do limite de +/- 5%. Projeto com falha.\n")
+            f.write("Dimensionamento Falhou\n")
 
 
     # ---  Parametros para outros setores ---

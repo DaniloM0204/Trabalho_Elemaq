@@ -154,7 +154,7 @@ def analisa_fatores(grupoengre,forcas,S_at,S_ac,C_p):
     else:
         FS_pitting = (sigma_c_adm / sigma_c)**2
 
-    return {"FS_flexao": FS_flexao, "FS_pitting": FS_pitting}
+    return {"FS_flexao": FS_flexao, "FS_pitting": FS_pitting,'sigma_b':sigma_b,'sigma_c':sigma_c}
 
 
 # Seção de Dimensionamento de Eixo
