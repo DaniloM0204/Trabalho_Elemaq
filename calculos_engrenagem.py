@@ -120,34 +120,35 @@ def escreve_estagio(file, nome_estagio, res):
 with open("resultados_engrenagem.txt", "w") as f:
 
     f.write(f"Torque de Entrada: {T_in:.2f} N.m\n Torque de Saida: {T_out:.2f} N.m\n")
+    f.write("\n")
 
     if resultado_estagio_1 and resultado_estagio_2:
         i_total_efetiva_final = resultado_estagio_1['i_efetiva'] * resultado_estagio_2['i_efetiva']
         erro_final = (i_total_efetiva_final - i_total) / i_total
 
     f.write("Comparativo pares estagio 1:\n")
-    f.write(f"{'Np':<4} | {'Nc':<4} | {'Mod':<4} | {'C (mm)':<10} | {'i_efetiva':<10} | {'Erro (%)':<10} | {'Status'}\n")
+    f.write(f"{'Np':<4} | {'Nc':<4} | {'Mod':<4} | {'C (mm)':<10} | {'i_efetiva':<10} |{'i_estagio':<10} | {'Erro (%)':<10}\n")
     f.write("-" * 80 + "\n")
 
     guardaengrenagem1.sort(key=lambda x: x['N_p'])
 
-    for par in guardaengrenagem1[:4]:
+    for par in guardaengrenagem1[:10]:
         status = "Melhor Par" if par == resultado_estagio_1 else "Possivel Par"
         erro_perc = par['erro_estagio'] * 100
 
-        f.write(f"{par['N_p']:<4} | {par['N_c']:<4} | {par['m']:<4.1f} | {par['C']:<10.2f} | {par['i_efetiva']:<10.4f} | {erro_perc:<10.2f} | {status}\n")
+        f.write(f"{par['N_p']:<4} | {par['N_c']:<4} | {par['m']:<4.1f} | {par['C']:<10.2f} | {par['i_efetiva']:<10.4f} |{i_estagio:<10.4f} |{erro_perc:<10.2f}\n")
 
     if guardaengrenagem2:
         f.write("\n")
         f.write("Comparativo pares estagio 2:\n")
-        f.write(f"{'Np':<4} | {'Nc':<4} | {'Mod':<4} | {'C (mm)':<10} | {'i_efetiva':<10} | {'Erro (%)':<10} | {'Status'}\n")
+        f.write(f"{'Np':<4} | {'Nc':<4} | {'Mod':<4} | {'C (mm)':<10} | {'i_efetiva':<10} |{'i_estagio':<10} | {'Erro (%)':<10}\n")
         f.write("-" * 80 + "\n")
 
         guardaengrenagem2.sort(key=lambda x: x['N_p'])
-        for par in guardaengrenagem2[:4]:
+        for par in guardaengrenagem2[:6]:
             status = "Melhor Par" if par == resultado_estagio_2 else "Possivel Par"
             erro_perc = par['erro_estagio'] * 100
-            f.write(f"{par['N_p']:<4} | {par['N_c']:<4} | {par['m']:<4.1f} | {par['C']:<10.2f} | {par['i_efetiva']:<10.4f} | {erro_perc:<10.2f} | {status}\n")
+            f.write(f"{par['N_p']:<4} | {par['N_c']:<4} | {par['m']:<4.1f} | {par['C']:<10.2f} | {par['i_efetiva']:<10.4f} |{i_estagio:<10.4f}| {erro_perc:<10.2f} |\n")
 
 
         escreve_estagio(f, "Estagio 1 (Entrada)", resultado_estagio_1)
