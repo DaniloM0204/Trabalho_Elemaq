@@ -3,46 +3,46 @@ Torque de Entrada: 10.41 N.m
 
 
 --- Estagio 1 (Entrada): aprovado ---
-  Modulo (m): 1.2 mm
-  Largura da Face (b): 12.5 mm
+  Modulo (m): 2.5 mm
+  Largura da Face (b): 25.0 mm
   Angulo de Pressao: 20.0 graus
   Razao de Contato (mp): 1.664
 
   Pinhao:
     N de Dentes (Np): 18
-    Diametro Primitivo (dp): 22.50 mm
-    Diametro Externo (dep): 25.00 mm
+    Diametro Primitivo (dp): 45.00 mm
+    Diametro Externo (dep): 50.00 mm
   Coroa:
     N de Dentes (Nc): 66
-    Diametro Primitivo (dc): 82.50 mm
-    Diametro Externo (dec): 85.00 mm
+    Diametro Primitivo (dc): 165.00 mm
+    Diametro Externo (dec): 170.00 mm
   Conjunto:
     Razao de Transmissao (i): 3.667
-    Distancia entre Centros (C): 52.50 mm
+    Distancia entre Centros (C): 105.00 mm
   Fatores de Seguranca:
-    FS (Flexao): 1.42
-    FS (Superficie): 0.35
+    FS (Flexao): 10.50
+    FS (Superficie): 2.60
 
 --- Estagio 2 (Saida): aprovado ---
-  Modulo (m): 1.2 mm
-  Largura da Face (b): 12.5 mm
+  Modulo (m): 4.0 mm
+  Largura da Face (b): 40.0 mm
   Angulo de Pressao: 20.0 graus
   Razao de Contato (mp): 1.664
 
   Pinhao:
     N de Dentes (Np): 18
-    Diametro Primitivo (dp): 22.50 mm
-    Diametro Externo (dep): 25.00 mm
+    Diametro Primitivo (dp): 72.00 mm
+    Diametro Externo (dep): 80.00 mm
   Coroa:
     N de Dentes (Nc): 66
-    Diametro Primitivo (dc): 82.50 mm
-    Diametro Externo (dec): 85.00 mm
+    Diametro Primitivo (dc): 264.00 mm
+    Diametro Externo (dec): 272.00 mm
   Conjunto:
     Razao de Transmissao (i): 3.667
-    Distancia entre Centros (C): 52.50 mm
+    Distancia entre Centros (C): 168.00 mm
   Fatores de Seguranca:
-    FS (Flexao): 0.46
-    FS (Superficie): 0.11
+    FS (Flexao): 13.92
+    FS (Superficie): 3.44
 Razao de Transmissao Total Efetiva: 13.444
 Razao de Transmissao Total Desejada: 13.486
 Erro Percentual: -0.31%
@@ -52,18 +52,18 @@ Parametros dos Eixos:
   Rotacao (n_eixo1): 1450.0 rpm
   Torque (T_eixo1): 10.41 N.m
   Forcas no Pinhao 1 (Eixo 1):
-    Forca Tangencial (W_t1): 924.93 N
-    Forca Radial (W_r1): 336.65 N
+    Forca Tangencial (W_t1): 462.46 N
+    Forca Radial (W_r1): 168.32 N
   Rotacao (n_eixo2): 395.5 rpm
   Torque (T_eixo2): 35.18 N.m
   Forcas da Coroa 1 (Eixo 2):
-    Forca Tangencial (W_t_c1): 924.93 N
-    Forca Radial (W_r_c1): 336.65 N
+    Forca Tangencial (W_t_c1): 462.46 N
+    Forca Radial (W_r_c1): 168.32 N
   Forcas no Pinhao 2 (Eixo 2):
-    Forca Tangencial (W_t_p2): 3126.72 N
-    Forca Radial (W_r_p2): 1138.03 N
+    Forca Tangencial (W_t_p2): 977.10 N
+    Forca Radial (W_r_p2): 355.64 N
   Rotacao (n_eixo3): 107.9 rpm
   Torque (T_eixo3): 118.91 N.m
   Forcas da Coroa 2 (Eixo 3):
-    Forca Tangencial (W_t_c2): 3126.72 N
-    Forca Radial (W_r_c2): 1138.03 N
+    Forca Tangencial (W_t_c2): 977.10 N
+    Forca Radial (W_r_c2): 355.64 N

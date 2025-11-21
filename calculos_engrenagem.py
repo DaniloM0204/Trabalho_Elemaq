@@ -64,9 +64,14 @@ for Np in N_pinhao_padronizado:
 
 
 # Escolhe a engrenagem com menor erro
-if guardaengrenagem1:
-    guardaengrenagem1.sort(key=lambda x: x['erro_estagio'])
-    resultado_estagio_1 = guardaengrenagem1[0] # Pega o melhor resultado
+EngrenagemAprovada = [p for p in guardaengrenagem1 if p['status_calc'] == "Aprovado"]
+
+if EngrenagemAprovada:
+    EngrenagemAprovada.sort(key=lambda x: x['erro_estagio'])
+    resultado_estagio_1 = EngrenagemAprovada[0]
+else:
+    resultado_estagio_1 = guardaengrenagem1[-1]
+    print("Nenhuma engrenagem passou no Estagio 1")
 
 # Estagio 2
 if resultado_estagio_1 is not None:
@@ -92,9 +97,14 @@ if resultado_estagio_1 is not None:
 
 
 # Escolhe o melhor do Estagio 2
-if guardaengrenagem2:
-    guardaengrenagem2.sort(key=lambda x: x['erro_estagio'])
-    resultado_estagio_2 = guardaengrenagem2[0]
+EngrenagemAprovada2 = [p for p in guardaengrenagem2 if p['status_calc'] == "Aprovado"]
+
+if EngrenagemAprovada2:
+    EngrenagemAprovada2.sort(key=lambda x: x['erro_estagio'])
+    resultado_estagio_2 = EngrenagemAprovada2[0]
+else:
+    resultado_estagio_2 = guardaengrenagem2[-1]
+    print("Nenhuma engrenagem passou no Estagio 2")
 
 
 #Engrenagem
