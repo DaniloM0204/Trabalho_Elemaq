@@ -3,40 +3,40 @@ Mancal 1:
   Velocidade (rpm): 0.00
   Diametro minimo do eixo (mm): 7.28
   Carga Equivalente (N): 1.06
-Escolhido o rolamento SFK 6004 com capacidade de carga dinâmica de 9.95 kN
+Escolhido o rolamento SFK 6004 com capacidade de carga dinamica de 9.95 kN
 
 Mancal 2:
   Carga Radial (N): 0.35
   Velocidade (rpm): 0.00
   Diametro minimo do eixo (mm): 7.28
   Carga Equivalente (N): 0.35
-Escolhido o rolamento SFK 6004 com capacidade de carga dinâmica de 9.95 kN
+Escolhido o rolamento SFK 6004 com capacidade de carga dinamica de 9.95 kN
 
 Mancal 3:
   Carga Radial (N): 2.55
   Velocidade (rpm): 0.00
   Diametro minimo do eixo (mm): 10.91
   Carga Equivalente (N): 2.55
-Escolhido o rolamento SFK 6004 com capacidade de carga dinâmica de 9.95 kN
+Escolhido o rolamento SFK 6004 com capacidade de carga dinamica de 9.95 kN
 
 Mancal 4:
   Carga Radial (N): 2.55
   Velocidade (rpm): 0.00
   Diametro minimo do eixo (mm): 10.91
   Carga Equivalente (N): 2.55
-Escolhido o rolamento SFK 6004 com capacidade de carga dinâmica de 9.95 kN
+Escolhido o rolamento SFK 6004 com capacidade de carga dinamica de 9.95 kN
 
 Mancal 5:
   Carga Radial (N): 2.26
   Velocidade (rpm): 0.00
   Diametro minimo do eixo (mm): 16.01
   Carga Equivalente (N): 2.26
-Escolhido o rolamento SFK 6004 com capacidade de carga dinâmica de 9.95 kN
+Escolhido o rolamento SFK 6004 com capacidade de carga dinamica de 9.95 kN
 
 Mancal 6:
   Carga Radial (N): 0.85
   Velocidade (rpm): 0.00
   Diametro minimo do eixo (mm): 16.01
   Carga Equivalente (N): 0.85
-Escolhido o rolamento SFK 6004 com capacidade de carga dinâmica de 9.95 kN
+Escolhido o rolamento SFK 6004 com capacidade de carga dinamica de 9.95 kN
 

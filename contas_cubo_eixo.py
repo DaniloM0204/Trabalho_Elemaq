@@ -99,26 +99,26 @@ chavetas = [
 # RELATÓRIO DAS CHAVETAS
 # ============================================================
 
-with open("dimensionamento_chavetas.txt", "w") as f:
+with open("Outputs/dimensionamento_chavetas.txt", "w") as f:
     f.write("DIMENSIONAMENTO DE CHAVETAS - RESULTADOS\n")
     f.write("="*60 + "\n\n")
 
     f.write("Material: Aço AISI 1020\n")
     f.write(f"S_y = {S_y} MPa, S_ut = {S_ut} MPa\n")
-    f.write(f"Fator de segurança: {C_seg}\n\n")
+    f.write(f"Fator de seguranca: {C_seg}\n\n")
 
     for chaveta in chavetas:
         f.write(f"{chaveta['nome']}:\n")
-        f.write(f"  Diâmetro do eixo: {chaveta['diametro_eixo']:.1f} mm\n")
+        f.write(f"  Diametro do eixo: {chaveta['diametro_eixo']:.1f} mm\n")
         f.write(f"  Torque transmitido: {chaveta['torque']:.0f} N.mm\n")
-        f.write(f"  Dimensões chaveta: {chaveta['dimensoes_chaveta']['b']} x {chaveta['dimensoes_chaveta']['h']} mm\n")
+        f.write(f"  Dimensoes chaveta: {chaveta['dimensoes_chaveta']['b']} x {chaveta['dimensoes_chaveta']['h']} mm\n")
         f.write(f"  Comprimento chaveta: {chaveta['comprimento']:.1f} mm\n")
-        f.write(f"  Força tangencial: {chaveta['forca_tangencial']:.0f} N\n")
+        f.write(f"  Forca tangencial: {chaveta['forca_tangencial']:.0f} N\n")
         f.write(f"  Tensão cisalhamento: {chaveta['tau_cisalhamento']:.1f} MPa\n")
-        f.write(f"  Tensão admissível cisalhamento: {chaveta['tau_admissivel']:.1f} MPa\n")
+        f.write(f"  Tensao admissivel cisalhamento: {chaveta['tau_admissivel']:.1f} MPa\n")
         f.write(f"  FS cisalhamento: {chaveta['FS_cisalhamento']:.2f} ({chaveta['status_cisalhamento']})\n")
-        f.write(f"  Tensão esmagamento: {chaveta['sigma_esmagamento']:.1f} MPa\n")
-        f.write(f"  Tensão admissível esmagamento: {chaveta['sigma_adm_esmagamento']:.1f} MPa\n")
+        f.write(f"  Tensao esmagamento: {chaveta['sigma_esmagamento']:.1f} MPa\n")
+        f.write(f"  Tensao admissivel esmagamento: {chaveta['sigma_adm_esmagamento']:.1f} MPa\n")
         f.write(f"  FS esmagamento: {chaveta['FS_esmagamento']:.2f} ({chaveta['status_esmagamento']})\n\n")
 
     # Verificação geral
@@ -127,9 +127,9 @@ with open("dimensionamento_chavetas.txt", "w") as f:
 
     f.write("VERIFICAÇÃO GERAL:\n")
     if todas_atendem:
-        f.write("TODAS AS CHAVETAS ATENDEM AOS CRITÉRIOS DE DIMENSIONAMENTO\n")
+        f.write("TODAS AS CHAVETAS ATENDEM AOS CRITERIOS DE DIMENSIONAMENTO\n")
     else:
-        f.write("ALGUMAS CHAVETAS NÃO ATENDEM - REVISAR DIMENSIONAMENTO\n")
+        f.write("ALGUMAS CHAVETAS NAO ATENDEM - REVISAR DIMENSIONAMENTO\n")
 
     f.write("\nRECOMENDAÇÕES:\n")
     f.write("- Utilizar chavetas paralelas ABNT\n")

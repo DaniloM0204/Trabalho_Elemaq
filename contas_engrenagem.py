@@ -2,7 +2,7 @@ import equacoes_engrenagens as eng
 import utilities as util
 import numpy as np
 
-parametros = util.ler_Dados_De_Entrada('Dados_De_Entrada.txt')
+parametros = util.ler_Dados_De_Entrada('Inputs/Dados_De_Entrada.txt')
 
 # Parametros iniciais
 """Nessa seção são calculados os valores que irão compor o dimensionamento dos estágios dos pares de engrenagens, obtendo aqui uma velocidade angular de entrada para o calculo do Torque de entrada, e saída, para poder calcular a razão de transmissão que vai nos dar quanto cada estágio tem que reduzir de velocidade."""

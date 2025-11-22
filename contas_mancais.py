@@ -6,7 +6,7 @@ import csv
 
 
 dados_engre = util.ler_Estagios_Engrenagem('Outputs/Estagios_Engrenagem.txt')
-dados_entradas = util.ler_Dados_De_Entrada('Dados_De_Entrada.txt')
+dados_entradas = util.ler_Dados_De_Entrada('Inputs/Dados_De_Entrada.txt')
 dados_eixos = util.ler_dimensionamento_eixos('Outputs/dimensionamento_eixos.txt')
 
 
@@ -14,7 +14,7 @@ vida_util = 4000  # horas
 
 
 catalogo = []
-with open('rolamento_sfk.csv', newline='') as csvfile:
+with open('Inputs/rolamento_sfk.csv', newline='') as csvfile:
     leitor = csv.DictReader(csvfile)
     for linha in leitor:
         catalogo.append({
