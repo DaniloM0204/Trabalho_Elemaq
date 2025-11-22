@@ -262,8 +262,7 @@ def calcula_diagramas_eixo_simples(forcas_engrenagem, distancias, torque, nome_e
     plt.legend()
 
     plt.tight_layout()
-    plt.savefig(f'.\\Diagramas\\diagramas_{nome_eixo.replace(" ", "_")}_momento.png', dpi=300, bbox_inches='tight')
-    plt.show()
+    plt.savefig(f'Plots/diagramas_{nome_eixo.replace(" ", "_")}_momento.png', dpi=300, bbox_inches='tight')
 
     return {
         'M_max': M_max,
@@ -379,8 +378,7 @@ def calcula_diagramas_eixo_duplo(forcas_engrenagem1, forcas_engrenagem2, distanc
     plt.legend()
 
     plt.tight_layout()
-    plt.savefig(f'diagramas_{nome_eixo.replace(" ", "_")}.png', dpi=300, bbox_inches='tight')
-    plt.show()
+    plt.savefig(f'Plots/diagramas_{nome_eixo.replace(" ", "_")}.png', dpi=300, bbox_inches='tight')
 
     return {
         'M_max': M_max,

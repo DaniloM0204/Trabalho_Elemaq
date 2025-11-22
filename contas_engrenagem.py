@@ -13,7 +13,6 @@ S_ac=parametros['S_ac']
 C_p=float(parametros['C_p'])
 
 omega_in = parametros['rotacao_motor'] * (2*np.pi / 60) # Em rad/s mesmo
-print(omega_in)
 
 T_in = parametros['potencia_motor'] / omega_in
 T_out = parametros['forca_cabo'] * (parametros['diametro_tambor'] / 2)
@@ -34,7 +33,7 @@ resultado_estagio_1, resultado_estagio_2, guardaengrenagem1, guardaengrenagem2 =
     T_in, parametros['rotacao_motor'], i_estagio, eta_estagio, S_at, S_ac, C_p, vida_util_horas
 )
 
-with open("resultados_engrenagem.txt", "w") as f:
+with open("Outputs/resultados_engrenagem.txt", "w") as f:
     if resultado_estagio_1 and resultado_estagio_2:
         i_total_efetiva_final = resultado_estagio_1['i_efetiva'] * resultado_estagio_2['i_efetiva']
         erro_final = (i_total_efetiva_final - i_total) / i_total
@@ -88,8 +87,10 @@ with open("resultados_engrenagem.txt", "w") as f:
                 f.write(f"{par['m']:<8.1f} | {par['sigma_b']:<13.2f} | {par['FS_flexao']:<8.2f} | {par['sigma_c']:<13.2f} | {par['FS_pitting']:<8.2f} | {status}\n")
 
 
-with open("Estagios_Engrenagem.txt", "w") as f:
+with open("Outputs/Estagios_Engrenagem.txt", "w") as f:
     f.write(f"Torque de Entrada: {T_in:.2f} N.m\n Torque de Saida: {T_out:.2f} N.m\n")
+    f.write(f"Velocidade Angular de Entrada: {parametros['rotacao_motor']:.2f} rpm\n")
+    f.write(f"Velocidade Angular de Saida: {parametros['rotacao_motor'] / i_total:.2f} rpm\n")
     f.write("\n")
 
     util.escreve_estagio(f, "Estagio 1 (Entrada)", resultado_estagio_1)

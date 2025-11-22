@@ -2,7 +2,7 @@ import equacoes_eixo as eixo
 import utilities as util
 import numpy as np
 
-parametros = util.ler_Estagios_Engrenagem('Estagios_Engrenagem.txt')
+parametros = util.ler_Estagios_Engrenagem('Outputs/Estagios_Engrenagem.txt')
 
 # Aço AISI 1020 Normalizado
 S_ut = 469  # MPa - Tensão de ruptura
@@ -73,17 +73,17 @@ resultados_diagramas = {
 }
 
 # Salvar em arquivo
-with open("resultados_diagramas.txt", "w") as f:
+with open("Outputs/resultados_diagramas.txt", "w") as f:
     f.write("RESULTADOS DOS DIAGRAMAS - VALORES CRÍTICOS\n")
     f.write("="*50 + "\n\n")
 
     for eixo_variavel, dados in resultados_diagramas.items():
         f.write(f"{eixo_variavel.upper()}:\n")
-        f.write(f"  Momento máximo: {dados['M_max']:.0f} N.mm\n")
-        f.write(f"  Cortante máximo: {dados['V_max']:.0f} N\n")
-        f.write(f"  Reação A: {dados['R_A_resultante']:.0f} N\n")
-        f.write(f"  Reação B: {dados['R_B_resultante']:.0f} N\n")
-        f.write(f"  Posição M_max: {dados['posicao_M_max']:.1f} mm\n\n")
+        f.write(f"  Momento maximo: {dados['M_max']:.0f} N.mm\n")
+        f.write(f"  Cortante maximo: {dados['V_max']:.0f} N\n")
+        f.write(f"  Reacao A: {dados['R_A_resultante']:.0f} N\n")
+        f.write(f"  Reacao B: {dados['R_B_resultante']:.0f} N\n")
+        f.write(f"  Posicao M_max: {dados['posicao_M_max']:.1f} mm\n\n")
 
 # Dimensionamento do EIXO 1 usando a função definida localmente
 resultado_e1 = eixo.dimensiona_eixo_por_fadiga(
@@ -173,11 +173,11 @@ fadiga2 = resultado_e2['FS_fadiga']
 fadiga3 = resultado_e3['FS_fadiga']
 valor_min = min(fadiga1,fadiga2,fadiga3)
 
-with open("dimensionamento_eixos.txt", "w") as f:
+with open("Outputs/dimensionamento_eixos.txt", "w") as f:
     f.write("DIMENSIONAMENTO DOS EIXOS - RESULTADOS FINAIS\n")
     f.write("="*60 + "\n\n")
 
-    f.write(f"Material: Aço AISI 1020\n")
+    f.write("Material: Aço AISI 1020\n")
     f.write(f"S_ut = {S_ut} MPa, S_y = {S_y} MPa\n")
     f.write(f"Fator de segurança mínimo: {valor_min:2f}\n\n")
 
