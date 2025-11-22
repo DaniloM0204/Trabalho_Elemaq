@@ -1,35 +1,35 @@
 DIMENSIONAMENTO DOS EIXOS - RESULTADOS FINAIS
 ============================================================
 
-Material: AÃ§o AISI 1020
+Material: Aço AISI 1020
 S_ut = 469 MPa, S_y = 390 MPa
-Fator de seguranÃ§a mÃ­nimo: 5.759035
+Fator de segurança mínimo: 5.759035
 
 Eixo 1 (Entrada):
-  DiÃ¢metro mÃ­nimo: 7.3 mm
+  Diâmetro mínimo: 7.3 mm
   FS Fadiga: 16.64
   FS Escoamento: 26.76
-  DeflexÃ£o mÃ¡xima: 0.006 mm
-  Status DeflexÃ£o: APROVADO
-  Velocidade crÃ­tica: 21655 rpm
+  Deflexão máxima: 0.006 mm
+  Status Deflexão: APROVADO
+  Velocidade crítica: 21655 rpm
 
-Eixo 2 (IntermediÃ¡rio):
-  DiÃ¢metro mÃ­nimo: 7.3 mm
+Eixo 2 (Intermediário):
+  Diâmetro mínimo: 7.3 mm
   FS Fadiga: 7.90
   FS Escoamento: 13.43
-  DeflexÃ£o mÃ¡xima: 0.015 mm
-  Status DeflexÃ£o: APROVADO
-  Velocidade crÃ­tica: 17897 rpm
+  Deflexão máxima: 0.015 mm
+  Status Deflexão: APROVADO
+  Velocidade crítica: 17897 rpm
 
-Eixo 3 (SaÃ­da):
-  DiÃ¢metro mÃ­nimo: 7.3 mm
+Eixo 3 (Saída):
+  Diâmetro mínimo: 7.3 mm
   FS Fadiga: 5.76
   FS Escoamento: 9.05
-  DeflexÃ£o mÃ¡xima: 0.016 mm
-  Status DeflexÃ£o: APROVADO
-  Velocidade crÃ­tica: 21655 rpm
+  Deflexão máxima: 0.016 mm
+  Status Deflexão: APROVADO
+  Velocidade crítica: 21655 rpm
 
-RECOMENDAÃ‡Ã•ES:
-- Utilizar diÃ¢metros comerciais (25, 30, 35, 40 mm)
-- Considerar acabamento retificado nas seÃ§Ãµes crÃ­ticas
-- Implementar raios de concordÃ¢ncia generosos nos degraus
+RECOMENDAÇÕES:
+- Utilizar diâmetros comerciais (25, 30, 35, 40 mm)
+- Considerar acabamento retificado nas seções críticas
+- Implementar raios de concordância generosos nos degraus

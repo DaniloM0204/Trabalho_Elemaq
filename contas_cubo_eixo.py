@@ -7,7 +7,7 @@ import numpy as  np
 
 # Diâmetros dos eixos dimensionados
 diametro_eixo1 = resultado_e1['diametro_minimo']
-diametro_eixo2 = resultado_e2['diametro_minimo'] 
+diametro_eixo2 = resultado_e2['diametro_minimo']
 diametro_eixo3 = resultado_e3['diametro_minimo']
 
 # Torques nos eixos
@@ -24,7 +24,7 @@ C_seg = 1.5
 
 # Larguras das engrenagens (assumidas - seriam calculadas no PASSO 1.2)
 largura_engrenagem_eixo1 = 20  # mm
-largura_engrenagem_eixo2_coroa1 = 25  # mm  
+largura_engrenagem_eixo2_coroa1 = 25  # mm
 largura_engrenagem_eixo2_pinhao2 = 20  # mm
 largura_engrenagem_eixo3 = 30  # mm
 
@@ -64,11 +64,11 @@ chavetas = [
 with open("dimensionamento_chavetas.txt", "w") as f:
     f.write("DIMENSIONAMENTO DE CHAVETAS - RESULTADOS\n")
     f.write("="*60 + "\n\n")
-    
+
     f.write(f"Material: Aço AISI 1020\n")
     f.write(f"S_y = {S_y} MPa, S_ut = {S_ut} MPa\n")
     f.write(f"Fator de segurança: {C_seg}\n\n")
-    
+
     for chaveta in chavetas:
         f.write(f"{chaveta['nome']}:\n")
         f.write(f"  Diâmetro do eixo: {chaveta['diametro_eixo']:.1f} mm\n")
@@ -82,17 +82,17 @@ with open("dimensionamento_chavetas.txt", "w") as f:
         f.write(f"  Tensão esmagamento: {chaveta['sigma_esmagamento']:.1f} MPa\n")
         f.write(f"  Tensão admissível esmagamento: {chaveta['sigma_adm_esmagamento']:.1f} MPa\n")
         f.write(f"  FS esmagamento: {chaveta['FS_esmagamento']:.2f} ({chaveta['status_esmagamento']})\n\n")
-    
+
     # Verificação geral
-    todas_atendem = all(chaveta['status_cisalhamento'] == "ATENDE" and 
+    todas_atendem = all(chaveta['status_cisalhamento'] == "ATENDE" and
                        chaveta['status_esmagamento'] == "ATENDE" for chaveta in chavetas)
-    
+
     f.write("VERIFICAÇÃO GERAL:\n")
     if todas_atendem:
         f.write("✓ TODAS AS CHAVETAS ATENDEM AOS CRITÉRIOS DE DIMENSIONAMENTO\n")
     else:
         f.write("✗ ALGUMAS CHAVETAS NÃO ATENDEM - REVISAR DIMENSIONAMENTO\n")
-        
+
     f.write("\nRECOMENDAÇÕES:\n")
     f.write("- Utilizar chavetas paralelas ABNT\n")
     f.write("- Ajustar comprimento da chaveta conforme largura real da engrenagem\n")
