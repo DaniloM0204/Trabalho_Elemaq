@@ -3,33 +3,33 @@ DIMENSIONAMENTO DOS EIXOS - RESULTADOS FINAIS
 
 Material: Aco AISI 1020
 S_ut = 469 MPa, S_y = 390 MPa
-Fator de seguranca minimo: 1.964960
+Fator de seguranca minimo: 1.978232
 
 Eixo 1 (Entrada):
-  Diametro minimo: 17.0 mm
-  FS Fadiga: 2.01
-  FS Escoamento: 7.99
-  Deflexao maxima: 0.075 mm
+  Diametro minimo: 7.3 mm
+  FS Fadiga: 2.07
+  FS Escoamento: 2.81
+  Deflexao maxima: 0.006 mm
   Status Deflexao: APROVADO
-  Velocidade critica: 50591 rpm
+  Velocidade critica: 21655 rpm
 
 Eixo 2 (Intermediario):
-  Diametro minimo: 22.7 mm
-  FS Fadiga: 2.01
-  FS Escoamento: 8.16
-  Deflexao maxima: 0.058 mm
+  Diametro minimo: 10.9 mm
+  FS Fadiga: 1.98
+  FS Escoamento: 2.81
+  Deflexao maxima: 0.003 mm
   Status Deflexao: APROVADO
-  Velocidade critica: 55753 rpm
+  Velocidade critica: 26808 rpm
 
 Eixo 3 (Saida):
-  Diametro minimo: 25.5 mm
-  FS Fadiga: 1.96
-  FS Escoamento: 5.83
-  Deflexao maxima: 0.040 mm
+  Diametro minimo: 16.0 mm
+  FS Fadiga: 1.98
+  FS Escoamento: 2.64
+  Deflexao maxima: 0.001 mm
   Status Deflexao: APROVADO
-  Velocidade critica: 75894 rpm
+  Velocidade critica: 47615 rpm
 
-RECOMENDAÇÕES:
+RECOMENDACOES:
 - Utilizar diametros comerciais (25, 30, 35, 40 mm)
 - Considerar acabamento retificado nas secoes criticas
 - Implementar raios de concordancia generosos nos degraus

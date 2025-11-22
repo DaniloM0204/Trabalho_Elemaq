@@ -63,12 +63,10 @@ Dentro do limite de+/- 5%. Projeto aprovado.
 Parametros dos Eixos:
   Rotacao eixo1: 1450.0 rpm
   Torque eixo1: 10.41 N.m
-  Forcas no Pinhao 1 (Eixo 1):
     Forca Tangencial (W_t1): 462.46 N
     Forca Radial (W_r1): 168.32 N
   Rotacao eixo2: 395.5 rpm
   Torque eixo2: 35.18 N.m
-  Forcas da Coroa 1 (Eixo 2):
     Forca Tangencial (W_t_c1): 462.46 N
     Forca Radial (W_r_c1): 168.32 N
   Forcas no Pinhao 2 (Eixo 2):
@@ -76,6 +74,5 @@ Parametros dos Eixos:
     Forca Radial (W_r_p2): 355.64 N
   Rotacao eixo3: 107.9 rpm
   Torque eixo3: 118.91 N.m
-  Forcas da Coroa 2 (Eixo 3):
     Forca Tangencial (W_t_c2): 977.10 N
     Forca Radial (W_r_c2): 355.64 N

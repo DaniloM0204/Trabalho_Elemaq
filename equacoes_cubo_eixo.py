@@ -8,7 +8,7 @@ def dimensiona_chavetas(diametro_eixo, torque, largura_engrenagem, nome_chaveta)
     """
     Dimensiona chavetas para engrenagens nos eixos conforme norma ABNT
     """
-    
+
     # Tabela de chavetas paralelas conforme ABNT
     # [diâmetro_min, diâmetro_max, largura_b, altura_h, profundidade_eixo_t1, profundidade_cubo_t2]
     tabela_chavetas = [
@@ -25,7 +25,7 @@ def dimensiona_chavetas(diametro_eixo, torque, largura_engrenagem, nome_chaveta)
         [58, 65, 18, 11, 7.0, 4.4],
         [65, 75, 20, 12, 7.5, 4.9]
     ]
-    
+
     # Selecionar chaveta baseada no diâmetro do eixo
     chaveta_selecionada = None
     for faixa in tabela_chavetas:
@@ -37,17 +37,17 @@ def dimensiona_chavetas(diametro_eixo, torque, largura_engrenagem, nome_chaveta)
                 't2': faixa[5]  # profundidade no cubo
             }
             break
-    
+
     if chaveta_selecionada is None:
         raise ValueError(f"Diâmetro do eixo {diametro_eixo} mm fora da faixa da tabela de chavetas")
-    
+
     # Comprimento da chaveta (usar 80% da largura da engrenagem como prática comum)
     comprimento_chaveta = 0.8 * largura_engrenagem
-    
+
     # Força tangencial na chaveta
     raio_eixo = diametro_eixo / 2
     F_t = torque / raio_eixo  # N
-    
+
     return {
         'nome': nome_chaveta,
         'diametro_eixo': diametro_eixo,
@@ -61,60 +61,72 @@ def dimensiona_chavetas(diametro_eixo, torque, largura_engrenagem, nome_chaveta)
 # PASSO 3.2 - VERIFICAÇÃO AO CISALHAMENTO DAS CHAVETAS
 # ============================================================
 
-def verifica_cisalhamento_chaveta(resultado_chaveta, S_y, C_seg):
+def verifica_cisalhamento_chaveta(resultado_chaveta):
     """
     Verifica a chaveta ao cisalhamento
     """
     b = resultado_chaveta['dimensoes_chaveta']['b']
     L = resultado_chaveta['comprimento']
     F_t = resultado_chaveta['forca_tangencial']
-    
+
+    # Propriedades do material (Aço AISI 1020)
+    S_y = 390  # MPa - Tensão de escoamento
+
+    # Fator de segurança
+    C_seg = 1.5
+
     # Área resistente ao cisalhamento
     A_cisalhamento = b * L  # mm²
-    
+
     # Tensão de cisalhamento
     tau = F_t / A_cisalhamento  # MPa
-    
+
     # Tensão admissível ao cisalhamento (0.577 * Sy segundo critério de Von Mises)
     tau_adm = (0.577 * S_y) / C_seg
-    
+
     # Fator de segurança ao cisalhamento
     FS_cisalhamento = tau_adm / tau if tau > 0 else float('inf')
-    
+
     resultado_chaveta['tau_cisalhamento'] = tau
     resultado_chaveta['tau_admissivel'] = tau_adm
     resultado_chaveta['FS_cisalhamento'] = FS_cisalhamento
     resultado_chaveta['status_cisalhamento'] = "ATENDE" if FS_cisalhamento >= 1 else "NÃO ATENDE"
-    
+
     return resultado_chaveta
 
 # ============================================================
 # PASSO 3.3 - VERIFICAÇÃO AO ESMAGAMENTO DAS CHAVETAS
 # ============================================================
 
-def verifica_esmagamento_chaveta(resultado_chaveta, S_y, C_seg):
+def verifica_esmagamento_chaveta(resultado_chaveta):
     """
     Verifica a chaveta ao esmagamento (compressão)
     """
     h = resultado_chaveta['dimensoes_chaveta']['h']
     L = resultado_chaveta['comprimento']
     F_t = resultado_chaveta['forca_tangencial']
-    
+
+    # Propriedades do material (Aço AISI 1020)
+    S_y = 390  # MPa - Tensão de escoamento
+
+    # Fator de segurança
+    C_seg = 1.5
+
     # Área resistente ao esmagamento (metade da altura da chaveta)
     A_esmagamento = (h / 2) * L  # mm²
-    
+
     # Tensão de esmagamento
     sigma_esmagamento = F_t / A_esmagamento  # MPa
-    
+
     # Tensão admissível ao esmagamento
     sigma_adm_esmagamento = S_y / C_seg
-    
+
     # Fator de segurança ao esmagamento
     FS_esmagamento = sigma_adm_esmagamento / sigma_esmagamento if sigma_esmagamento > 0 else float('inf')
-    
+
     resultado_chaveta['sigma_esmagamento'] = sigma_esmagamento
     resultado_chaveta['sigma_adm_esmagamento'] = sigma_adm_esmagamento
     resultado_chaveta['FS_esmagamento'] = FS_esmagamento
     resultado_chaveta['status_esmagamento'] = "ATENDE" if FS_esmagamento >= 1 else "NÃO ATENDE"
-    
+
     return resultado_chaveta

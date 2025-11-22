@@ -4,6 +4,36 @@ import utilities as util
 
 param = util.ler_Estagios_Engrenagem('Outputs/Estagios_Engrenagem.txt')
 
+param = {
+    'Rotacao eixo1': 1450.0,
+    'Rotacao eixo2': 395.5,
+    'Rotacao eixo3': 107.9,
+    'Torque eixo1': 10.41,
+    'Torque eixo2': 35.18,
+    'Torque eixo3': 118.91,
+    'Forca Tangencial (W_t1)': 462.46,
+    'Forca Radial (W_r1)': 168.32,
+    'Forca Tangencial (W_t_c1)': 462.46,
+    'Forca Radial (W_r_c1)': 168.32,
+    'Forca Tangencial (W_t_p2)': 977.10,
+    'Forca Radial (W_r_p2)': 355.64,
+    'Forca Tangencial (W_t_c2)': 977.10,
+    'Forca Radial (W_r_c2)': 355.64,
+    'estagio_1': {
+        'N_p': 18,
+        'N_g': 66,
+        'm': 2.0,
+        'b1': 20,
+        'b2': 20,
+    },
+    'estagio_2': {
+        'N_p': 10,
+        'N_g': 50,
+        'm': 4.0,
+        'b1': 30,
+        'b2': 30,
+    },
+    }
 
 
 # VARIÁVEIS NECESSÁRIAS PARA O DIMENSIONAMENTO DE CHAVETAS
@@ -15,9 +45,9 @@ diametro_eixo2 = eixo.resultado_e2['diametro_minimo']
 diametro_eixo3 = eixo.resultado_e3['diametro_minimo']
 
 # Torques nos eixos
-torque_eixo1 = param['parametros_eixos']['Torque eixo1']
-torque_eixo2 = param['parametros_eixos']['Torque eixo2']
-torque_eixo3 = param['parametros_eixos']['Torque eixo3']
+torque_eixo1 = param['Torque eixo1']
+torque_eixo2 = param['Torque eixo2']
+torque_eixo3 = param['Torque eixo3']
 
 # Propriedades do material (Aço AISI 1020)
 S_y = 390  # MPa - Tensão de escoamento
@@ -97,9 +127,9 @@ with open("dimensionamento_chavetas.txt", "w") as f:
 
     f.write("VERIFICAÇÃO GERAL:\n")
     if todas_atendem:
-        f.write("✓ TODAS AS CHAVETAS ATENDEM AOS CRITÉRIOS DE DIMENSIONAMENTO\n")
+        f.write("TODAS AS CHAVETAS ATENDEM AOS CRITÉRIOS DE DIMENSIONAMENTO\n")
     else:
-        f.write("✗ ALGUMAS CHAVETAS NÃO ATENDEM - REVISAR DIMENSIONAMENTO\n")
+        f.write("ALGUMAS CHAVETAS NÃO ATENDEM - REVISAR DIMENSIONAMENTO\n")
 
     f.write("\nRECOMENDAÇÕES:\n")
     f.write("- Utilizar chavetas paralelas ABNT\n")

@@ -1,0 +1,66 @@
+DIMENSIONAMENTO DE CHAVETAS - RESULTADOS
+============================================================
+
+Material: Aço AISI 1020
+S_y = 390 MPa, S_ut = 469 MPa
+Fator de segurança: 1.5
+
+Chaveta Eixo1-Pinhão1:
+  Diâmetro do eixo: 7.3 mm
+  Torque transmitido: 10 N.mm
+  Dimensões chaveta: 2 x 2 mm
+  Comprimento chaveta: 16.0 mm
+  Força tangencial: 3 N
+  Tensão cisalhamento: 0.1 MPa
+  Tensão admissível cisalhamento: 150.0 MPa
+  FS cisalhamento: 1679.39 (ATENDE)
+  Tensão esmagamento: 0.2 MPa
+  Tensão admissível esmagamento: 260.0 MPa
+  FS esmagamento: 1455.28 (ATENDE)
+
+Chaveta Eixo2-Coroa1:
+  Diâmetro do eixo: 10.9 mm
+  Torque transmitido: 35 N.mm
+  Dimensões chaveta: 4 x 4 mm
+  Comprimento chaveta: 16.0 mm
+  Força tangencial: 6 N
+  Tensão cisalhamento: 0.1 MPa
+  Tensão admissível cisalhamento: 150.0 MPa
+  FS cisalhamento: 1488.73 (ATENDE)
+  Tensão esmagamento: 0.2 MPa
+  Tensão admissível esmagamento: 260.0 MPa
+  FS esmagamento: 1290.06 (ATENDE)
+
+Chaveta Eixo2-Pinhão2:
+  Diâmetro do eixo: 10.9 mm
+  Torque transmitido: 35 N.mm
+  Dimensões chaveta: 4 x 4 mm
+  Comprimento chaveta: 24.0 mm
+  Força tangencial: 6 N
+  Tensão cisalhamento: 0.1 MPa
+  Tensão admissível cisalhamento: 150.0 MPa
+  FS cisalhamento: 2233.09 (ATENDE)
+  Tensão esmagamento: 0.1 MPa
+  Tensão admissível esmagamento: 260.0 MPa
+  FS esmagamento: 1935.09 (ATENDE)
+
+Chaveta Eixo3-Coroa2:
+  Diâmetro do eixo: 16.0 mm
+  Torque transmitido: 119 N.mm
+  Dimensões chaveta: 5 x 5 mm
+  Comprimento chaveta: 24.0 mm
+  Força tangencial: 15 N
+  Tensão cisalhamento: 0.1 MPa
+  Tensão admissível cisalhamento: 150.0 MPa
+  FS cisalhamento: 1212.27 (ATENDE)
+  Tensão esmagamento: 0.2 MPa
+  Tensão admissível esmagamento: 260.0 MPa
+  FS esmagamento: 1050.49 (ATENDE)
+
+VERIFICAÇÃO GERAL:
+TODAS AS CHAVETAS ATENDEM AOS CRITÉRIOS DE DIMENSIONAMENTO
+
+RECOMENDAÇÕES:
+- Utilizar chavetas paralelas ABNT
+- Ajustar comprimento da chaveta conforme largura real da engrenagem
+- Verificar folgas de montagem entre chaveta e rasgo

@@ -3,6 +3,11 @@ import utilities as util
 
 parametros = util.ler_Estagios_Engrenagem('Outputs/Estagios_Engrenagem.txt')
 
+parametros_torque = {
+    'Torque eixo1': 10.41,
+    'Torque eixo2': 35.18,
+    'Torque eixo3': 118.91
+}
 
 # Aço AISI 1020 Normalizado
 S_ut = 469  # MPa - Tensão de ruptura
@@ -26,42 +31,42 @@ L_e3 = 200
 
 # Calcule as reações
 reações_eixo1 = eixo.calcula_reações_mancais_eixo1(
-    {'W_t': parametros['parametros_eixos']['Forca Tangencial (W_t1)'], 'W_r': parametros['parametros_eixos']['Forca Radial (W_r1)']},  # Pinhão 1
+    {'W_t': parametros['parametros_eixos']['forca_tangencial_pinhao1'], 'W_r': parametros['parametros_eixos']['forca_radial_pinhao1']},  # Pinhão 1
     distancias_eixo1
 )
 
 reações_eixo2 = eixo.calcula_reações_eixo2(
-    {'W_t': parametros['parametros_eixos']['Forca Tangencial (W_t_c1)'], 'W_r': parametros['parametros_eixos']['Forca Radial (W_r_c1)']},  # Coroa 1
-    {'W_t': parametros['parametros_eixos']['Forca Tangencial (W_t_p2)'], 'W_r': parametros['parametros_eixos']['Forca Radial (W_r_p2)']},  # Pinhão 2
+    {'W_t': parametros['parametros_eixos']['forca_tangencial_coroa1'], 'W_r': parametros['parametros_eixos']['forca_radial_coroa1']},  # Coroa 1
+    {'W_t': parametros['parametros_eixos']['forca_tangencial_pinhao2'], 'W_r': parametros['parametros_eixos']['forca_radial_pinhao2']},  # Pinhão 2
     distancias_eixo2
 )
 
 reações_eixo3 = eixo.calcula_reações_mancais_eixo1(
-    {'W_t': parametros['parametros_eixos']['Forca Tangencial (W_t_c2)'], 'W_r': parametros['parametros_eixos']['Forca Radial (W_r_c2)']},  # Coroa 2
+    {'W_t': parametros['parametros_eixos']['forca_tangencial_coroa2'], 'W_r': parametros['parametros_eixos']['forca_radial_coroa2']},  # Coroa 2
     distancias_eixo3
 )
 # EIXO 1 - ENTRADA
-resultados_eixo1 = eixo.calcula_diagramas_eixo_simples(
-    forcas_engrenagem={'W_t': parametros['parametros_eixos']['Forca Tangencial (W_t1)'], 'W_r': parametros['parametros_eixos']['Forca Radial (W_r1)']},
+resultados_eixo1 = eixo.calcula_diagramas_eixo_simples( # type: ignore
+    forcas_engrenagem={'W_t': parametros['parametros_eixos']['forca_tangencial_pinhao1'], 'W_r': parametros['parametros_eixos']['forca_radial_pinhao1']},
     distancias=distancias_eixo1,
-    torque=parametros['parametros_eixos']['Torque_eixo1'],
+    torque=parametros_torque['Torque eixo1'],
     nome_eixo="Eixo 1 - Entrada"
 )
 
 # EIXO 2 - INTERMEDIÁRIO
 resultados_eixo2 = eixo.calcula_diagramas_eixo_duplo(
-    forcas_engrenagem1={'W_t': parametros['parametros_eixos']['Forca Tangencial (W_t_c1)'], 'W_r': parametros['parametros_eixos']['Forca Radial (W_r_c1)']},  # Coroa 1
-    forcas_engrenagem2={'W_t': parametros['parametros_eixos']['Forca Tangencial (W_t_p2)'], 'W_r': parametros['parametros_eixos']['Forca Radial (W_r_p2)']},  # Pinhão 2
+    forcas_engrenagem1={'W_t': parametros['parametros_eixos']['forca_tangencial_coroa1'], 'W_r': parametros['parametros_eixos']['forca_radial_coroa1']},  # Coroa 1
+    forcas_engrenagem2={'W_t': parametros['parametros_eixos']['forca_tangencial_pinhao2'], 'W_r': parametros['parametros_eixos']['forca_radial_pinhao2']},  # Pinhão 2
     distancias=distancias_eixo2,
-    torque=parametros['parametros_eixos']['Torque_eixo2'],
+    torque=parametros_torque['Torque eixo2'],
     nome_eixo="Eixo 2 - Intermediario"
 )
 
 # EIXO 3 - SAÍDA
 resultados_eixo3 = eixo.calcula_diagramas_eixo_simples(
-    forcas_engrenagem={'W_t': parametros['parametros_eixos']['Forca Tangencial (W_t_c2)'], 'W_r': parametros['parametros_eixos']['Forca Radial (W_r_c2)']},
+    forcas_engrenagem={'W_t': parametros['parametros_eixos']['forca_tangencial_coroa2'], 'W_r': parametros['parametros_eixos']['forca_radial_coroa2']},
     distancias=distancias_eixo3,
-    torque=parametros['parametros_eixos']['Torque_eixo3'],
+    torque=parametros_torque['Torque eixo3'],
     nome_eixo="Eixo 3 - Saida"
 )
 
@@ -88,7 +93,7 @@ with open("Outputs/resultados_diagramas.txt", "w") as f:
 # Dimensionamento do EIXO 1 usando a função definida localmente
 resultado_e1 = eixo.dimensiona_eixo_por_fadiga(
     resultados_diagramas['eixo1']['M_max'],
-    parametros['parametros_eixos']['Torque_eixo1'],
+    parametros_torque['Torque eixo1'],
     S_ut, S_y, Se_linha,
     tipo_eixo="simples"
 )
@@ -107,7 +112,7 @@ velocidade_critica_e1 = eixo.calcula_velocidade_critica(
 # Dimensionamento do EIXO 2
 resultado_e2 = eixo.dimensiona_eixo_por_fadiga(
     resultados_diagramas['eixo2']['M_max'],
-    parametros['parametros_eixos']['Torque_eixo2'],
+    parametros_torque['Torque eixo2'],
     S_ut, S_y, Se_linha,
     tipo_eixo="duplo"
 )
@@ -126,7 +131,7 @@ velocidade_critica_e2 = eixo.calcula_velocidade_critica(
 # Dimensionamento do EIXO 3
 resultado_e3 = eixo.dimensiona_eixo_por_fadiga(
     resultados_diagramas['eixo3']['M_max'],
-    parametros['parametros_eixos']['Torque_eixo3'],
+    parametros_torque['Torque eixo3'],
     S_ut, S_y, Se_linha,
     tipo_eixo="simples"
 )
