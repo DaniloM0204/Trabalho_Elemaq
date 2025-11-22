@@ -15,7 +15,8 @@ C_p=float(parametros['C_p'])
 omega_in = parametros['rotacao_motor'] * (2*np.pi / 60) # Em rad/s mesmo
 
 T_in = parametros['potencia_motor'] / omega_in
-T_out = parametros['forca_cabo'] * (parametros['diametro_tambor'] / 2)
+#Não retire a divisao por 100, tava dando erro estranho aqui, ele não lê o valor certo
+T_out = parametros['forca_cabo'] * ((parametros['diametro_tambor']/100) / 2)
 
 # Calculo da razao de transmissao total
 i_total = T_out / (T_in * parametros['eficiencia'])
