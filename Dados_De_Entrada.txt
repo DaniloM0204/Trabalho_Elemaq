@@ -1,6 +1,32 @@
+# Parâmetros de Projeto
 Potência de entrada do motor elétrico: 1,58 kW
 Velocidade de rotação do motor elétrico: 1450 rpm
 Força no cabo necessária: 1988 N
 Diâmetro do tambor do guincho: 120 mm
 Vida útil em número de horas (considerando a potência máxima): 4000 h
 Eficiência mínima do redutor: 85%
+
+# Material Engrenagens - Aço AISI 4140 Normalizado
+S_at: 655
+S_ac: 1020
+C_p: 191
+
+# Material Eixos - Aço AISI 1020 Normalizado
+S_ut = 469  # MPa - Tensão de ruptura
+S_y = 390   # MPa - Tensão de escoamento
+Se_linha = 0.5 * S_ut  # Limite de fadiga não corrigido
+
+# Coeficientes
+C_seg = 1.5  # Fator de segurança
+C_conf = 0.814  # Fator de confiabilidade de 99%
+C_temp = 1.0   # Fator de temperatura para T < 450C
+C_carr = 1.0   # Fator de carregamento para carga moderada
+
+# Defina distâncias estimadas (em mm)
+distancias_eixo1 = {'LA': 50, 'AB': 200, 'BC': 150}
+comprimento eixo 1: 200 mm
+distancias_eixo2 = {'LA': 40, 'L1': 120, 'L2': 40}  # AB = 220mm
+comprimento eixo 2: 220 mm
+distancias_eixo3 = {'LA': 60, 'AB': 200, 'BC': 160}
+comprimento eixo 3: 200 mm
+
