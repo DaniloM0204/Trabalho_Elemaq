@@ -113,15 +113,15 @@ with open("Outputs/Estagios_Engrenagem.txt", "w") as f:
         f.write("\n")
         f.write("Parametros dos Eixos:\n")
 
-        f.write(f"  Rotacao (n_eixo1): {parametros['rotacao_motor']:.1f} rpm\n")
-        f.write(f"  Torque (T_eixo1): {T_in:.2f} N.m\n")
+        f.write(f"  Rotacao eixo1: {parametros['rotacao_motor']:.1f} rpm\n")
+        f.write(f"  Torque eixo1: {T_in:.2f} N.m\n")
         f.write("  Forcas no Pinhao 1 (Eixo 1):\n")
         f.write(f"    Forca Tangencial (W_t1): {resultado_estagio_1['W_t']:.2f} N\n")
         f.write(f"    Forca Radial (W_r1): {resultado_estagio_1['W_r']:.2f} N\n")
 
         # Eixo 2
-        f.write(f"  Rotacao (n_eixo2): {resultado_estagio_1['n_p_out']:.1f} rpm\n")
-        f.write(f"  Torque (T_eixo2): {resultado_estagio_1['T_p_out']:.2f} N.m\n")
+        f.write(f"  Rotacao eixo2: {resultado_estagio_1['n_p_out']:.1f} rpm\n")
+        f.write(f"  Torque eixo2: {resultado_estagio_1['T_p_out']:.2f} N.m\n")
         f.write("  Forcas da Coroa 1 (Eixo 2):\n")
         f.write(f"    Forca Tangencial (W_t_c1): {resultado_estagio_1['W_t']:.2f} N\n")
         f.write(f"    Forca Radial (W_r_c1): {resultado_estagio_1['W_r']:.2f} N\n")
@@ -130,8 +130,8 @@ with open("Outputs/Estagios_Engrenagem.txt", "w") as f:
         f.write(f"    Forca Radial (W_r_p2): {resultado_estagio_2['W_r']:.2f} N\n")
 
         # Eixo 3 Saida
-        f.write(f"  Rotacao (n_eixo3): {resultado_estagio_2['n_p_out']:.1f} rpm\n")
-        f.write(f"  Torque (T_eixo3): {resultado_estagio_2['T_p_out']:.2f} N.m\n")
+        f.write(f"  Rotacao eixo3: {resultado_estagio_2['n_p_out']:.1f} rpm\n")
+        f.write(f"  Torque eixo3: {resultado_estagio_2['T_p_out']:.2f} N.m\n")
         f.write("  Forcas da Coroa 2 (Eixo 3):\n")
         f.write(f"    Forca Tangencial (W_t_c2): {resultado_estagio_2['W_t']:.2f} N\n")
         f.write(f"    Forca Radial (W_r_c2): {resultado_estagio_2['W_r']:.2f} N\n")

@@ -1,19 +1,35 @@
 import equacoes_cubo_eixo as ce
+import contas_engrenagem as eng
+import contas_eixo as eixo
 import utilities as util
 import numpy as  np
+
+param = util.ler_Estagios_Engrenagem('Outputs/Estagios_Engrenagem.txt')
+
+
+param = {
+    'estagio_1': {'modulo': 2.5,'largura_face': 20.0,'angulo_pressao': 20.0,'razao_contato': 1.664,'pinhao_dentes': 18.0,
+'pinhao_diametro_primitivo': 45.0,'pinhao_diametro_externo': 50.0,'coroa_dentes': 66.0,'coroa_diametro_primitivo': 165.0,'coroa_diametro_externo': 170.0,'razao_transmissao': 3.667,'distancia_centros': 105.0,'b1': 20.0,'b2': 20.0
+    },
+    'estagio_2': {'modulo': 2.5,'largura_face': 22.0,'angulo_pressao': 20.0,'razao_contato': 1.664,'pinhao_dentes': 16.0,'pinhao_diametro_primitivo': 40.0,'pinhao_diametro_externo': 45.0,'coroa_dentes': 72.0,'coroa_diametro_primitivo': 180.0,'coroa_diametro_externo': 185.0,'razao_transmissao': 4.5,'distancia_centros': 110.0,'b1': 22.0,'b2': 22.0
+    },
+    'parametros_eixos': {'Parametros dos Eixos':  {"Rotacao eixo1": 1450.0,"Torque eixo1": 10.41,"Rotacao eixo2": 395.5,"Torque eixo2": 35.18,"Rotacao eixo3": 107.9,"Torque eixo3": 118.91}}
+}
+
+
 
 # VARIÁVEIS NECESSÁRIAS PARA O DIMENSIONAMENTO DE CHAVETAS
 # (Valores extraídos das fases anteriores do código)
 
 # Diâmetros dos eixos dimensionados
-diametro_eixo1 = resultado_e1['diametro_minimo']
-diametro_eixo2 = resultado_e2['diametro_minimo']
-diametro_eixo3 = resultado_e3['diametro_minimo']
+diametro_eixo1 = eixo.resultado_e1['diametro_minimo']
+diametro_eixo2 = eixo.resultado_e2['diametro_minimo']
+diametro_eixo3 = eixo.resultado_e3['diametro_minimo']
 
 # Torques nos eixos
-torque_eixo1 = parametros['parametros_eixos']['torque_eixo1']
-torque_eixo2 = parametros['parametros_eixos']['torque_eixo2']
-torque_eixo3 = parametros['parametros_eixos']['torque_eixo3']
+torque_eixo1 = param['parametros_eixos']['Torque eixo1']
+torque_eixo2 = param['parametros_eixos']['Torque eixo2']
+torque_eixo3 = param['parametros_eixos']['Torque eixo3']
 
 # Propriedades do material (Aço AISI 1020)
 S_y = 390  # MPa - Tensão de escoamento
@@ -22,11 +38,15 @@ S_ut = 469  # MPa - Tensão de ruptura
 # Fator de segurança
 C_seg = 1.5
 
+estagio_1 = param['estagio_1']
+estagio_2 = param['estagio_2']
+
+
 # Larguras das engrenagens (assumidas - seriam calculadas no PASSO 1.2)
-largura_engrenagem_eixo1 = 20  # mm
-largura_engrenagem_eixo2_coroa1 = 25  # mm
-largura_engrenagem_eixo2_pinhao2 = 20  # mm
-largura_engrenagem_eixo3 = 30  # mm
+largura_engrenagem_eixo1 = estagio_1['b1']  # mm
+largura_engrenagem_eixo2_coroa1 =estagio_1['b2']  # mm
+largura_engrenagem_eixo2_pinhao2 = estagio_2['b1']  # mm
+largura_engrenagem_eixo3 = estagio_2['b2']  # mm
 
 # ============================================================
 # APLICAÇÃO PARA TODAS AS ENGRENAGENS

@@ -4,6 +4,12 @@ import numpy as np
 
 parametros = util.ler_Estagios_Engrenagem('Outputs/Estagios_Engrenagem.txt')
 
+parametros = {
+            'parametros_eixos':{"Rotacao eixo1": 1450.0,"Torque_eixo1": 10.41,"Forca Tangencial (W_t1)": 462.46,"Forca Radial (W_r1)": 168.32," Rotacao eixo2": 395.5,"Torque_eixo2": 35.18,"Forca Tangencial (W_t_c1)": 462.46, "Forca Radial (W_r_c1)": 168.32,"Forca Tangencial (W_t_p2)": 977.10,"Forca Radial (W_r_p2)": 355.64,"Rotacao eixo3": 107.9, "Torque_eixo3": 118.91,"Forca Tangencial (W_t_c2)": 977.10,"Forca Radial (W_r_c2)": 355.64},
+}
+
+
+
 # Aço AISI 1020 Normalizado
 S_ut = 469  # MPa - Tensão de ruptura
 S_y = 390   # MPa - Tensão de escoamento
@@ -26,43 +32,43 @@ L_e3 = 200
 
 # Calcule as reações
 reações_eixo1 = eixo.calcula_reações_mancais_eixo1(
-    {'W_t': parametros['parametros_eixos']['forca_tangencial_pinhao1'], 'W_r': parametros['parametros_eixos']['forca_radial_pinhao1']},  # Pinhão 1
+    {'W_t': parametros['parametros_eixos']['Forca Tangencial (W_t1)'], 'W_r': parametros['parametros_eixos']['Forca Radial (W_r1)']},  # Pinhão 1
     distancias_eixo1
 )
 
 reações_eixo2 = eixo.calcula_reações_eixo2(
-    {'W_t': parametros['parametros_eixos']['forca_tangencial_coroa1'], 'W_r': parametros['parametros_eixos']['forca_radial_coroa1']},  # Coroa 1
-    {'W_t': parametros['parametros_eixos']['forca_tangencial_pinhao2'], 'W_r': parametros['parametros_eixos']['forca_radial_pinhao2']},  # Pinhão 2
+    {'W_t': parametros['parametros_eixos']['Forca Tangencial (W_t_c1)'], 'W_r': parametros['parametros_eixos']['Forca Radial (W_r_c1)']},  # Coroa 1
+    {'W_t': parametros['parametros_eixos']['Forca Tangencial (W_t_p2)'], 'W_r': parametros['parametros_eixos']['Forca Radial (W_r_p2)']},  # Pinhão 2
     distancias_eixo2
 )
 
 reações_eixo3 = eixo.calcula_reações_mancais_eixo1(
-    {'W_t': parametros['parametros_eixos']['forca_tangencial_coroa2'], 'W_r': parametros['parametros_eixos']['forca_radial_coroa2']},  # Coroa 2
+    {'W_t': parametros['parametros_eixos']['Forca Tangencial (W_t_c2)'], 'W_r': parametros['parametros_eixos']['Forca Radial (W_r_c2)']},  # Coroa 2
     distancias_eixo3
 )
 # EIXO 1 - ENTRADA
 resultados_eixo1 = eixo.calcula_diagramas_eixo_simples(
-    forcas_engrenagem={'W_t': parametros['parametros_eixos']['forca_tangencial_pinhao1'], 'W_r': parametros['parametros_eixos']['forca_radial_pinhao1']},
+    forcas_engrenagem={'W_t': parametros['parametros_eixos']['Forca Tangencial (W_t1)'], 'W_r': parametros['parametros_eixos']['Forca Radial (W_r1)']},
     distancias=distancias_eixo1,
-    torque=parametros['parametros_eixos']['torque_eixo1'],
+    torque=parametros['parametros_eixos']['Torque_eixo1'],
     nome_eixo="Eixo 1 - Entrada"
 )
 
 # EIXO 2 - INTERMEDIÁRIO
 resultados_eixo2 = eixo.calcula_diagramas_eixo_duplo(
-    forcas_engrenagem1={'W_t': parametros['parametros_eixos']['forca_tangencial_coroa1'], 'W_r': parametros['parametros_eixos']['forca_radial_coroa1']},  # Coroa 1
-    forcas_engrenagem2={'W_t': parametros['parametros_eixos']['forca_tangencial_pinhao2'], 'W_r': parametros['parametros_eixos']['forca_radial_pinhao2']},  # Pinhão 2
+    forcas_engrenagem1={'W_t': parametros['parametros_eixos']['Forca Tangencial (W_t_c1)'], 'W_r': parametros['parametros_eixos']['Forca Radial (W_r_c1)']},  # Coroa 1
+    forcas_engrenagem2={'W_t': parametros['parametros_eixos']['Forca Tangencial (W_t_p2)'], 'W_r': parametros['parametros_eixos']['Forca Radial (W_r_p2)']},  # Pinhão 2
     distancias=distancias_eixo2,
-    torque=parametros['parametros_eixos']['torque_eixo2'],
-    nome_eixo="Eixo 2 - Intermediário"
+    torque=parametros['parametros_eixos']['Torque_eixo2'],
+    nome_eixo="Eixo 2 - Intermediario"
 )
 
 # EIXO 3 - SAÍDA
 resultados_eixo3 = eixo.calcula_diagramas_eixo_simples(
-    forcas_engrenagem={'W_t': parametros['parametros_eixos']['forca_tangencial_coroa2'], 'W_r': parametros['parametros_eixos']['forca_radial_coroa2']},
+    forcas_engrenagem={'W_t': parametros['parametros_eixos']['Forca Tangencial (W_t_c2)'], 'W_r': parametros['parametros_eixos']['Forca Radial (W_r_c2)']},
     distancias=distancias_eixo3,
-    torque=parametros['parametros_eixos']['torque_eixo3'],
-    nome_eixo="Eixo 3 - Saída"
+    torque=parametros['parametros_eixos']['Torque_eixo3'],
+    nome_eixo="Eixo 3 - Saida"
 )
 
 # Salvar resultados para uso no dimensionamento
@@ -88,7 +94,7 @@ with open("Outputs/resultados_diagramas.txt", "w") as f:
 # Dimensionamento do EIXO 1 usando a função definida localmente
 resultado_e1 = eixo.dimensiona_eixo_por_fadiga(
     resultados_diagramas['eixo1']['M_max'],
-    parametros['parametros_eixos']['torque_eixo1'],
+    parametros['parametros_eixos']['Torque_eixo1'],
     S_ut, S_y, Se_linha,
     tipo_eixo="simples"
 )
@@ -107,7 +113,7 @@ velocidade_critica_e1 = eixo.calcula_velocidade_critica(
 # Dimensionamento do EIXO 2
 resultado_e2 = eixo.dimensiona_eixo_por_fadiga(
     resultados_diagramas['eixo2']['M_max'],
-    parametros['parametros_eixos']['torque_eixo2'],
+    parametros['parametros_eixos']['Torque_eixo2'],
     S_ut, S_y, Se_linha,
     tipo_eixo="duplo"
 )
@@ -126,7 +132,7 @@ velocidade_critica_e2 = eixo.calcula_velocidade_critica(
 # Dimensionamento do EIXO 3
 resultado_e3 = eixo.dimensiona_eixo_por_fadiga(
     resultados_diagramas['eixo3']['M_max'],
-    parametros['parametros_eixos']['torque_eixo3'],
+    parametros['parametros_eixos']['Torque_eixo3'],
     S_ut, S_y, Se_linha,
     tipo_eixo="simples"
 )
@@ -144,27 +150,27 @@ velocidade_critica_e3 = eixo.calcula_velocidade_critica(
 
 resumo_eixos = {
     "Eixo 1 (Entrada)": {
-        "Diâmetro": resultado_e1['diametro_minimo'],
+        "Diametro": resultado_e1['diametro_minimo'],
         "FS Fadiga": resultado_e1['FS_fadiga'],
         "FS Escoamento": resultado_e1['FS_escoamento'],
-        "Deflexão": deflexao_e1['deflexao_max_mm'],
-        "Status Deflexão": deflexao_e1['status_deflexao'],
+        "Deflexao": deflexao_e1['deflexao_max_mm'],
+        "Status Deflexao": deflexao_e1['status_deflexao'],
         "N_critica": velocidade_critica_e1['velocidade_critica_rpm']
     },
-    "Eixo 2 (Intermediário)": {
-        "Diâmetro": resultado_e2['diametro_minimo'],
+    "Eixo 2 (Intermediario)": {
+        "Diametro": resultado_e2['diametro_minimo'],
         "FS Fadiga": resultado_e2['FS_fadiga'],
         "FS Escoamento": resultado_e2['FS_escoamento'],
-        "Deflexão": deflexao_e2['deflexao_max_mm'],
-        "Status Deflexão": deflexao_e2['status_deflexao'],
+        "Deflexao": deflexao_e2['deflexao_max_mm'],
+        "Status Deflexao": deflexao_e2['status_deflexao'],
         "N_critica": velocidade_critica_e2['velocidade_critica_rpm']
     },
-    "Eixo 3 (Saída)": {
-        "Diâmetro": resultado_e3['diametro_minimo'],
+    "Eixo 3 (Saida)": {
+        "Diametro": resultado_e3['diametro_minimo'],
         "FS Fadiga": resultado_e3['FS_fadiga'],
         "FS Escoamento": resultado_e3['FS_escoamento'],
-        "Deflexão": deflexao_e3['deflexao_max_mm'],
-        "Status Deflexão": deflexao_e3['status_deflexao'],
+        "Deflexao": deflexao_e3['deflexao_max_mm'],
+        "Status Deflexao": deflexao_e3['status_deflexao'],
         "N_critica": velocidade_critica_e3['velocidade_critica_rpm']
     }
 }
@@ -177,20 +183,20 @@ with open("Outputs/dimensionamento_eixos.txt", "w") as f:
     f.write("DIMENSIONAMENTO DOS EIXOS - RESULTADOS FINAIS\n")
     f.write("="*60 + "\n\n")
 
-    f.write("Material: Aço AISI 1020\n")
+    f.write("Material: Aco AISI 1020\n")
     f.write(f"S_ut = {S_ut} MPa, S_y = {S_y} MPa\n")
-    f.write(f"Fator de segurança mínimo: {valor_min:2f}\n\n")
+    f.write(f"Fator de seguranca minimo: {valor_min:2f}\n\n")
 
     for eixo, dados in resumo_eixos.items():
         f.write(f"{eixo}:\n")
-        f.write(f"  Diâmetro mínimo: {dados['Diâmetro']:.1f} mm\n")
+        f.write(f"  Diametro minimo: {dados['Diametro']:.1f} mm\n")
         f.write(f"  FS Fadiga: {dados['FS Fadiga']:.2f}\n")
         f.write(f"  FS Escoamento: {dados['FS Escoamento']:.2f}\n")
-        f.write(f"  Deflexão máxima: {dados['Deflexão']:.3f} mm\n")
-        f.write(f"  Status Deflexão: {dados['Status Deflexão']}\n")
-        f.write(f"  Velocidade crítica: {dados['N_critica']:.0f} rpm\n\n")
+        f.write(f"  Deflexao maxima: {dados['Deflexao']:.3f} mm\n")
+        f.write(f"  Status Deflexao: {dados['Status Deflexao']}\n")
+        f.write(f"  Velocidade critica: {dados['N_critica']:.0f} rpm\n\n")
 
     f.write("RECOMENDAÇÕES:\n")
-    f.write("- Utilizar diâmetros comerciais (25, 30, 35, 40 mm)\n")
-    f.write("- Considerar acabamento retificado nas seções críticas\n")
-    f.write("- Implementar raios de concordância generosos nos degraus\n")
+    f.write("- Utilizar diametros comerciais (25, 30, 35, 40 mm)\n")
+    f.write("- Considerar acabamento retificado nas secoes criticas\n")
+    f.write("- Implementar raios de concordancia generosos nos degraus\n")
