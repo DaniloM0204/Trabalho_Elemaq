@@ -1,8 +1,6 @@
 import equacoes_cubo_eixo as ce
-import contas_engrenagem as eng
 import contas_eixo as eixo
 import utilities as util
-import numpy as  np
 
 param = util.ler_Estagios_Engrenagem('Outputs/Estagios_Engrenagem.txt')
 
@@ -85,7 +83,7 @@ with open("dimensionamento_chavetas.txt", "w") as f:
     f.write("DIMENSIONAMENTO DE CHAVETAS - RESULTADOS\n")
     f.write("="*60 + "\n\n")
 
-    f.write(f"Material: Aço AISI 1020\n")
+    f.write("Material: Aço AISI 1020\n")
     f.write(f"S_y = {S_y} MPa, S_ut = {S_ut} MPa\n")
     f.write(f"Fator de segurança: {C_seg}\n\n")
 

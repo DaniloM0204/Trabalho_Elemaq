@@ -1,6 +1,5 @@
 import equacoes_eixo as eixo
 import utilities as util
-import numpy as np
 
 parametros = util.ler_Estagios_Engrenagem('Outputs/Estagios_Engrenagem.txt')
 
