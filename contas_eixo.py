@@ -3,10 +3,6 @@ import utilities as util
 
 parametros = util.ler_Estagios_Engrenagem('Outputs/Estagios_Engrenagem.txt')
 
-parametros = {
-            'parametros_eixos':{"Rotacao eixo1": 1450.0,"Torque_eixo1": 10.41,"Forca Tangencial (W_t1)": 462.46,"Forca Radial (W_r1)": 168.32," Rotacao eixo2": 395.5,"Torque_eixo2": 35.18,"Forca Tangencial (W_t_c1)": 462.46, "Forca Radial (W_r_c1)": 168.32,"Forca Tangencial (W_t_p2)": 977.10,"Forca Radial (W_r_p2)": 355.64,"Rotacao eixo3": 107.9, "Torque_eixo3": 118.91,"Forca Tangencial (W_t_c2)": 977.10,"Forca Radial (W_r_c2)": 355.64},
-}
-
 
 # Aço AISI 1020 Normalizado
 S_ut = 469  # MPa - Tensão de ruptura
