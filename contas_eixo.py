@@ -8,7 +8,6 @@ parametros = {
 }
 
 
-
 # Aço AISI 1020 Normalizado
 S_ut = 469  # MPa - Tensão de ruptura
 S_y = 390   # MPa - Tensão de escoamento
@@ -195,7 +194,7 @@ with open("Outputs/dimensionamento_eixos.txt", "w") as f:
         f.write(f"  Status Deflexao: {dados['Status Deflexao']}\n")
         f.write(f"  Velocidade critica: {dados['N_critica']:.0f} rpm\n\n")
 
-    f.write("RECOMENDAÇÕES:\n")
+    f.write("RECOMENDACOES:\n")
     f.write("- Utilizar diametros comerciais (25, 30, 35, 40 mm)\n")
     f.write("- Considerar acabamento retificado nas secoes criticas\n")
     f.write("- Implementar raios de concordancia generosos nos degraus\n")

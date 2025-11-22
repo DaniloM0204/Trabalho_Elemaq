@@ -1,5 +1,4 @@
 import re
-import numpy as np
 import matplotlib.pyplot as plt
 
 def plot_diagramas_cortante_momento(x, V, M, titulo):
@@ -114,8 +113,8 @@ def ler_Dados_De_Entrada(nome_arquivo):
                 elif "eixo 3" in linha:
                     numero = extrair_numero(linha)
                     parametros['comprimento_eixo3'] = numero
-            except:
-                print(f"AVISO: Não foi possível extrair comprimento da linha: {linha}")
+            except Exception as e:
+                print(f"Não foi possível extrair comprimento da linha: {linha}. Erro: {e}")
             continue
 
         # Processa linhas com separador : ou =
@@ -222,7 +221,6 @@ def ler_Estagios_Engrenagem(nome_arquivo):
         return None
 
     estagio_atual = None
-    secao_atual = None
 
     for linha in linhas:
         linha = linha.strip()
@@ -260,7 +258,6 @@ def ler_Estagios_Engrenagem(nome_arquivo):
 
         elif linha.startswith('Parametros dos Eixos:'):
             estagio_atual = 'parametros_eixos'
-            secao_atual = None
 
         # Processa dados dos estágios
         elif estagio_atual in ['estagio1', 'estagio2']:
@@ -333,28 +330,6 @@ def ler_Estagios_Engrenagem(nome_arquivo):
                 resultados['parametros_eixos']['forca_radial_coroa2'] = extrair_numero(linha)
 
     return resultados
-
-def extrair_numero(texto):
-    """
-    Extrai um número de um texto, removendo unidades e convertendo vírgula para ponto
-    """
-    # Encontra todos os números no texto (incluindo decimais com vírgula)
-    padrao = r'[-+]?\d*[,.]?\d+'
-    matches = re.findall(padrao, texto)
-
-    if matches:
-        # Pega o primeiro número encontrado e converte
-        numero_str = matches[0].replace(',', '.')
-        try:
-            # Tenta converter para float primeiro
-            return float(numero_str)
-        except ValueError:
-            # Se falhar, tenta int
-            try:
-                return int(numero_str)
-            except ValueError:
-                return None
-    return None
 
 def ler_resultados_diagramas(nome_arquivo='resultados_diagramas.txt'):
     """
@@ -539,27 +514,6 @@ def ler_dimensionamento_eixos(nome_arquivo='dimensionamento_eixos.txt'):
 
     return resultados
 
-def extrair_numero(texto):
-    """
-    Extrai um número de um texto, removendo unidades e convertendo vírgula para ponto
-    """
-    # Remove unidades comuns e espaços
-    texto_limpo = re.sub(r'[MPa|mm|rpm]', '', texto).strip()
 
-    # Encontra números (incluindo decimais com vírgula)
-    padrao = r'[-+]?\d*[,.]?\d+'
-    matches = re.findall(padrao, texto_limpo)
-
-    if matches:
-        # Pega o primeiro número encontrado e converte
-        numero_str = matches[0].replace(',', '.')
-        try:
-            return float(numero_str)
-        except ValueError:
-            try:
-                return int(numero_str)
-            except ValueError:
-                return None
-    return None
 
 

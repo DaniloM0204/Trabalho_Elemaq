@@ -21,7 +21,8 @@ def calcula_c_superf(S_ut):
         fator = A * (S_ut ** b)
 
         # O fator não deve ser maior que 1.0
-        if fator > 1.0: fator = 1.0
+        if fator > 1.0:
+            fator = 1.0
 
         c_lista.append(fator)
 
