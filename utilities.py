@@ -1,4 +1,3 @@
-
 import re
 import numpy as np
 import matplotlib.pyplot as plt
@@ -24,31 +23,6 @@ def plot_diagramas_cortante_momento(x, V, M, titulo):
     
     plt.tight_layout()
     return plt
-
-def converte_unidades(valor, unidade_origem, unidade_destino):
-    """
-    Conversor de unidades comum
-    """
-    conversoes = {
-        ('N.m', 'N.mm'): lambda x: x * 1000,
-        ('N.mm', 'N.m'): lambda x: x / 1000,
-        ('mm', 'm'): lambda x: x / 1000,
-        ('m', 'mm'): lambda x: x * 1000,
-        ('RPM', 'rad/s'): lambda x: x * 2 * np.pi / 60,
-        ('rad/s', 'RPM'): lambda x: x * 60 / (2 * np.pi)
-    }
-    
-    return conversoes.get((unidade_origem, unidade_destino), lambda x: x)(valor)
-
-def valida_entradas(**kwargs):
-
-    """
-    Valida entradas do usuário
-    """
-    for key, value in kwargs.items():
-        if value <= 0:
-            raise ValueError(f"Valor de {key} deve ser positivo")
-    return True
 
 def escreve_estagio(file, nome_estagio, res):
     """
@@ -83,36 +57,80 @@ def escreve_estagio(file, nome_estagio, res):
     file.write(f"    Vida Minima: {res['vida_util_minima']:.0f} horas\n")
     file.write(f"    Status Vida: {res['status_vida']}\n")
 
-
 def ler_Dados_De_Entrada(nome_arquivo):
     """
-    Versão robusta que garante que todos os valores são números
+    Versão atualizada que lê todos os parâmetros do projeto incluindo
+    materiais de engrenagens, eixos e comprimentos dos eixos.
     """
     parametros = {}
     
     mapeamento_chaves = {
+        # Parâmetros principais do projeto
         "Potência de entrada do motor elétrico": "potencia_motor",
         "Velocidade de rotação do motor elétrico": "rotacao_motor", 
         "Força no cabo necessária": "forca_cabo",
         "Diâmetro do tambor do guincho": "diametro_tambor",
         "Vida útil em número de horas": "vida_util",
         "Eficiência mínima do redutor": "eficiencia",
+        
+        # Material das engrenagens
         "S_at": "S_at",
         "S_ac": "S_ac", 
-        "C_p": "C_p"
+        "C_p": "C_p",
+        
+        # Material dos eixos
+        "S_ut": "S_ut",
+        "S_y": "S_y",
+        
+        # Coeficientes
+        "C_seg": "C_seg",
+        "C_conf": "C_conf",
+        "C_temp": "C_temp",
+        "C_carr": "C_carr"
     }
     
     with open(nome_arquivo, 'r', encoding='utf-8') as arquivo:
-        for linha in arquivo:
-            linha = linha.strip()
+        linhas = arquivo.readlines()
+    
+    # Processa cada linha
+    for i, linha in enumerate(linhas):
+        linha = linha.strip()
+        
+        # Ignora linhas vazias e comentários
+        if not linha or linha.startswith('#'):
+            continue
             
-            if not linha or linha.startswith('#'):
-                continue
-                
-            if ':' in linha:
-                chave, valor = linha.split(':', 1)
-                chave = chave.strip()
-                valor = valor.strip()
+        # Processa comprimentos dos eixos (formato especial)
+        if "comprimento eixo" in linha.lower():
+            try:
+                # Extrai o número do eixo e o comprimento
+                if "eixo 1" in linha:
+                    numero = extrair_numero(linha)
+                    parametros['comprimento_eixo1'] = numero
+                elif "eixo 2" in linha:
+                    numero = extrair_numero(linha)
+                    parametros['comprimento_eixo2'] = numero
+                elif "eixo 3" in linha:
+                    numero = extrair_numero(linha)
+                    parametros['comprimento_eixo3'] = numero
+            except:
+                print(f"AVISO: Não foi possível extrair comprimento da linha: {linha}")
+            continue
+        
+        # Processa linhas com separador : ou =
+        separadores = [':', '=']
+        separador_encontrado = None
+        
+        for sep in separadores:
+            if sep in linha:
+                separador_encontrado = sep
+                break
+        
+        if separador_encontrado:
+            partes = linha.split(separador_encontrado, 1)
+            if len(partes) == 2:
+                chave = partes[0].strip()
+                valor = partes[1].strip()
                 
                 # Encontra a chave correspondente no mapeamento
                 chave_correspondente = None
@@ -121,29 +139,60 @@ def ler_Dados_De_Entrada(nome_arquivo):
                         chave_correspondente = chave_saida
                         break
                 
-                if chave_correspondente:
-                    # Extrai o primeiro número encontrado
-                    import re
-                    numeros = re.findall(r'[-+]?\d+[,.]?\d*', valor)
-                    if numeros:
-                        numero_str = numeros[0].replace(',', '.')
-                        try:
-                            if '.' in numero_str:
-                                numero = float(numero_str)
-                            else:
-                                numero = int(numero_str)
-                            
-                            # Conversão especial para eficiência
-                            if chave_correspondente == 'eficiencia' and numero > 1:
-                                numero = numero / 100
-                                
-                            parametros[chave_correspondente] = numero
-                            
-                        except ValueError:
-                            print(f"AVISO: Não pude converter '{numero_str}' para número")
+                # Se não encontrou no mapeamento, tenta usar a própria chave
+                if not chave_correspondente:
+                    chave_correspondente = chave.replace(' ', '_').lower()
+                
+                # Extrai o número
+                numero = extrair_numero(valor)
+                if numero is not None:
+                    # Conversões especiais
+                    if chave_correspondente == 'eficiencia' and numero > 1:
+                        numero = numero / 100
+                    
+                    parametros[chave_correspondente] = numero
+                else:
+                    # Se não conseguiu extrair número, armazena como string
+                    parametros[chave_correspondente] = valor
+    
+    # Calcula valores derivados
+    if 'S_ut' in parametros and 'Se_linha' not in parametros:
+        parametros['Se_linha'] = 0.5 * parametros['S_ut']
+    
+    # Define valores padrão para coeficientes se não encontrados
+    if 'C_seg' not in parametros:
+        parametros['C_seg'] = 1.5
+    if 'C_conf' not in parametros:
+        parametros['C_conf'] = 0.814
+    if 'C_temp' not in parametros:
+        parametros['C_temp'] = 1.0
+    if 'C_carr' not in parametros:
+        parametros['C_carr'] = 1.0
     
     return parametros
 
+def extrair_numero(texto):
+    """
+    Extrai um número de um texto, removendo unidades e convertendo vírgula para ponto
+    """
+    # Remove unidades comuns e espaços
+    texto_limpo = re.sub(r'[N\.mm|N\.m|mm|N|MPa|kW|rpm|h]', '', texto).strip()
+    
+    # Encontra números (incluindo decimais com vírgula)
+    padrao = r'[-+]?\d*[,.]?\d+'
+    matches = re.findall(padrao, texto_limpo)
+    
+    if matches:
+        # Pega o primeiro número encontrado e converte
+        numero_str = matches[0].replace(',', '.')
+        try:
+            return float(numero_str)
+        except ValueError:
+            try:
+                return int(numero_str)
+            except ValueError:
+                return None
+    return None
 
 def ler_Estagios_Engrenagem(nome_arquivo):
     """
@@ -306,38 +355,210 @@ def extrair_numero(texto):
                 return None
     return None
 
-# Função auxiliar para exibir os resultados de forma organizada
-def exibir_resultados(resultados):
+def ler_resultados_diagramas(nome_arquivo='resultados_diagramas.txt'):
     """
-    Exibe os resultados de forma organizada para verificação
+    Lê um arquivo de texto com resultados dos diagramas e extrai os valores críticos
+    de forma estruturada.
+    
+    Args:
+        nome_arquivo (str): Caminho para o arquivo de texto
+        
+    Returns:
+        dict: Dicionário estruturado com os valores críticos de cada eixo
     """
-    if not resultados:
-        print("Nenhum resultado para exibir")
-        return
+    resultados = {}
     
-    print("=== RESULTADOS DO REDUTOR ===")
+    try:
+        with open(nome_arquivo, 'r', encoding='utf-8') as arquivo:
+            linhas = arquivo.readlines()
+    except FileNotFoundError:
+        print(f"Erro: Arquivo {nome_arquivo} não encontrado.")
+        return None
     
-    # Torques
-    print("\n--- TORQUES ---")
-    for chave, valor in resultados['torques'].items():
-        print(f"{chave}: {valor} N.m")
+    eixo_atual = None
     
-    # Estágio 1
-    print("\n--- ESTÁGIO 1 ---")
-    for chave, valor in resultados['estagio1'].items():
-        print(f"{chave}: {valor}")
+    for linha in linhas:
+        linha = linha.strip()
+        
+        # Ignora linhas vazias e cabeçalhos
+        if not linha or "RESULTADOS DOS DIAGRAMAS" in linha or "====" in linha:
+            continue
+        
+        # Detecta um novo eixo
+        if linha.upper().startswith('EIXO'):
+            eixo_nome = linha.replace(':', '').strip().lower()
+            eixo_atual = eixo_nome
+            resultados[eixo_atual] = {}
+            continue
+        
+        # Processa os dados do eixo atual
+        if eixo_atual and ':' in linha:
+            chave, valor = linha.split(':', 1)
+            chave = chave.strip().lower()
+            valor = valor.strip()
+            
+            # Extrai o número do valor (remove unidades se houver)
+            numero = extrair_numero_diagrama(valor)
+            
+            if numero is not None:
+                # Mapeia as chaves para nomes padronizados
+                if 'momento máximo' in chave:
+                    resultados[eixo_atual]['momento_maximo'] = numero
+                elif 'cortante máximo' in chave:
+                    resultados[eixo_atual]['cortante_maximo'] = numero
+                elif 'reação a' in chave:
+                    resultados[eixo_atual]['reacao_A'] = numero
+                elif 'reação b' in chave:
+                    resultados[eixo_atual]['reacao_B'] = numero
+                elif 'posição m_max' in chave or 'posicao m_max' in chave:
+                    resultados[eixo_atual]['posicao_M_max'] = numero
     
-    # Estágio 2
-    print("\n--- ESTÁGIO 2 ---")
-    for chave, valor in resultados['estagio2'].items():
-        print(f"{chave}: {valor}")
+    return resultados
+
+def extrair_numero_diagrama(texto):
+    """
+    Extrai um número de um texto, removendo unidades e convertendo vírgula para ponto
+    """
+    # Remove unidades comuns e espaços
+    texto_limpo = re.sub(r'[N\.mm|N\.m|mm|N]', '', texto).strip()
     
-    # Transmissão total
-    print("\n--- TRANSMISSÃO TOTAL ---")
-    for chave, valor in resultados['transmissao_total'].items():
-        print(f"{chave}: {valor}")
+    # Encontra números (incluindo decimais com vírgula)
+    padrao = r'[-+]?\d*[,.]?\d+'
+    matches = re.findall(padrao, texto_limpo)
     
-    # Parâmetros dos eixos
-    print("\n--- PARÂMETROS DOS EIXOS ---")
-    for chave, valor in resultados['parametros_eixos'].items():
-        print(f"{chave}: {valor}")
+    if matches:
+        # Pega o primeiro número encontrado e converte
+        numero_str = matches[0].replace(',', '.')
+        try:
+            return float(numero_str)
+        except ValueError:
+            try:
+                return int(numero_str)
+            except ValueError:
+                return None
+    return None
+
+def ler_dimensionamento_eixos(nome_arquivo='dimensionamento_eixos.txt'):
+    """
+    Lê um arquivo de texto com resultados do dimensionamento dos eixos
+    e extrai os valores de forma estruturada.
+    
+    Args:
+        nome_arquivo (str): Caminho para o arquivo de texto
+        
+    Returns:
+        dict: Dicionário estruturado com os resultados do dimensionamento
+    """
+    resultados = {
+        'material': {},
+        'fs_minimo': None,
+        'eixos': {},
+        'recomendacoes': []
+    }
+    
+    try:
+        with open(nome_arquivo, 'r', encoding='utf-8') as arquivo:
+            linhas = arquivo.readlines()
+    except FileNotFoundError:
+        print(f"Erro: Arquivo {nome_arquivo} não encontrado.")
+        return None
+    
+    eixo_atual = None
+    secao_atual = None
+    
+    for linha in linhas:
+        linha = linha.strip()
+        
+        # Ignora linhas vazias e cabeçalhos
+        if not linha or "DIMENSIONAMENTO DOS EIXOS" in linha or "====" in linha:
+            continue
+        
+        # Detecta seção de material
+        if linha.startswith('Material:'):
+            resultados['material']['nome'] = linha.split(':', 1)[1].strip()
+            secao_atual = 'material'
+            continue
+            
+        # Detecta propriedades do material
+        if 'S_ut =' in linha and 'S_y =' in linha:
+            # Extrai S_ut e S_y da mesma linha
+            s_ut_match = re.search(r'S_ut\s*=\s*([\d.,]+)', linha)
+            s_y_match = re.search(r'S_y\s*=\s*([\d.,]+)', linha)
+            if s_ut_match:
+                resultados['material']['S_ut'] = extrair_numero(s_ut_match.group(1))
+            if s_y_match:
+                resultados['material']['S_y'] = extrair_numero(s_y_match.group(1))
+            continue
+            
+        # Detecta fator de segurança mínimo
+        if 'Fator de segurança mínimo:' in linha:
+            resultados['fs_minimo'] = extrair_numero(linha)
+            continue
+            
+        # Detecta um novo eixo
+        if linha.startswith('Eixo'):
+            eixo_nome = linha.split(':', 1)[0].strip().lower()
+            eixo_atual = eixo_nome
+            resultados['eixos'][eixo_atual] = {}
+            secao_atual = 'eixo'
+            continue
+            
+        # Detecta seção de recomendações
+        if linha.startswith('RECOMENDAÇÕES:'):
+            secao_atual = 'recomendacoes'
+            continue
+            
+        # Processa dados dos eixos
+        if secao_atual == 'eixo' and eixo_atual and ':' in linha:
+            chave, valor = linha.split(':', 1)
+            chave = chave.strip().lower()
+            valor = valor.strip()
+            
+            # Extrai o número ou texto
+            if any(termo in chave for termo in ['diâmetro', 'fs', 'deflexão', 'velocidade']):
+                numero = extrair_numero(valor)
+                if numero is not None:
+                    # Mapeia as chaves para nomes padronizados
+                    if 'diâmetro' in chave:
+                        resultados['eixos'][eixo_atual]['diametro_minimo'] = numero
+                    elif 'fs fadiga' in chave:
+                        resultados['eixos'][eixo_atual]['fs_fadiga'] = numero
+                    elif 'fs escoamento' in chave:
+                        resultados['eixos'][eixo_atual]['fs_escoamento'] = numero
+                    elif 'deflexão' in chave and 'máxima' in chave:
+                        resultados['eixos'][eixo_atual]['deflexao_maxima'] = numero
+                    elif 'velocidade crítica' in chave:
+                        resultados['eixos'][eixo_atual]['velocidade_critica'] = numero
+            elif 'status' in chave:
+                resultados['eixos'][eixo_atual]['status_deflexao'] = valor
+                
+        # Processa recomendações
+        if secao_atual == 'recomendacoes' and linha.startswith('-'):
+            resultados['recomendacoes'].append(linha[1:].strip())
+    
+    return resultados
+
+def extrair_numero(texto):
+    """
+    Extrai um número de um texto, removendo unidades e convertendo vírgula para ponto
+    """
+    # Remove unidades comuns e espaços
+    texto_limpo = re.sub(r'[MPa|mm|rpm]', '', texto).strip()
+    
+    # Encontra números (incluindo decimais com vírgula)
+    padrao = r'[-+]?\d*[,.]?\d+'
+    matches = re.findall(padrao, texto_limpo)
+    
+    if matches:
+        # Pega o primeiro número encontrado e converte
+        numero_str = matches[0].replace(',', '.')
+        try:
+            return float(numero_str)
+        except ValueError:
+            try:
+                return int(numero_str)
+            except ValueError:
+                return None
+    return None
+
+
