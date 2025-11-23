@@ -201,69 +201,116 @@ def calcula_diagramas_eixo_duplo(forcas_engrenagem1, forcas_engrenagem2, distanc
 def plotar_diagramas_eixo(L_total, posicoes_elementos, forcas, torque, nome_eixo):
     """
     Gera e salva diagramas de Cortante, Momento e Torque.
+    Plota componentes Vertical, Horizontal e a Resultante.
     """
+    # Cria diretório se não existir
+    import os
+    if not os.path.exists('Outputs'):
+        os.makedirs('Outputs')
+
     x = np.linspace(0, L_total, 500)
     xA = posicoes_elementos['A']
     xB = posicoes_elementos['B']
 
-    # Recalcula reações para plotagem (Equilíbrio)
+    # 1. CÁLCULO DAS REAÇÕES DE APOIO (Equilíbrio Estático)
+    # Cargas externas passadas na lista 'forcas'
     cargas = forcas
+
+    # Somatório de Momentos em A para achar Rb
     M_A_v = sum(Fv * (pos - xA) for pos, Fv, Fh in cargas)
     M_A_h = sum(Fh * (pos - xA) for pos, Fv, Fh in cargas)
 
     R_Bv = M_A_v / (xB - xA)
     R_Bh = M_A_h / (xB - xA)
+
+    # Somatório de Forças para achar Ra
     R_Av = sum(c[1] for c in cargas) - R_Bv
     R_Ah = sum(c[2] for c in cargas) - R_Bh
 
+    # Lista completa de forças para o método das seções
+    # Reações entram com sinal oposto às cargas externas para fechar o diagrama
     todas_forcas = cargas.copy()
     todas_forcas.append((xA, -R_Av, -R_Ah))
     todas_forcas.append((xB, -R_Bv, -R_Bh))
     todas_forcas.sort(key=lambda k: k[0])
 
+    # Arrays para os diagramas
     V_v, V_h, M_v, M_h, T_plot = [np.zeros_like(x) for _ in range(5)]
 
+    # 2. CÁLCULO DOS ESFORÇOS PONTO A PONTO
     for i, xi in enumerate(x):
         for pos, Fv, Fh in todas_forcas:
             if pos <= xi:
-                val_v = abs(Fv) if (pos==xA or pos==xB) else -abs(Fv)
-                val_h = abs(Fh) if (pos==xA or pos==xB) else -abs(Fh)
+                # Lógica de Sinais para Diagrama:
+                # Se for reação (A ou B), soma. Se for carga externa, subtrai.
+                # (Assumindo convenção padrão de engenharia)
+                is_reaction = (abs(pos - xA) < 0.1 or abs(pos - xB) < 0.1)
+
+                # Ajuste de sinal: Reação sobe o diagrama, Carga desce
+                val_v = abs(Fv) if is_reaction else -abs(Fv)
+                val_h = abs(Fh) if is_reaction else -abs(Fh)
+
+                # Cortante (Soma das forças à esquerda)
                 V_v[i] += val_v
                 V_h[i] += val_h
+
+                # Momento (Força * Braço)
                 M_v[i] += val_v * (xi - pos)
                 M_h[i] += val_h * (xi - pos)
 
+        # Lógica do Torque (Mantida)
         elementos_torque = [k for k in posicoes_elementos.keys() if 'Eng' in k or 'Coroa' in k or 'Pinhao' in k]
-        if len(elementos_torque) >= 1: # Simples
-             if posicoes_elementos['A'] <= xi <= posicoes_elementos[elementos_torque[0]]: # Entrada até engrenagem
+        if len(elementos_torque) >= 1: # Eixo simples
+             if posicoes_elementos['A'] <= xi <= posicoes_elementos[elementos_torque[0]]:
                  T_plot[i] = torque
 
-        if len(elementos_torque) >= 2: # Duplo
+        if len(elementos_torque) >= 2: # Eixo intermediário
              p_t = sorted([posicoes_elementos[k] for k in elementos_torque])
              if p_t[0] <= xi <= p_t[-1]:
                  T_plot[i] = torque
 
+    # Resultantes (Pitágoras)
     V_res = np.sqrt(V_v**2 + V_h**2)
     M_res = np.sqrt(M_v**2 + M_h**2)
 
-    fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(8, 10), sharex=True)
+    # 3. PLOTAGEM
+    fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(10, 12), sharex=True)
 
-    ax1.plot(x, V_res, 'k-', lw=2)
-    ax1.set_ylabel('Cortante Resultante (N)')
+    # --- Gráfico 1: Esforço Cortante (V) ---
+    ax1.plot(x, V_v, label='Vertical', color='blue', alpha=0.5, linestyle='--')
+    ax1.plot(x, V_h, label='Horizontal', color='green', alpha=0.5, linestyle='--')
+    ax1.plot(x, V_res, label='Resultante', color='black', linewidth=2)
+    ax1.set_ylabel('Cortante (N)')
+    ax1.set_title(f'{nome_eixo} - Esforço Cortante')
+    ax1.legend(loc='best')
     ax1.grid(True, alpha=0.3)
-    ax1.set_title(f'{nome_eixo} - Esforços')
 
-    ax2.plot(x, M_res, 'r-', lw=2)
+    # --- Gráfico 2: Momento Fletor (M) ---
+    ax2.plot(x, M_v, label='Vertical', color='blue', alpha=0.5, linestyle='--')
+    ax2.plot(x, M_h, label='Horizontal', color='green', alpha=0.5, linestyle='--')
+    ax2.plot(x, M_res, label='Resultante', color='red', linewidth=2)
     ax2.set_ylabel('Momento Fletor (N.mm)')
+    ax2.set_title(f'{nome_eixo} - Momento Fletor')
+    ax2.legend(loc='best')
     ax2.grid(True, alpha=0.3)
-    max_M = np.max(M_res)
-    ax2.annotate(f'Mmax: {max_M:.0f}', xy=(x[np.argmax(M_res)], max_M))
 
-    ax3.plot(x, T_plot/1000, 'purple', lw=2)
+    # Anotação do Máximo
+    max_M = np.max(M_res)
+    pos_max = x[np.argmax(M_res)]
+    ax2.annotate(f'Mmax: {max_M:.0f}', xy=(pos_max, max_M),
+                 xytext=(pos_max, max_M*1.1),
+                 arrowprops=dict(facecolor='black', arrowstyle='->'))
+
+    # --- Gráfico 3: Torque (T) ---
+    ax3.plot(x, T_plot/1000, 'purple', lw=2, label='Torque')
+    ax3.fill_between(x, T_plot/1000, color='purple', alpha=0.1)
     ax3.set_ylabel('Torque (N.m)')
-    ax3.set_xlabel('Posição (mm)')
+    ax3.set_xlabel('Posição no Eixo (mm)')
+    ax3.set_title(f'{nome_eixo} - Torque')
     ax3.grid(True, alpha=0.3)
 
     plt.tight_layout()
-    plt.savefig(f'Plots/Diagrama_{nome_eixo.replace(" ", "_")}.png', dpi=300)
+
+    nome_arquivo = f'Plots/Diagrama_{nome_eixo.replace(" ", "_")}.png'
+    plt.savefig(nome_arquivo, dpi=300)
     plt.close()
