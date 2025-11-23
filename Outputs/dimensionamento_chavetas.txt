@@ -1,66 +1,28 @@
-DIMENSIONAMENTO DE CHAVETAS - RESULTADOS
-============================================================
-
-Material: Aço AISI 1020
-S_y = 390 MPa, S_ut = 469 MPa
+Material: Aco AISI 1020 (Sy=390 MPa)
 Fator de seguranca: 1.5
 
-Chaveta Eixo1-Pinhão1:
-  Diametro do eixo: 7.3 mm
-  Torque transmitido: 10 N.mm
-  Dimensoes chaveta: 2 x 2 mm
-  Comprimento chaveta: 16.0 mm
-  Forca tangencial: 3 N
-  Tensão cisalhamento: 0.1 MPa
-  Tensao admissivel cisalhamento: 150.0 MPa
-  FS cisalhamento: 1679.39 (ATENDE)
-  Tensao esmagamento: 0.2 MPa
-  Tensao admissivel esmagamento: 260.0 MPa
-  FS esmagamento: 1455.28 (ATENDE)
-
+Chaveta Eixo1-Pinhao1:
+  Eixo: 30.0 mm | Torque: 10410 N.mm
+  Chaveta: 8x7x18.0 mm
+  Cisalhamento: 4.8 MPa (FS=31.13) - ATENDE
+  Esmagamento:  11.0 MPa (FS=23.60) - ATENDE
+----------------------------------------
 Chaveta Eixo2-Coroa1:
-  Diametro do eixo: 10.9 mm
-  Torque transmitido: 35 N.mm
-  Dimensoes chaveta: 4 x 4 mm
-  Comprimento chaveta: 16.0 mm
-  Forca tangencial: 6 N
-  Tensão cisalhamento: 0.1 MPa
-  Tensao admissivel cisalhamento: 150.0 MPa
-  FS cisalhamento: 1488.73 (ATENDE)
-  Tensao esmagamento: 0.2 MPa
-  Tensao admissivel esmagamento: 260.0 MPa
-  FS esmagamento: 1290.06 (ATENDE)
-
-Chaveta Eixo2-Pinhão2:
-  Diametro do eixo: 10.9 mm
-  Torque transmitido: 35 N.mm
-  Dimensoes chaveta: 4 x 4 mm
-  Comprimento chaveta: 24.0 mm
-  Forca tangencial: 6 N
-  Tensão cisalhamento: 0.1 MPa
-  Tensao admissivel cisalhamento: 150.0 MPa
-  FS cisalhamento: 2233.09 (ATENDE)
-  Tensao esmagamento: 0.1 MPa
-  Tensao admissivel esmagamento: 260.0 MPa
-  FS esmagamento: 1935.09 (ATENDE)
-
+  Eixo: 35.0 mm | Torque: 35180 N.mm
+  Chaveta: 10x8x18.0 mm
+  Cisalhamento: 11.2 MPa (FS=13.43) - ATENDE
+  Esmagamento:  27.9 MPa (FS=9.31) - ATENDE
+----------------------------------------
+Chaveta Eixo2-Pinhao2:
+  Eixo: 35.0 mm | Torque: 35180 N.mm
+  Chaveta: 10x8x30.0 mm
+  Cisalhamento: 6.7 MPa (FS=22.39) - ATENDE
+  Esmagamento:  16.8 MPa (FS=15.52) - ATENDE
+----------------------------------------
 Chaveta Eixo3-Coroa2:
-  Diametro do eixo: 16.0 mm
-  Torque transmitido: 119 N.mm
-  Dimensoes chaveta: 5 x 5 mm
-  Comprimento chaveta: 24.0 mm
-  Forca tangencial: 15 N
-  Tensão cisalhamento: 0.1 MPa
-  Tensao admissivel cisalhamento: 150.0 MPa
-  FS cisalhamento: 1212.27 (ATENDE)
-  Tensao esmagamento: 0.2 MPa
-  Tensao admissivel esmagamento: 260.0 MPa
-  FS esmagamento: 1050.49 (ATENDE)
-
-VERIFICAÇÃO GERAL:
-TODAS AS CHAVETAS ATENDEM AOS CRITERIOS DE DIMENSIONAMENTO
-
-RECOMENDAÇÕES:
-- Utilizar chavetas paralelas ABNT
-- Ajustar comprimento da chaveta conforme largura real da engrenagem
-- Verificar folgas de montagem entre chaveta e rasgo
+  Eixo: 40.0 mm | Torque: 118910 N.mm
+  Chaveta: 12x8x30.0 mm
+  Cisalhamento: 16.5 MPa (FS=9.08) - ATENDE
+  Esmagamento:  49.5 MPa (FS=5.25) - ATENDE
+----------------------------------------
+Chavetas atendem o projeto

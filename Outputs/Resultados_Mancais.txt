@@ -1,42 +1,31 @@
-Mancal 1:
-  Carga Radial (N): 1.06
-  Velocidade (rpm): 0.00
-  Diametro minimo do eixo (mm): 7.28
-  Carga Equivalente (N): 1.06
-Escolhido o rolamento SFK 6004 com capacidade de carga dinamica de 9.95 kN
-
-Mancal 2:
-  Carga Radial (N): 0.35
-  Velocidade (rpm): 0.00
-  Diametro minimo do eixo (mm): 7.28
-  Carga Equivalente (N): 0.35
-Escolhido o rolamento SFK 6004 com capacidade de carga dinamica de 9.95 kN
-
-Mancal 3:
-  Carga Radial (N): 2.55
-  Velocidade (rpm): 0.00
-  Diametro minimo do eixo (mm): 10.91
-  Carga Equivalente (N): 2.55
-Escolhido o rolamento SFK 6004 com capacidade de carga dinamica de 9.95 kN
-
-Mancal 4:
-  Carga Radial (N): 2.55
-  Velocidade (rpm): 0.00
-  Diametro minimo do eixo (mm): 10.91
-  Carga Equivalente (N): 2.55
-Escolhido o rolamento SFK 6004 com capacidade de carga dinamica de 9.95 kN
-
-Mancal 5:
-  Carga Radial (N): 2.26
-  Velocidade (rpm): 0.00
-  Diametro minimo do eixo (mm): 16.01
-  Carga Equivalente (N): 2.26
-Escolhido o rolamento SFK 6004 com capacidade de carga dinamica de 9.95 kN
-
-Mancal 6:
-  Carga Radial (N): 0.85
-  Velocidade (rpm): 0.00
-  Diametro minimo do eixo (mm): 16.01
-  Carga Equivalente (N): 0.85
-Escolhido o rolamento SFK 6004 com capacidade de carga dinamica de 9.95 kN
-
+Dimensionamento de mancais
+Mancal 1 (Eixo 1 - A):
+  Carga: 1060.7 N, RPM: 1450.0, D_min: 30.0 mm
+  C_req: 7.46 kN
+  > SELECIONADO: SKF 6006 (C=13.8 kN)
+--------------------------------------------------
+Mancal 2 (Eixo 1 - B):
+  Carga: 353.6 N, RPM: 1450.0, D_min: 30.0 mm
+  C_req: 2.49 kN
+  > SELECIONADO: SKF 6006 (C=13.8 kN)
+--------------------------------------------------
+Mancal 3 (Eixo 2 - A):
+  Carga: 1697.1 N, RPM: 395.5, D_min: 35.0 mm
+  C_req: 7.74 kN
+  > SELECIONADO: SKF 6007 (C=16.8 kN)
+--------------------------------------------------
+Mancal 4 (Eixo 2 - B):
+  Carga: 2545.6 N, RPM: 395.5, D_min: 35.0 mm
+  C_req: 11.61 kN
+  > SELECIONADO: SKF 6007 (C=16.8 kN)
+--------------------------------------------------
+Mancal 5 (Eixo 3 - A):
+  Carga: 2262.7 N, RPM: 107.9, D_min: 40.0 mm
+  C_req: 6.69 kN
+  > SELECIONADO: SKF 6008 (C=17.8 kN)
+--------------------------------------------------
+Mancal 6 (Eixo 3 - B):
+  Carga: 848.5 N, RPM: 107.9, D_min: 40.0 mm
+  C_req: 2.51 kN
+  > SELECIONADO: SKF 6008 (C=17.8 kN)
+--------------------------------------------------

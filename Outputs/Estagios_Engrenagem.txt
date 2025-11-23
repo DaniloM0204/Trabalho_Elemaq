@@ -5,6 +5,32 @@ Velocidade Angular de Saida: 107.52 rpm
 
 
 --- Estagio 1 (Entrada): APROVADO ---
+  Modulo (m): 1.5 mm
+  Largura da Face (b): 10.0 mm
+  Angulo de Pressao: 20.0 graus
+  Razao de Contato (mp): 1.720
+
+  Pinhao:
+    N de Dentes (Np): 24
+    Diametro Primitivo (dp): 36.00 mm
+    Diametro Externo (dep): 39.00 mm
+  Coroa:
+    N de Dentes (Nc): 88
+    Diametro Primitivo (dc): 132.00 mm
+    Diametro Externo (dec): 135.00 mm
+  Conjunto:
+    Razao de Transmissao (i): 3.667
+    Distancia entre Centros (C): 84.00 mm
+  Fatores de Seguranca:
+    FS (Flexao): 2.46
+    FS (Superficie): 1.20
+  Vida Util Estimada:
+    Vida por Flexao: 210728 horas
+    Vida por Pitting: 210728 horas
+    Vida Minima: 210728 horas
+    Status Vida: APROVADO
+
+--- Estagio 2 (Saida): APROVADO ---
   Modulo (m): 2.5 mm
   Largura da Face (b): 20.0 mm
   Angulo de Pressao: 20.0 graus
@@ -22,38 +48,12 @@ Velocidade Angular de Saida: 107.52 rpm
     Razao de Transmissao (i): 3.667
     Distancia entre Centros (C): 105.00 mm
   Fatores de Seguranca:
-    FS (Flexao): 17.74
-    FS (Superficie): 4.39
+    FS (Flexao): 3.05
+    FS (Superficie): 1.21
   Vida Util Estimada:
-    Vida por Flexao: 52920 horas
-    Vida por Pitting: 28161 horas
-    Vida Minima: 28161 horas
-    Status Vida: APROVADO
-
---- Estagio 2 (Saida): APROVADO ---
-  Modulo (m): 4.0 mm
-  Largura da Face (b): 30.0 mm
-  Angulo de Pressao: 20.0 graus
-  Razao de Contato (mp): 1.664
-
-  Pinhao:
-    N de Dentes (Np): 18
-    Diametro Primitivo (dp): 72.00 mm
-    Diametro Externo (dep): 80.00 mm
-  Coroa:
-    N de Dentes (Nc): 66
-    Diametro Primitivo (dc): 264.00 mm
-    Diametro Externo (dec): 272.00 mm
-  Conjunto:
-    Razao de Transmissao (i): 3.667
-    Distancia entre Centros (C): 168.00 mm
-  Fatores de Seguranca:
-    FS (Flexao): 18.34
-    FS (Superficie): 4.54
-  Vida Util Estimada:
-    Vida por Flexao: 52920 horas
-    Vida por Pitting: 30240 horas
-    Vida Minima: 30240 horas
+    Vida por Flexao: 772669 horas
+    Vida por Pitting: 772669 horas
+    Vida Minima: 772669 horas
     Status Vida: APROVADO
 Razao de Transmissao Total Efetiva: 13.444
 Razao de Transmissao Total Desejada: 13.486
@@ -63,16 +63,16 @@ Dentro do limite de+/- 5%. Projeto aprovado.
 Parametros dos Eixos:
   Rotacao eixo1: 1450.0 rpm
   Torque eixo1: 10.41 N.m
-    Forca Tangencial (W_t1): 462.46 N
-    Forca Radial (W_r1): 168.32 N
+    Forca Tangencial (W_t1): 578.08 N
+    Forca Radial (W_r1): 210.40 N
   Rotacao eixo2: 395.5 rpm
   Torque eixo2: 35.18 N.m
-    Forca Tangencial (W_t_c1): 462.46 N
-    Forca Radial (W_r_c1): 168.32 N
+    Forca Tangencial (W_t_c1): 578.08 N
+    Forca Radial (W_r_c1): 210.40 N
   Forcas no Pinhao 2 (Eixo 2):
-    Forca Tangencial (W_t_p2): 977.10 N
-    Forca Radial (W_r_p2): 355.64 N
+    Forca Tangencial (W_t_p2): 1563.36 N
+    Forca Radial (W_r_p2): 569.02 N
   Rotacao eixo3: 107.9 rpm
   Torque eixo3: 118.91 N.m
-    Forca Tangencial (W_t_c2): 977.10 N
-    Forca Radial (W_r_c2): 355.64 N
+    Forca Tangencial (W_t_c2): 1563.36 N
+    Forca Radial (W_r_c2): 569.02 N
