@@ -1,23 +1,28 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+
 
 def calcula_c_superf(S_ut):
     """
     Analisa TODOS os acabamentos e retorna o MAIOR fator (Melhor cenário).
     """
-    A_b = [(1.58, -0.085),   # Retificado
-           (4.51, -0.265),   # Usinado
-           (57.7, -0.718),   # Laminado
-           (272, -0.995)]    # Forjado
+    A_b = [
+        (1.58, -0.085),  # Retificado
+        (4.51, -0.265),  # Usinado
+        (57.7, -0.718),  # Laminado
+        (272, -0.995),
+    ]  # Forjado
 
-    nomes = ['retificado', 'usinado', 'laminado', 'forjado']
+    nomes = ["retificado", "usinado", "laminado", "forjado"]
     c_lista = []
 
     for i in range(len(A_b)):
         A = A_b[i][0]
         b = A_b[i][1]
-        fator = A * (S_ut ** b)
-        if fator > 1.0: fator = 1.0
+        fator = A * (S_ut**b)
+        if fator > 1.0:
+            fator = 1.0
         c_lista.append(fator)
 
     maior_valor = max(c_lista)
@@ -26,13 +31,27 @@ def calcula_c_superf(S_ut):
 
     return maior_valor, melhor_acabamento
 
+
 def calcula_fator_tamanho(d):
     """Calcula C_tamanho segundo Norton para Flexão/Torção"""
-    if d <= 8: return 1.0
-    elif d <= 250: return 1.189 * (d ** -0.097)
-    else: return 0.6
+    if d <= 8:
+        return 1.0
+    elif d <= 250:
+        return 1.189 * (d**-0.097)
+    else:
+        return 0.6
 
-def dimensiona_eixo_por_fadiga(M_max, Tm, Sut, Sy, Se_linha, vida_util_horas=4000, Nf=2.0, tipo_eixo="simples"):
+
+def dimensiona_eixo_por_fadiga(
+    M_max,
+    Tm,
+    Sut,
+    Sy,
+    Se_linha,
+    vida_util_horas=4000,
+    Nf=2.0,
+    tipo_eixo="simples",
+):
     """
     Dimensiona eixo por fadiga E escoamento simultaneamente.
     """
@@ -64,7 +83,7 @@ def dimensiona_eixo_por_fadiga(M_max, Tm, Sut, Sy, Se_linha, vida_util_horas=400
     while iter_count < max_iter:
         C_tam = calcula_fator_tamanho(d_guess)
         A_sup, b_sup = 4.51, -0.265
-        C_sup = min(A_sup * (Sut ** b_sup), 1.0)
+        C_sup = min(A_sup * (Sut**b_sup), 1.0)
         Se = Se_linha * C_carreg * C_tam * C_sup * C_temp * C_conf
 
         sigma_nominal = (32 * M_max_Nmm) / (np.pi * d_guess**3)
@@ -91,31 +110,38 @@ def dimensiona_eixo_por_fadiga(M_max, Tm, Sut, Sy, Se_linha, vida_util_horas=400
         iter_count += 1
 
     FS_final_fadiga = 1 / ((sigma_a / Se) + (tau_m / Sut))
-    sigma_vm_final = np.sqrt(((32 * M_max_Nmm) / (np.pi * d_guess**3))**2 + 3 * ((16 * Tm_Nmm) / (np.pi * d_guess**3))**2)
+    sigma_vm_final = np.sqrt(
+        ((32 * M_max_Nmm) / (np.pi * d_guess**3)) ** 2
+        + 3 * ((16 * Tm_Nmm) / (np.pi * d_guess**3)) ** 2
+    )
     FS_final_escoamento = Sy / sigma_vm_final
 
     return {
-        'diametro_minimo': d_guess,
-        'FS_fadiga': FS_final_fadiga,
-        'FS_escoamento': FS_final_escoamento,
-        'Se_corrigido': Se,
-        'iteracoes': iter_count
+        "diametro_minimo": d_guess,
+        "FS_fadiga": FS_final_fadiga,
+        "FS_escoamento": FS_final_escoamento,
+        "Se_corrigido": Se,
+        "iteracoes": iter_count,
     }
 
-def analisa_deflexao_eixo(M_max, comprimento, diametro, material='aco'):
+
+def analisa_deflexao_eixo(M_max, comprimento, diametro, material="aco"):
     E = 200000
     Inercia = (np.pi * diametro**4) / 64
     deflexao_max = (M_max * comprimento**2) / (10 * E * Inercia)
     deflexao_admissivel = 0.0005 * comprimento
-    status_deflexao = "APROVADO" if deflexao_max <= deflexao_admissivel else "REPROVADO"
+    status_deflexao = (
+        "APROVADO" if deflexao_max <= deflexao_admissivel else "REPROVADO"
+    )
 
     return {
-        'deflexao_max_mm': deflexao_max,
-        'deflexao_admissivel_mm': deflexao_admissivel,
-        'status_deflexao': status_deflexao,
+        "deflexao_max_mm": deflexao_max,
+        "deflexao_admissivel_mm": deflexao_admissivel,
+        "status_deflexao": status_deflexao,
     }
 
-def calcula_velocidade_critica(diametro, comprimento, material='aco'):
+
+def calcula_velocidade_critica(diametro, comprimento):
     E = 200000
     rho = 7850
     diametro_m = diametro / 1000
@@ -125,192 +151,275 @@ def calcula_velocidade_critica(diametro, comprimento, material='aco'):
     m = rho * A
     omega_n = (np.pi**2 / L**2) * np.sqrt(E * 1e6 * Inercia / m)
     N_critica = omega_n * 60 / (2 * np.pi)
-    return {'velocidade_critica_rpm': N_critica}
+    return {"velocidade_critica_rpm": N_critica}
+
 
 # --- FUNÇÕES DE CÁLCULO DE ESFORÇOS ---
-
-def calcula_reações_mancais_eixo1(forcas_engrenagem1, distancias):
-    W_t, W_r = forcas_engrenagem1['W_t'], forcas_engrenagem1['W_r']
-    LA, AB, BC = distancias['LA'], distancias['AB'], distancias['BC']
-
-    R_Av = (W_r * BC) / AB
-    R_Bv = (W_r * LA) / AB
-    R_Ah = (W_t * BC) / AB
-    R_Bh = (W_t * LA) / AB
-
-    return {'R_A_resultante': np.sqrt(R_Av**2 + R_Ah**2), 'R_B_resultante': np.sqrt(R_Bv**2 + R_Bh**2)}
-
-def calcula_reações_eixo2(forcas_coroa1, forcas_pinhao2, distancias):
-    W_t1, W_r1 = forcas_coroa1['W_t'], forcas_coroa1['W_r']
-    W_t2, W_r2 = forcas_pinhao2['W_t'], forcas_pinhao2['W_r']
-    LA, L1, L2 = distancias['LA'], distancias['L1'], distancias['L2']
-    AB = LA + L1 + L2
-
-    R_Av = (W_r1 * (L1 + L2) + W_r2 * L2) / AB
-    R_Bv = (W_r1 * LA + W_r2 * (LA + L1)) / AB
-    R_Ah = (W_t1 * (L1 + L2) + W_t2 * L2) / AB
-    R_Bh = (W_t1 * LA + W_t2 * (LA + L1)) / AB
-
-    return {'R_A_resultante': np.sqrt(R_Av**2 + R_Ah**2), 'R_B_resultante': np.sqrt(R_Bv**2 + R_Bh**2)}
-
-def calcula_reações_mancais_eixo3(forcas_engrenagem, distancias):
-    # Para o eixo 3 (saída) que só tem 1 engrenagem
-    return calcula_reações_mancais_eixo1(forcas_engrenagem, distancias)
-
-def calcula_diagramas_eixo_simples(forcas_engrenagem, distancias, torque, nome_eixo):
-    W_t, W_r = forcas_engrenagem['W_t'], forcas_engrenagem['W_r']
-    LA, AB, BC = distancias['LA'], distancias['AB'], distancias['BC']
-
-    R_Av = (W_r * BC) / AB
-    R_Ah = (W_t * BC) / AB
-
-    # Momento Máximo ocorre na engrenagem (LA)
-    M_v_max = R_Av * LA
-    M_h_max = R_Ah * LA
-    M_resultante = np.sqrt(M_v_max**2 + M_h_max**2)
-
-    return {'M_max': M_resultante, 'V_max': 0, 'posicao_M_max': LA,
-            'R_A_resultante': 0, 'R_B_resultante': 0}
-
-def calcula_diagramas_eixo_duplo(forcas_engrenagem1, forcas_engrenagem2, distancias, torque, nome_eixo):
-    W_t1, W_r1 = forcas_engrenagem1['W_t'], forcas_engrenagem1['W_r']
-    W_t2, W_r2 = forcas_engrenagem2['W_t'], forcas_engrenagem2['W_r']
-    LA, L1, L2 = distancias['LA'], distancias['L1'], distancias['L2']
-    AB = LA + L1 + L2
-
-    R_Av = (W_r1 * (L1 + L2) + W_r2 * L2) / AB
-    R_Ah = (W_t1 * (L1 + L2) + W_t2 * L2) / AB
-
-    # Momentos nos pontos de aplicação
-    # Ponto 1 (Coroa 1): x = LA
-    M_v1 = R_Av * LA
-    M_h1 = R_Ah * LA
-    M_res1 = np.sqrt(M_v1**2 + M_h1**2)
-
-    # Ponto 2 (Pinhão 2): x = LA + L1
-    # M = R_A * x - F1 * (x - LA)
-    M_v2 = R_Av * (LA + L1) - W_r1 * L1
-    M_h2 = R_Ah * (LA + L1) - W_t1 * L1
-    M_res2 = np.sqrt(M_v2**2 + M_h2**2)
-
-    M_max = max(M_res1, M_res2)
-
-    return {'M_max': M_max, 'V_max': 0, 'posicao_M_max': 0,
-            'R_A_resultante': 0, 'R_B_resultante': 0}
-
-def plotar_diagramas_eixo(L_total, posicoes_elementos, forcas, torque, nome_eixo):
+def calcula_esforcos_analitico(L_total, posicoes, forcas, torque, nome_eixo):
     """
-    Gera e salva diagramas de Cortante, Momento e Torque.
-    Plota componentes Vertical, Horizontal e a Resultante.
+    Calcula Reações e Momento Máximo para qualquer configuração de eixo.
+    Entradas:
+      posicoes: dict {'A': 0, 'B': 100, ...}
+      forcas: list [(pos, Fv, Fh), ...]
+    Retorna: Dicionário com resultados escalares para log.
     """
-    # Cria diretório se não existir
-    import os
-    if not os.path.exists('Outputs'):
-        os.makedirs('Outputs')
+    xA = posicoes["A"]
+    xB = posicoes["B"]
+    dist_mancais = xB - xA
 
-    x = np.linspace(0, L_total, 500)
-    xA = posicoes_elementos['A']
-    xB = posicoes_elementos['B']
-
-    # 1. CÁLCULO DAS REAÇÕES DE APOIO (Equilíbrio Estático)
-    # Cargas externas passadas na lista 'forcas'
-    cargas = forcas
-
+    # 1. CÁLCULO DAS REAÇÕES (Estática)
     # Somatório de Momentos em A para achar Rb
-    M_A_v = sum(Fv * (pos - xA) for pos, Fv, Fh in cargas)
-    M_A_h = sum(Fh * (pos - xA) for pos, Fv, Fh in cargas)
+    soma_M_A_v = 0
+    soma_M_A_h = 0
+    soma_F_v = 0
+    soma_F_h = 0
 
-    R_Bv = M_A_v / (xB - xA)
-    R_Bh = M_A_h / (xB - xA)
+    for pos, Fv, Fh in forcas:
+        soma_M_A_v += Fv * (pos - xA)
+        soma_M_A_h += Fh * (pos - xA)
+        soma_F_v += Fv
+        soma_F_h += Fh
 
-    # Somatório de Forças para achar Ra
-    R_Av = sum(c[1] for c in cargas) - R_Bv
-    R_Ah = sum(c[2] for c in cargas) - R_Bh
+    # Reações em B (Sinal oposto ao momento gerado pelas cargas)
+    R_Bv = -soma_M_A_v / dist_mancais
+    R_Bh = -soma_M_A_h / dist_mancais
 
-    # Lista completa de forças para o método das seções
-    # Reações entram com sinal oposto às cargas externas para fechar o diagrama
-    todas_forcas = cargas.copy()
-    todas_forcas.append((xA, -R_Av, -R_Ah))
-    todas_forcas.append((xB, -R_Bv, -R_Bh))
-    todas_forcas.sort(key=lambda k: k[0])
+    # Reações em A (Soma das forças = 0)
+    R_Av = -soma_F_v - R_Bv
+    R_Ah = -soma_F_h - R_Bh
 
-    # Arrays para os diagramas
-    V_v, V_h, M_v, M_h, T_plot = [np.zeros_like(x) for _ in range(5)]
+    R_A_res = np.sqrt(R_Av**2 + R_Ah**2)
+    R_B_res = np.sqrt(R_Bv**2 + R_Bh**2)
 
-    # 2. CÁLCULO DOS ESFORÇOS PONTO A PONTO
+    # 2. ENCONTRAR MOMENTO MÁXIMO (Varredura)
+    # Criamos a lista completa de cargas (Externas + Reações)
+    todas_cargas = forcas.copy()
+    todas_cargas.append((xA, R_Av, R_Ah))
+    todas_cargas.append((xB, R_Bv, R_Bh))
+    todas_cargas.sort(key=lambda x: x[0])  # Ordenar por posição
+
+    # Vamos calcular o momento nos pontos de aplicação de força (onde ocorrem os picos)
+    # e em alguns pontos intermediários para garantir
+    pontos_interesse = sorted(
+        list(set([p[0] for p in todas_cargas] + [xA, xB]))
+    )
+    max_M_res = 0
+    pos_max = 0
+
+    for x in pontos_interesse:
+        Mv, Mh = 0, 0
+        # Método das seções (olhando para esquerda de x)
+        for pos, Fv, Fh in todas_cargas:
+            if pos <= x:  # Se a força está à esquerda
+                braço = x - pos
+                Mv += Fv * braço
+                Mh += Fh * braço
+
+        M_res = np.sqrt(Mv**2 + Mh**2)
+        if M_res > max_M_res:
+            max_M_res = M_res
+            pos_max = x
+
+    return {
+        "M_max": max_M_res,
+        "posicao_M_max": pos_max,
+        "R_A_resultante": R_A_res,
+        "R_B_resultante": R_B_res,
+        "R_Av": R_Av,
+        "R_Ah": R_Ah,
+        "R_Bv": R_Bv,
+        "R_Bh": R_Bh,
+    }
+
+
+# --- FUNÇÃO GRÁFICA NOVA (ILUSTRAÇÃO + DIAGRAMAS) ---
+def plotar_diagramas_completo(
+    L_total, posicoes, forcas, torque, nome_eixo, d_estimado=30
+):
+    """
+    posicoes: dict {'A': 0, 'B': 100, 'Eng1': 40...}
+    forcas: list of tuples (pos, F_vertical, F_horizontal)
+    d_estimado: diâmetro visual para o desenho
+    """
+    # 1. Resolver Reações (Genérico para qualquer viga bi-apoiada)
+    xA, xB = posicoes["A"], posicoes["B"]
+
+    # Soma de momentos em A (considerando sentido positivo horario)
+    # Momento = F * braco. Se F for positiva (pra cima), momento anti-horario (-)
+    # Vamos usar convenção: Força pra cima (+), Momento anti-horario (+)
+    soma_M_A_v = 0
+    soma_M_A_h = 0
+    soma_F_v = 0
+    soma_F_h = 0
+
+    for pos, Fv, Fh in forcas:
+        soma_M_A_v += Fv * (pos - xA)
+        soma_M_A_h += Fh * (pos - xA)
+        soma_F_v += Fv
+        soma_F_h += Fh
+
+    # Reações em B
+    R_Bv = -soma_M_A_v / (xB - xA)  # Sinal negativo para contrabalancear
+    R_Bh = -soma_M_A_h / (xB - xA)
+
+    # Reações em A
+    R_Av = -soma_F_v - R_Bv
+    R_Ah = -soma_F_h - R_Bh
+
+    # Lista para plotagem (Cargas + Reações)
+    cargas_plot = forcas.copy()
+    cargas_plot.append((xA, R_Av, R_Ah))
+    cargas_plot.append((xB, R_Bv, R_Bh))
+    cargas_plot.sort(key=lambda x: x[0])
+
+    # 2. Calcular vetores V e M
+    x = np.linspace(0, L_total, 1000)
+    V_res = np.zeros_like(x)
+    M_res = np.zeros_like(x)
+    T_res = np.zeros_like(x)
+
+    # Torque
+    elementos_torque = sorted(
+        [v for k, v in posicoes.items() if k not in ["A", "B"]]
+    )
+    if len(elementos_torque) == 1:  # Entrada ou Saida
+        if (
+            "Entrada" in nome_eixo or "1" in nome_eixo
+        ):  # Torque entra em A e sai na engrenagem
+            mask = (x >= xA) & (x <= elementos_torque[0])
+        else:  # Torque entra na engrenagem e sai em B (ou vice versa, simplificação: trecho carregado)
+            mask = (x >= min(xA, elementos_torque[0])) & (
+                x <= max(xB, elementos_torque[0])
+            )  # Ajustar conforme lógica real
+            # Melhor lógica: Torque flui da Engrenagem para a Saida do eixo.
+            # Vou assumir fluxo padrão: Eng -> Ponta ou Ponta -> Eng
+            mask = x <= elementos_torque[0]  # Simplificação visual
+    elif len(elementos_torque) == 2:  # Intermediário
+        mask = (x >= elementos_torque[0]) & (x <= elementos_torque[1])
+    else:
+        mask = np.zeros_like(x, dtype=bool)
+
+    T_res[mask] = torque
+
     for i, xi in enumerate(x):
-        for pos, Fv, Fh in todas_forcas:
-            if pos <= xi:
-                # Lógica de Sinais para Diagrama:
-                # Se for reação (A ou B), soma. Se for carga externa, subtrai.
-                # (Assumindo convenção padrão de engenharia)
-                is_reaction = (abs(pos - xA) < 0.1 or abs(pos - xB) < 0.1)
+        Vv_local, Vh_local = 0, 0
+        Mv_local, Mh_local = 0, 0
 
-                # Ajuste de sinal: Reação sobe o diagrama, Carga desce
-                val_v = abs(Fv) if is_reaction else -abs(Fv)
-                val_h = abs(Fh) if is_reaction else -abs(Fh)
+        for pos, Fv, Fh in cargas_plot:
+            if pos < xi:  # Método das seções olhando para a esquerda
+                Vv_local += Fv
+                Vh_local += Fh
+                Mv_local += Fv * (xi - pos)
+                Mh_local += Fh * (xi - pos)
 
-                # Cortante (Soma das forças à esquerda)
-                V_v[i] += val_v
-                V_h[i] += val_h
+        V_res[i] = np.sqrt(Vv_local**2 + Vh_local**2)
+        M_res[i] = np.sqrt(Mv_local**2 + Mh_local**2)
 
-                # Momento (Força * Braço)
-                M_v[i] += val_v * (xi - pos)
-                M_h[i] += val_h * (xi - pos)
+    M_max = np.max(M_res)
 
-        # Lógica do Torque (Mantida)
-        elementos_torque = [k for k in posicoes_elementos.keys() if 'Eng' in k or 'Coroa' in k or 'Pinhao' in k]
-        if len(elementos_torque) >= 1: # Eixo simples
-             if posicoes_elementos['A'] <= xi <= posicoes_elementos[elementos_torque[0]]:
-                 T_plot[i] = torque
+    # 3. PLOTAGEM (4 Subplots: Esquema, V, M, T)
+    fig, (ax0, ax1, ax2, ax3) = plt.subplots(
+        4,
+        1,
+        figsize=(10, 14),
+        gridspec_kw={"height_ratios": [1, 1, 1, 1]},
+        sharex=True,
+    )
 
-        if len(elementos_torque) >= 2: # Eixo intermediário
-             p_t = sorted([posicoes_elementos[k] for k in elementos_torque])
-             if p_t[0] <= xi <= p_t[-1]:
-                 T_plot[i] = torque
+    # --- AX0: ESQUEMA DO EIXO (Ilustração) ---
+    ax0.set_title(
+        f"{nome_eixo} - Esquema Geométrico", fontsize=12, fontweight="bold"
+    )
+    ax0.set_ylim(-d_estimado * 1.5, d_estimado * 1.5)
+    ax0.axis("off")  # Desliga eixos numéricos
 
-    # Resultantes (Pitágoras)
-    V_res = np.sqrt(V_v**2 + V_h**2)
-    M_res = np.sqrt(M_v**2 + M_h**2)
+    # Desenha Eixo
+    rect_eixo = patches.Rectangle(
+        (0, -d_estimado / 2),
+        L_total,
+        d_estimado,
+        linewidth=1,
+        edgecolor="black",
+        facecolor="lightgray",
+    )
+    ax0.add_patch(rect_eixo)
+    # Linha de centro
+    ax0.axhline(0, color="black", linestyle="-.", linewidth=0.5)
 
-    # 3. PLOTAGEM
-    fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(10, 12), sharex=True)
+    # Desenha Mancais (A e B)
+    w_mancal = 15
+    h_mancal = d_estimado + 10
+    for nome, pos in posicoes.items():
+        if nome in ["A", "B"]:
+            rect_mancal = patches.Rectangle(
+                (pos - w_mancal / 2, -h_mancal / 2),
+                w_mancal,
+                h_mancal,
+                linewidth=1,
+                edgecolor="black",
+                facecolor="lightblue",
+                hatch="///",
+            )
+            ax0.add_patch(rect_mancal)
+            ax0.text(pos, h_mancal / 2 + 2, nome, ha="center")
 
-    # --- Gráfico 1: Esforço Cortante (V) ---
-    ax1.plot(x, V_v, label='Vertical', color='blue', alpha=0.5, linestyle='--')
-    ax1.plot(x, V_h, label='Horizontal', color='green', alpha=0.5, linestyle='--')
-    ax1.plot(x, V_res, label='Resultante', color='black', linewidth=2)
-    ax1.set_ylabel('Cortante (N)')
-    ax1.set_title(f'{nome_eixo} - Esforço Cortante')
-    ax1.legend(loc='best')
+    # Desenha Engrenagens
+    for nome, pos in posicoes.items():
+        if nome not in ["A", "B"]:
+            # Pinhão é menor, Coroa é maior (Visual)
+            if "Pinhao" in nome:
+                h_eng = d_estimado * 2.5
+            else:
+                h_eng = d_estimado * 4.0
+            w_eng = 20  # Largura visual
+
+            rect_eng = patches.Rectangle(
+                (pos - w_eng / 2, -h_eng / 2),
+                w_eng,
+                h_eng,
+                linewidth=1,
+                edgecolor="black",
+                facecolor="orange",
+                alpha=0.7,
+            )
+            ax0.add_patch(rect_eng)
+            ax0.text(pos, -h_eng / 2 - 5, nome, ha="center")
+
+    # --- AX1: CORTANTE ---
+    ax1.plot(x, V_res, color="blue", linewidth=2)
+    ax1.fill_between(x, V_res, color="blue", alpha=0.1)
+    ax1.set_ylabel("Cortante Resultante (N)")
     ax1.grid(True, alpha=0.3)
 
-    # --- Gráfico 2: Momento Fletor (M) ---
-    ax2.plot(x, M_v, label='Vertical', color='blue', alpha=0.5, linestyle='--')
-    ax2.plot(x, M_h, label='Horizontal', color='green', alpha=0.5, linestyle='--')
-    ax2.plot(x, M_res, label='Resultante', color='red', linewidth=2)
-    ax2.set_ylabel('Momento Fletor (N.mm)')
-    ax2.set_title(f'{nome_eixo} - Momento Fletor')
-    ax2.legend(loc='best')
+    # --- AX2: MOMENTO ---
+    ax2.plot(x, M_res, color="red", linewidth=2)
+    ax2.fill_between(x, M_res, color="red", alpha=0.1)
+    ax2.set_ylabel("Momento Resultante (N.mm)")
     ax2.grid(True, alpha=0.3)
+    ax2.annotate(
+        f"Mmax: {M_max:.0f}",
+        xy=(x[np.argmax(M_res)], M_max),
+        xytext=(10, 5),
+        textcoords="offset points",
+    )
 
-    # Anotação do Máximo
-    max_M = np.max(M_res)
-    pos_max = x[np.argmax(M_res)]
-    ax2.annotate(f'Mmax: {max_M:.0f}', xy=(pos_max, max_M),
-                 xytext=(pos_max, max_M*1.1),
-                 arrowprops=dict(facecolor='black', arrowstyle='->'))
-
-    # --- Gráfico 3: Torque (T) ---
-    ax3.plot(x, T_plot/1000, 'purple', lw=2, label='Torque')
-    ax3.fill_between(x, T_plot/1000, color='purple', alpha=0.1)
-    ax3.set_ylabel('Torque (N.m)')
-    ax3.set_xlabel('Posição no Eixo (mm)')
-    ax3.set_title(f'{nome_eixo} - Torque')
+    # --- AX3: TORQUE ---
+    ax3.plot(x, T_res / 1000, color="purple", linewidth=2)
+    ax3.fill_between(x, T_res / 1000, color="purple", alpha=0.1)
+    ax3.set_ylabel("Torque (N.m)")
+    ax3.set_xlabel("Comprimento do Eixo (mm)")
     ax3.grid(True, alpha=0.3)
 
     plt.tight_layout()
+    import os
 
-    nome_arquivo = f'Plots/Diagrama_{nome_eixo.replace(" ", "_")}.png'
-    plt.savefig(nome_arquivo, dpi=300)
+    if not os.path.exists("Plots"):
+        os.makedirs("Plots")
+    plt.savefig(f"Plots/Diagrama_{nome_eixo.replace(' ', '_')}.png", dpi=100)
     plt.close()
+
+    return {
+        "M_max": M_max,
+        "R_A": np.sqrt(R_Av**2 + R_Ah**2),
+        "R_B": np.sqrt(R_Bv**2 + R_Bh**2),
+    }

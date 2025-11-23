@@ -1,31 +1,45 @@
-Dimensionamento de mancais
+DIMENSIONAMENTO DE MANCAIS (Vida: 4000h)
+============================================================
+
 Mancal 1 (Eixo 1 - A):
-  Carga: 1060.7 N, RPM: 1450.0, D_min: 30.0 mm
-  C_req: 7.46 kN
-  > SELECIONADO: SKF 6006 (C=13.8 kN)
+  Condicoes: Fr=707.0 N | RPM=1450.0 | d_eixo=20 mm
+  Capacidade Dinamica Requerida (C_req): 4.97 kN
+  > SELECIONADO: Rolamento SKF 6004
+    (d=20.0mm, C_din=9.95 kN)
+    Vida Estimada: 32040 horas
 --------------------------------------------------
 Mancal 2 (Eixo 1 - B):
-  Carga: 353.6 N, RPM: 1450.0, D_min: 30.0 mm
-  C_req: 2.49 kN
-  > SELECIONADO: SKF 6006 (C=13.8 kN)
+  Condicoes: Fr=707.0 N | RPM=1450.0 | d_eixo=20 mm
+  Capacidade Dinamica Requerida (C_req): 4.97 kN
+  > SELECIONADO: Rolamento SKF 6004
+    (d=20.0mm, C_din=9.95 kN)
+    Vida Estimada: 32040 horas
 --------------------------------------------------
 Mancal 3 (Eixo 2 - A):
-  Carga: 1697.1 N, RPM: 395.5, D_min: 35.0 mm
-  C_req: 7.74 kN
-  > SELECIONADO: SKF 6007 (C=16.8 kN)
+  Condicoes: Fr=1741.0 N | RPM=395.5 | d_eixo=30 mm
+  Capacidade Dinamica Requerida (C_req): 7.94 kN
+  > SELECIONADO: Rolamento SKF 6006
+    (d=30.0mm, C_din=13.8 kN)
+    Vida Estimada: 20987 horas
 --------------------------------------------------
 Mancal 4 (Eixo 2 - B):
-  Carga: 2545.6 N, RPM: 395.5, D_min: 35.0 mm
-  C_req: 11.61 kN
-  > SELECIONADO: SKF 6007 (C=16.8 kN)
+  Condicoes: Fr=2502.0 N | RPM=395.5 | d_eixo=30 mm
+  Capacidade Dinamica Requerida (C_req): 11.41 kN
+  > SELECIONADO: Rolamento SKF 6006
+    (d=30.0mm, C_din=13.8 kN)
+    Vida Estimada: 7071 horas
 --------------------------------------------------
 Mancal 5 (Eixo 3 - A):
-  Carga: 2262.7 N, RPM: 107.9, D_min: 40.0 mm
-  C_req: 6.69 kN
-  > SELECIONADO: SKF 6008 (C=17.8 kN)
+  Condicoes: Fr=1414.0 N | RPM=107.9 | d_eixo=30 mm
+  Capacidade Dinamica Requerida (C_req): 4.18 kN
+  > SELECIONADO: Rolamento SKF 6006
+    (d=30.0mm, C_din=13.8 kN)
+    Vida Estimada: 143587 horas
 --------------------------------------------------
 Mancal 6 (Eixo 3 - B):
-  Carga: 848.5 N, RPM: 107.9, D_min: 40.0 mm
-  C_req: 2.51 kN
-  > SELECIONADO: SKF 6008 (C=17.8 kN)
+  Condicoes: Fr=1414.0 N | RPM=107.9 | d_eixo=30 mm
+  Capacidade Dinamica Requerida (C_req): 4.18 kN
+  > SELECIONADO: Rolamento SKF 6006
+    (d=30.0mm, C_din=13.8 kN)
+    Vida Estimada: 143587 horas
 --------------------------------------------------

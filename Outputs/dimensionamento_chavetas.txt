@@ -1,28 +1,31 @@
+=== DIMENSIONAMENTO DE CHAVETAS (ABNT/DIN 6885) ===
 Material: Aco AISI 1020 (Sy=390 MPa)
 Fator de seguranca: 1.5
+Dimensoes Base: d1=20.0mm, d2=30.0mm, d3=30.0mm
 
 Chaveta Eixo1-Pinhao1:
-  Eixo: 30.0 mm | Torque: 10410 N.mm
-  Chaveta: 8x7x18.0 mm
-  Cisalhamento: 4.8 MPa (FS=31.13) - ATENDE
-  Esmagamento:  11.0 MPa (FS=23.60) - ATENDE
-----------------------------------------
+  Eixo: 20.0 mm | Torque: 10410 N.mm
+  Chaveta Selecionada: 6 x 6 x 10.0 mm
+  Cisalhamento: 17.4 MPa (Adm: 150.0) -> [ATENDE]
+  Esmagamento:  34.7 MPa (Adm: 260.0) -> [ATENDE]
+--------------------------------------------------
 Chaveta Eixo2-Coroa1:
-  Eixo: 35.0 mm | Torque: 35180 N.mm
-  Chaveta: 10x8x18.0 mm
-  Cisalhamento: 11.2 MPa (FS=13.43) - ATENDE
-  Esmagamento:  27.9 MPa (FS=9.31) - ATENDE
-----------------------------------------
+  Eixo: 30.0 mm | Torque: 35180 N.mm
+  Chaveta Selecionada: 8 x 7 x 10.0 mm
+  Cisalhamento: 29.3 MPa (Adm: 150.0) -> [ATENDE]
+  Esmagamento:  67.0 MPa (Adm: 260.0) -> [ATENDE]
+--------------------------------------------------
 Chaveta Eixo2-Pinhao2:
-  Eixo: 35.0 mm | Torque: 35180 N.mm
-  Chaveta: 10x8x30.0 mm
-  Cisalhamento: 6.7 MPa (FS=22.39) - ATENDE
-  Esmagamento:  16.8 MPa (FS=15.52) - ATENDE
-----------------------------------------
+  Eixo: 30.0 mm | Torque: 35180 N.mm
+  Chaveta Selecionada: 8 x 7 x 20.0 mm
+  Cisalhamento: 14.7 MPa (Adm: 150.0) -> [ATENDE]
+  Esmagamento:  33.5 MPa (Adm: 260.0) -> [ATENDE]
+--------------------------------------------------
 Chaveta Eixo3-Coroa2:
-  Eixo: 40.0 mm | Torque: 118910 N.mm
-  Chaveta: 12x8x30.0 mm
-  Cisalhamento: 16.5 MPa (FS=9.08) - ATENDE
-  Esmagamento:  49.5 MPa (FS=5.25) - ATENDE
-----------------------------------------
-Chavetas atendem o projeto
+  Eixo: 30.0 mm | Torque: 118910 N.mm
+  Chaveta Selecionada: 8 x 7 x 20.0 mm
+  Cisalhamento: 49.5 MPa (Adm: 150.0) -> [ATENDE]
+  Esmagamento:  113.2 MPa (Adm: 260.0) -> [ATENDE]
+--------------------------------------------------
+
+CONCLUSAO: Todas as chavetas atendem aos criterios de projeto.

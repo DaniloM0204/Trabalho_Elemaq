@@ -1,15 +1,33 @@
+RESULTADOS DOS DIAGRAMAS - NOVO MÉTODO
+==================================================
+
 EIXO1:
-  Momento maximo: 53033 N.mm
-  Reacao A: 0 N
-  Reacao B: 0 N
+  Momento maximo: 21213 N.mm
+  Posicao M_max: 30.0 mm
+  Reacao A: 707 N
+  Reacao B: 707 N
+  Reacao Av: -500 N
+  Reacao Ah: -500 N
+  Reacao Bv: -500 N
+  Reacao Bh: -500 N
 
 EIXO2:
-  Momento maximo: 101823 N.mm
-  Reacao A: 0 N
-  Reacao B: 0 N
+  Momento maximo: 75062 N.mm
+  Posicao M_max: 100.0 mm
+  Reacao A: 1741 N
+  Reacao B: 2502 N
+  Reacao Av: -1231 N
+  Reacao Ah: -1231 N
+  Reacao Bv: -1769 N
+  Reacao Bh: -1769 N
 
 EIXO3:
-  Momento maximo: 135765 N.mm
-  Reacao A: 0 N
-  Reacao B: 0 N
+  Momento maximo: 42426 N.mm
+  Posicao M_max: 30.0 mm
+  Reacao A: 1414 N
+  Reacao B: 1414 N
+  Reacao Av: -1000 N
+  Reacao Ah: -1000 N
+  Reacao Bv: -1000 N
+  Reacao Bh: -1000 N
 
