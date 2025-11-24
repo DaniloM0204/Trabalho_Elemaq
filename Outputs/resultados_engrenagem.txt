@@ -26,7 +26,7 @@ Np   | Nc   | Mod  | C (mm)     | i_efetiva  |i_estagio  | Erro (%)
 18   | 66   | 2.5  | 105.00     | 3.6667     |3.6724    | 0.15       |
 18   | 66   | 3.0  | 126.00     | 3.6667     |3.6724    | 0.15       |
 
-Comparativo modulos estagio 1 (Para o Pinhão Escolhido):
+Comparativo modulos estagio 1 (Para o Pinho Escolhido):
 
 Modulo   | sigma_b (MPa) | FS_flex  | sigma_c (MPa) | FS_pit   | Status
 --------------------------------------------------------------------------------
@@ -41,7 +41,7 @@ Modulo   | sigma_b (MPa) | FS_flex  | sigma_c (MPa) | FS_pit   | Status
 10.0     | 1.08          | 605.87   | 59.28         | 296.07   | Nao Falha
 12.0     | 0.67          | 983.32   | 46.53         | 480.52   | Nao Falha
 
-Comparativo modulos estagio 2 (Para o Pinhão Escolhido):
+Comparativo modulos estagio 2 (Para o Pinho Escolhido):
 
 Modulo   | sigma_b (MPa) | FS_flex  | sigma_c (MPa) | FS_pit   | Status
 --------------------------------------------------------------------------------
