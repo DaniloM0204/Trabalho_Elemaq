@@ -14,7 +14,6 @@ C_p: 191 # Mpa^0.5
 # Material Eixos - Aço AISI 1020 Normalizado
 S_ut = 469  # MPa - Tensão de ruptura
 S_y = 390   # MPa - Tensão de escoamento
-Se_linha = 0.5 * S_ut  # Limite de fadiga não corrigido
 
 # Coeficientes
 C_seg = 1.5  # Fator de segurança

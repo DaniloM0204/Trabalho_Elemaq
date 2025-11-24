@@ -21,13 +21,14 @@ Velocidade Angular de Saida: 107.52 rpm
   Conjunto:
     Razao de Transmissao (i): 3.667
     Distancia entre Centros (C): 84.00 mm
+Fator dinamico (Kv): 1.311
   Fatores de Seguranca:
-    FS (Flexao): 2.46
+    FS (Flexao): 2.90
     FS (Superficie): 1.20
   Vida Util Estimada:
-    Vida por Flexao: 210728 horas
-    Vida por Pitting: 210728 horas
-    Vida Minima: 210728 horas
+    Vida por Flexao: 57471 horas
+    Vida por Pitting: 57471 horas
+    Vida Minima: 57471 horas
     Status Vida: APROVADO
 
 --- Estagio 2 (Saida): APROVADO ---
@@ -47,13 +48,14 @@ Velocidade Angular de Saida: 107.52 rpm
   Conjunto:
     Razao de Transmissao (i): 3.667
     Distancia entre Centros (C): 105.00 mm
+Fator dinamico (Kv): 1.184
   Fatores de Seguranca:
-    FS (Flexao): 3.05
+    FS (Flexao): 3.59
     FS (Superficie): 1.21
   Vida Util Estimada:
-    Vida por Flexao: 772669 horas
-    Vida por Pitting: 772669 horas
-    Vida Minima: 772669 horas
+    Vida por Flexao: 210728 horas
+    Vida por Pitting: 210728 horas
+    Vida Minima: 210728 horas
     Status Vida: APROVADO
 Razao de Transmissao Total Efetiva: 13.444
 Razao de Transmissao Total Desejada: 13.486
