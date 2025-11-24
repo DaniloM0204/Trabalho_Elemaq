@@ -4,18 +4,17 @@ import numpy as np
 
 parametros = util.ler_Dados_De_Entrada("Inputs/Dados_De_Entrada.txt")
 
-
 S_at = parametros["S_at"]
 S_ac = parametros["S_ac"]
 C_p = float(parametros["C_p"])
 
 omega_in = parametros["rotacao_motor"] * (2 * np.pi / 60)
 
-# Convertendo para N.mm para o cálculo funcionar
+# Torque Entrada
 T_in_Nm = parametros["potencia_motor"] / omega_in
 T_in_Nmm = T_in_Nm * 1000
 
-# Calculando diretamente em N.mm
+# Torque Saída
 raio_tambor_mm = parametros["diametro_tambor"] / 2
 T_out_Nmm = parametros["forca_cabo"] * raio_tambor_mm
 
@@ -26,7 +25,7 @@ i_estagio = np.sqrt(i_total)
 eta_estagio = np.sqrt(parametros["eficiencia"])
 vida_util_horas = parametros["vida_util"]
 
-
+# Chamada da Função de Dimensionamento
 (
     resultado_estagio_1,
     resultado_estagio_2,
@@ -43,6 +42,7 @@ vida_util_horas = parametros["vida_util"]
     vida_util_horas,
 )
 
+# Escrita dos Resultados
 with open("Outputs/resultados_engrenagem.txt", "w") as f:
 
     if resultado_estagio_1 and resultado_estagio_2:
@@ -98,9 +98,9 @@ with open("Outputs/resultados_engrenagem.txt", "w") as f:
                 status = (
                     "Nao Falha" if par["status_calc"] == "Aprovado" else "Falha"
                 )
-                # CORREÇÃO APLICADA: FS_pitting
+                # Garante uso da chave correta FS_pitting ou FS_superficie conforme equacoes
                 f.write(
-                    f"{par['m']:<8.1f} | {par['sigma_b']:<13.2f} | {par['FS_flexao']:<8.2f} | {par['sigma_c']:<13.2f} | {par['FS_pitting']:<8.2f} | {status}\n"
+                    f"{par['m']:<8.1f} | {par['sigma_b']:<13.2f} | {par['FS_flexao']:<8.2f} | {par['sigma_c']:<13.2f} | {par.get('FS_pitting', par.get('FS_superficie', 0)):<8.2f} | {status}\n"
                 )
 
     if resultado_estagio_2:
@@ -117,7 +117,7 @@ with open("Outputs/resultados_engrenagem.txt", "w") as f:
                     "Nao Falha" if par["status_calc"] == "Aprovado" else "Falha"
                 )
                 f.write(
-                    f"{par['m']:<8.1f} | {par['sigma_b']:<13.2f} | {par['FS_flexao']:<8.2f} | {par['sigma_c']:<13.2f} | {par['FS_pitting']:<8.2f} | {status}\n"
+                    f"{par['m']:<8.1f} | {par['sigma_b']:<13.2f} | {par['FS_flexao']:<8.2f} | {par['sigma_c']:<13.2f} | {par.get('FS_pitting', par.get('FS_superficie', 0)):<8.2f} | {status}\n"
                 )
 
 
@@ -170,7 +170,7 @@ with open("Outputs/Estagios_Engrenagem.txt", "w") as f:
         )
 
         f.write(f"  Rotacao eixo2: {resultado_estagio_1['n_p_out']:.1f} rpm\n")
-        # Torque em N.m para leitura
+
         f.write(
             f"  Torque eixo2: {resultado_estagio_1['T_p_out']/1000:.2f} N.m\n"
         )

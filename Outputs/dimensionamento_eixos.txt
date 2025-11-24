@@ -46,3 +46,51 @@ RECOMENDACOES:
 Eixo 1: 660722 RPM (Rotacao Operacional: 1450 RPM) -> Status: OK
 Eixo 2: 211118 RPM (Rotacao Operacional: 396 RPM) -> Status: OK
 Eixo 3: 991083 RPM (Rotacao Operacional: 108 RPM) -> Status: OK
+============================================================
+
+Material: Aco AISI 1020
+S_ut = 469 MPa, S_y = 390 MPa
+Fator de seguranca: 2.5
+Vida util: 4000 horas
+
+Eixo 1 (Entrada):
+  Diametro minimo: 18.8 mm
+  FS Fadiga: 2.53
+  FS Escoamento: 11.03
+  Limite de fadiga corrigido: 150 MPa
+  Deflexao maxima: 0.006 mm
+  Deflexao admissivel: 0.030 mm
+  Status deflexao: APROVADO
+  Velocidade critica: 620938 rpm
+  Iteracoes: 42
+
+Eixo 2 (Intermediario):
+  Diametro minimo: 29.8 mm
+  FS Fadiga: 2.52
+  FS Escoamento: 12.48
+  Limite de fadiga corrigido: 144 MPa
+  Deflexao maxima: 0.016 mm
+  Deflexao admissivel: 0.065 mm
+  Status deflexao: APROVADO
+  Velocidade critica: 209551 rpm
+  Iteracoes: 40
+
+Eixo 3 (Saida):
+  Diametro minimo: 25.4 mm
+  FS Fadiga: 2.52
+  FS Escoamento: 5.62
+  Limite de fadiga corrigido: 146 MPa
+  Deflexao maxima: 0.004 mm
+  Deflexao admissivel: 0.030 mm
+  Status deflexao: APROVADO
+  Velocidade critica: 838355 rpm
+  Iteracoes: 38
+
+RECOMENDACOES:
+- Diametros comerciais sugeridos: 20mm, 30mm, 30mm
+- Implementar raios de concordancia nos degraus
+- Verificar compatibilidade com rolamentos selecionados
+--------------------------------------------------
+Eixo 1: 660722 RPM (Rotacao Operacional: 1450 RPM) -> Status: OK
+Eixo 2: 211118 RPM (Rotacao Operacional: 396 RPM) -> Status: OK
+Eixo 3: 991083 RPM (Rotacao Operacional: 108 RPM) -> Status: OK
