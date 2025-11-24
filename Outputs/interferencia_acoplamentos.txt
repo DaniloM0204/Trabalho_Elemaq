@@ -1,0 +1,5 @@
+Acoplamento;Delta_dr_um;Interf_min_total_um;Interf_max_total_um
+Eixo1 - Pinhão1;14.4000;17.8643;187.6150
+Eixo2 - Coroa1;14.4000;15.8952;89.1617
+Eixo2 - Pinhão2;14.4000;17.4596;167.3785
+Eixo3 - Coroa2;14.4000;16.1650;102.6506
