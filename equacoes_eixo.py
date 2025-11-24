@@ -53,74 +53,103 @@ def dimensiona_eixo_por_fadiga(
     tipo_eixo="simples",
 ):
     """
-    Dimensiona eixo por fadiga E escoamento simultaneamente.
+    Dimensiona eixo utilizando o critério de Goodman Modificado (Fadiga)
+    e o critério de Langer (Escoamento Estático).
     """
-    M_max_Nmm = M_max
-    Tm_Nmm = Tm * 1000
+    # 1. CONVERSÃO DE UNIDADES
+    M_max_Nmm = M_max  # Já em N.mm
+    Tm_Nmm = Tm * 1000 # N.m -> N.mm
 
+    # 2. DEFINIÇÃO DOS FATORES DE CONCENTRAÇÃO DE TENSÃO (Kt)
     if tipo_eixo == "simples":
         Kt_flexao = 2.0
         Kt_torcao = 1.7
-    else:
+    else: # "duplo" ou complexo
         Kt_flexao = 2.2
         Kt_torcao = 1.8
 
+    # 3. SENSIBILIDADE AO ENTALHE (q)
+    # Para Aço AISI 1020 (Sut ~470 MPa), q é aprox 0.75
     q = 0.75
+
+    # Fatores Dinâmicos (Kf)
     Kf_flexao = 1 + q * (Kt_flexao - 1)
     Kf_torcao = 1 + q * (Kt_torcao - 1)
 
-    C_carreg = 1.0
-    C_temp = 1.0
-    C_conf = 0.814
+    # 4. FATORES DE MARIN (CONSTANTES)
+    C_carreg = 1.0  # Flexão Rotativa
+    C_sup = 0.88    # Usinado (Valor médio para 1020)
+    C_temp = 1.0    # Temp. Ambiente
+    C_conf = 0.814  # 99% Confiabilidade
 
-    d_guess = 20.0
+    # 5. LOOP DE ITERAÇÃO
+    d_guess = 20.0 # Chute inicial (mm)
     tolerance = 0.01
     max_iter = 100
     iter_count = 0
 
-    print(f"Dimensionando eixo {tipo_eixo} (M={M_max:.0f} N.mm)...")
+    print(f"Dimensionando {tipo_eixo} (M={M_max:.0f}, T={Tm_Nmm:.0f})...")
 
     while iter_count < max_iter:
-        C_tam = calcula_fator_tamanho(d_guess)
-        A_sup, b_sup = 4.51, -0.265
-        C_sup = min(A_sup * (Sut**b_sup), 1.0)
+        # A. Fator de Tamanho (Kb) - Depende do diâmetro!
+        if d_guess <= 8:
+            C_tam = 1.0
+        elif d_guess <= 250:
+            C_tam = 1.189 * (d_guess ** -0.097)
+        else:
+            C_tam = 0.6
+
+        # B. Limite de Resistência à Fadiga Corrigido (Se)
         Se = Se_linha * C_carreg * C_tam * C_sup * C_temp * C_conf
 
-        sigma_nominal = (32 * M_max_Nmm) / (np.pi * d_guess**3)
-        tau_nominal = (16 * Tm_Nmm) / (np.pi * d_guess**3)
+        # C. Tensões Atuantes (Baseadas no diâmetro atual)
+        # Tensão Alternada (Flexão)
+        sigma_a = Kf_flexao * (32 * M_max_Nmm) / (np.pi * d_guess**3)
 
-        sigma_a = Kf_flexao * sigma_nominal
-        tau_m = 1.0 * tau_nominal
+        # Tensão Média (Torção)
+        # Kfm = 1.0 para materiais dúcteis (não multiplica por Kf_torcao)
+        tau_m = (16 * Tm_Nmm) / (np.pi * d_guess**3)
 
+        # D. Critério 1: Goodman Modificado (Fadiga)
+        # (sigma_a / Se) + (tau_m / Sut) = 1 / Nf
         utilizacao_fadiga = (sigma_a / Se) + (tau_m / Sut)
-        sigma_von_mises = np.sqrt(sigma_nominal**2 + 3 * tau_nominal**2)
+
+        # E. Critério 2: Langer (Escoamento Estático)
+        # Von Mises das tensões nominais máximas
+        sigma_max = (32 * M_max_Nmm) / (np.pi * d_guess**3)
+        tau_max = (16 * Tm_Nmm) / (np.pi * d_guess**3)
+        sigma_von_mises = np.sqrt(sigma_max**2 + 3 * tau_max**2)
+
         utilizacao_escoamento = sigma_von_mises / Sy
 
+        # F. Convergência
         utilizacao_maxima = max(utilizacao_fadiga, utilizacao_escoamento)
         objetivo = 1.0 / Nf
 
         if abs(utilizacao_maxima - objetivo) < (tolerance * objetivo):
-            break
+            break # Achou o diâmetro ideal!
 
+        # Ajuste do diâmetro para a próxima tentativa
         if utilizacao_maxima > objetivo:
-            d_guess *= 1.02
+            d_guess *= 1.01 # Aumenta devagar (1%)
         else:
-            d_guess *= 0.98
+            d_guess *= 0.99 # Diminui
 
         iter_count += 1
 
-    FS_final_fadiga = 1 / ((sigma_a / Se) + (tau_m / Sut))
-    sigma_vm_final = np.sqrt(
-        ((32 * M_max_Nmm) / (np.pi * d_guess**3)) ** 2
-        + 3 * ((16 * Tm_Nmm) / (np.pi * d_guess**3)) ** 2
-    )
-    FS_final_escoamento = Sy / sigma_vm_final
+    # 6. RESULTADOS FINAIS PARA O RELATÓRIO
+    FS_fadiga = 1 / ((sigma_a / Se) + (tau_m / Sut))
+    FS_escoamento = Sy / sigma_von_mises
 
     return {
         "diametro_minimo": d_guess,
-        "FS_fadiga": FS_final_fadiga,
-        "FS_escoamento": FS_final_escoamento,
+        "FS_fadiga": FS_fadiga,
+        "FS_escoamento": FS_escoamento,
         "Se_corrigido": Se,
+        "sigma_a": sigma_a,
+        "tau_m": tau_m,
+        "Kf_flexao": Kf_flexao,
+        "C_tam": C_tam,
         "iteracoes": iter_count,
     }
 
