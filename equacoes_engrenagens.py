@@ -156,7 +156,7 @@ def calcula_Kv_AGMA(V_t, Qv, phi_rad):
         K_v = 1.0
     else:
         K_v = ((A_coef + np.sqrt(V_t_ftmin)) / A_coef) ** B_coef
-
+    print(K_v,Qv)
     return max(1.0, min(K_v, 2.0))
 
 

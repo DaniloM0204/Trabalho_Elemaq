@@ -10,6 +10,12 @@ parametros_torque = {
     "Torque eixo3": 118.91,
 }
 
+parametros_rotacao = {
+    "Rotacao eixo1": 1450.0 ,
+    "Rotacao eixo2": 395.5,
+    "Rotacao eixo3": 107.9,
+}
+
 # Material Aco AISI 1020
 S_ut = 469
 S_y = 390
@@ -238,8 +244,11 @@ d3_com = max(
     30, math.ceil(resumo_eixos["Eixo 3 (Saida)"]["diametro_minimo"] / 5) * 5
 )
 
-with open("Outputs/dimensionamento_eixos.txt", "w") as f:
-    f.write("DIMENSIONAMENTO DOS EIXOS - RESULTADOS FINAIS\n")
+vc1 = eixo.calcula_velocidade_critica_rayleigh(d1_com, L_e1)
+vc2 = eixo.calcula_velocidade_critica_rayleigh(d2_com, L_e2)
+vc3 = eixo.calcula_velocidade_critica_rayleigh(d3_com, L_e3)
+
+with open("Outputs/dimensionamento_eixos.txt", "a") as f:
     f.write("=" * 60 + "\n\n")
     f.write("Material: Aco AISI 1020\n")
     f.write(f"S_ut = {S_ut} MPa, S_y = {S_y} MPa\n")
@@ -271,8 +280,8 @@ with open("Outputs/dimensionamento_eixos.txt", "w") as f:
     f.write("- Implementar raios de concordancia nos degraus\n")
     f.write("- Verificar compatibilidade com rolamentos selecionados\n")
 
-print("Analise completa concluida!")
-print(
-    f"Diametros minimos: E1={resultado_e1['diametro_minimo']:.1f}mm, E2={resultado_e2['diametro_minimo']:.1f}mm, E3={resultado_e3['diametro_minimo']:.1f}mm"
-)
-print("Arquivos salvos em: Outputs/")
+    f.write("-" * 50 + "\n")
+    f.write(f"Eixo 1: {vc1:.0f} RPM (Rotacao Operacional: {parametros_rotacao['Rotacao eixo1']:.0f} RPM) -> Status: {'OK' if vc1 > 1.2*parametros_rotacao['Rotacao eixo1'] else 'PERIGO'}\n")
+    f.write(f"Eixo 2: {vc2:.0f} RPM (Rotacao Operacional: {parametros_rotacao['Rotacao eixo2']:.0f} RPM) -> Status: {'OK' if vc2 > 1.2*parametros_rotacao['Rotacao eixo2'] else 'PERIGO'}\n")
+    f.write(f"Eixo 3: {vc3:.0f} RPM (Rotacao Operacional: {parametros_rotacao['Rotacao eixo3']:.0f} RPM) -> Status: {'OK' if vc3 > 1.2*parametros_rotacao['Rotacao eixo3'] else 'PERIGO'}\n")
+

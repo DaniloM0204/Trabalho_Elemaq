@@ -48,6 +48,7 @@ def escreve_estagio(file, nome_estagio, res):
     file.write("  Conjunto:\n")
     file.write(f"    Razao de Transmissao (i): {res['i_efetiva']:.3f}\n")
     file.write(f"    Distancia entre Centros (C): {res['C']:.2f} mm\n")
+    file.write(f"Fator dinamico (Kv): {res['K_v']:.3f}\n")
     file.write("  Fatores de Seguranca:\n")
     file.write(f"    FS (Flexao): {res['FS_flexao']:.2f}\n")
     file.write(f"    FS (Superficie): {res['FS_pitting']:.2f}\n")

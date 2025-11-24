@@ -423,3 +423,32 @@ def plotar_diagramas_completo(
         "R_A": np.sqrt(R_Av**2 + R_Ah**2),
         "R_B": np.sqrt(R_Bv**2 + R_Bh**2),
     }
+
+
+def calcula_velocidade_critica_rayleigh(d_mm, L_mm):
+    """
+    Calcula a primeira velocidade crítica (Rayleigh) para eixo uniforme em aço.
+    Entrada: d (mm), L (mm)
+    Saída: RPM crítica
+    """
+    # Constantes do Aço
+    E = 200000 * 1e6  # Pa (200 GPa)
+    rho = 7850        # kg/m^3
+
+    # Conversão para SI (metros)
+    d = d_mm / 1000.0
+    L = L_mm / 1000.0
+
+    # Propriedades Geométricas
+    area = (np.pi * d**2) / 4
+    inercia = (np.pi * d**4) / 64
+    massa_linear = rho * area  # kg/m
+
+    # Frequência natural (rad/s) - Modelo Viga Bi-Apoiada
+    # wn = (pi^2 / L^2) * sqrt(EI / m_linear)
+    wn = (np.pi**2 / L**2) * np.sqrt((E * inercia) / massa_linear)
+
+    # Conversão para RPM
+    n_critica = (wn * 60) / (2 * np.pi)
+
+    return n_critica
